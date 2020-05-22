@@ -1,0 +1,15 @@
+{
+  "name": "random-go-stone-placements",
+  "version": "1.0.0",
+  "description": "Generate a random starting position for your go games",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rúnar Berg Baugsson Sigríðarson <runarberg@zoho.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.0.0",
+    "prettier": "2.0.5"
+  }
+}

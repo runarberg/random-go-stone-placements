@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en_US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Random Go Stone Placements</title>
+
+    <meta
+      rel="author"
+      content="Rúnar Berg Baugsson Sigríðarson <runarberg@zoho.com>"
+    />
+
+    <meta
+      rel="description"
+      content="Generate a random starting position for your go games"
+    />
+
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./main.js" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>Random Go Stone Placements</h1>
+      <p>Generate a random starting position for your go games.</p>
+    </header>
+
+    <main class="app">
+      <form id="generator-form" class="form">
+        <label class="stones-field">
+          Number of stones each:
+          <input name="stones" type="number" min="0" value="3" />
+        </label>
+
+        <div class="confirm-buttons">
+          <button class="submit-button" name="generate">Generate</button>
+        </div>
+      </form>
+
+      <section class="output">
+        <label class="placements">
+          Placements:
+          <output form="generator-form" name="placements">
+            <pre id="placements"></pre>
+          </output>
+        </label>
+
+        <a id="download-anchor" class="download-anchor" download>
+          Download SGF
+        </a>
+      </section>
+    </main>
+
+    <footer>
+      <p>Created by Rúnar Berg Baugsson Sigríðarson</p>
+
+      <address>
+        &lt;<a href="mailto:runarberg@zoho.com">runarberg@zoho.com</a>&gt; (<a
+          href="https://online-go.com/player/321307/"
+          ><i>@runarberg</i></a
+        >
+        on OGS).
+      </address>
+
+      <small>© <a href="./LICENSE.txt">MIT</a> 2020</small>
+
+      <p class="source">
+        See
+        <a href="https://github.com/runarberg/random-go-stone-placements"
+          >source code on GitHub</a
+        >.
+      </p>
+    </footer>
+  </body>
+</html>

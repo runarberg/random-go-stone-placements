@@ -1,0 +1,39 @@
+.app {
+  align-items: start;
+  display: grid;
+  grid-gap: 1em;
+  grid-template:
+    "form output"
+    / max-content max-content;
+}
+
+.form {
+  align-items: start;
+  display: grid;
+  grid-area: form;
+  grid-gap: 1ex 1em;
+  grid-template:
+    "stones"
+    "submit";
+}
+
+.form label {
+  display: flex;
+  flex-flow: column;
+}
+
+.output {
+  grid-area: output;
+}
+
+.form .stones-field {
+  grid-area: stones;
+}
+
+.form .confirm-buttons {
+  grid-area: submit;
+}
+
+.download-anchor[download]:not([href]) {
+  display: none;
+}
