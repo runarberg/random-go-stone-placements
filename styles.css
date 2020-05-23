@@ -27,10 +27,6 @@
   flex-flow: row;
 }
 
-.output {
-  grid-area: output;
-}
-
 .form .stones-field {
   grid-area: stones;
 }
@@ -43,6 +39,62 @@
   grid-area: submit;
 }
 
+.output {
+  align-items: start;
+  display: grid;
+  grid-area: output;
+  grid-template:
+    "board    placements"
+    "download placements"
+    / min-content max-content;
+}
+
+.output .placements {
+  grid-area: placements;
+}
+
+.output svg {
+  grid-area: board;
+  height: 20em;
+  width: 20em;
+}
+
+.output svg .gridlines {
+  stroke: black;
+  stroke-width: 0.25px;
+}
+
+.output svg .starpoints {
+  fill: black;
+  stroke-width: 0;
+}
+
+.output svg .stones {
+  stroke: black;
+  stroke-width: 0.25px;
+}
+
+.output svg .stones [data-player="white"] {
+  fill: white;
+}
+
+.output svg .stones [data-player="black"] {
+  fill: black;
+}
+
+.download-anchor {
+  grid-area: download;
+  margin: auto;
+}
+
 .download-anchor[download]:not([href]) {
   display: none;
+}
+
+@media (max-width: 90ch) {
+  .app {
+    grid-template:
+      "form"
+      "output";
+  }
 }
