@@ -24,6 +24,7 @@ function main() {
     });
 
     downloadAnchor.href = URL.createObjectURL(sgfFile);
+    downloadAnchor.download = sgfFile.name;
   });
 }
 
