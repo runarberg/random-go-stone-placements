@@ -12,26 +12,89 @@ function allowedCoord([newCol, newRow], placements) {
   });
 }
 
-function randomPos() {
-  return 3 + Math.floor(Math.random() * 15);
+function randomPos({ start = 3, end = 17 }) {
+  return start + Math.floor(Math.random() * (end - start) + 1);
 }
 
-function newCoord(placements) {
-  const coord = [randomPos(), randomPos()];
+function getRandomQuadrant(quadrantMask) {
+  const bits = Array.from(quadrantMask.toString(2).padStart(4, "0"), (n) =>
+    Number.parseInt(n)
+  ).reverse();
+  const once = bits.reduce((count, bit) => count + bit, 0);
 
-  if (allowedCoord(coord, placements)) {
-    return coord;
+  if (once === 1) {
+    return quadrantMask;
   }
 
-  return newCoord(placements);
+  // Get a random nth of the available bits.
+  const nth = Math.floor(Math.random() * once);
+  let bitsLeft = nth + 1;
+  const index = bits.findIndex((bit) => {
+    if (bit) {
+      bitsLeft -= 1;
+    }
+
+    if (bitsLeft === 0) {
+      return true;
+    }
+
+    return false;
+  });
+
+  return 1 << index;
 }
 
-export default function randomPlacements(n = 0, placements = []) {
+function newCoord(placements, { quadrant = 0 }) {
+  let colStart = 3;
+  let colEnd = 17;
+  let rowStart = 3;
+  let rowEnd = 17;
+
+  if (quadrant === 0b1000) {
+    colEnd = 10;
+    rowEnd = 10;
+  } else if (quadrant === 0b0100) {
+    colStart = 10;
+    rowEnd = 10;
+  } else if (quadrant === 0b0010) {
+    colEnd = 10;
+    rowStart = 10;
+  } else if (quadrant === 0b0001) {
+    colStart = 10;
+    rowStart = 10;
+  }
+
+  const col = randomPos({ start: colStart, end: colEnd });
+  const row = randomPos({ start: rowStart, end: rowEnd });
+  const coord = [col, row];
+
+  if (!allowedCoord(coord, placements)) {
+    return newCoord(placements, { quadrant });
+  }
+
+  return coord;
+}
+
+export default function randomPlacements(
+  n = 0,
+  config = {},
+  state = { placements: [], quadrantMask: 0b1111 }
+) {
   if (n <= 0) {
-    return placements;
+    return state.placements;
   }
 
-  placements.push(newCoord(placements));
+  let coordConfig = {};
 
-  return randomPlacements(n - 1, placements);
+  if (config.quadrantShuffle) {
+    const quadrant = getRandomQuadrant(state.quadrantMask);
+    const nextMask = state.quadrantMask ^ quadrant || 0b1111;
+
+    coordConfig.quadrant = quadrant;
+    state.quadrantMask = nextMask;
+  }
+
+  state.placements.push(newCoord(state.placements, coordConfig));
+
+  return randomPlacements(n - 1, config, state);
 }

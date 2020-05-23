@@ -14,6 +14,7 @@
   grid-gap: 1ex 1em;
   grid-template:
     "stones"
+    "quadrant-shuffle"
     "submit";
 }
 
@@ -22,12 +23,20 @@
   flex-flow: column;
 }
 
+.form label.checkbox-field {
+  flex-flow: row;
+}
+
 .output {
   grid-area: output;
 }
 
 .form .stones-field {
   grid-area: stones;
+}
+
+.form .quadrant-shuffle-field {
+  grid-area: quadrant-shuffle;
 }
 
 .form .confirm-buttons {

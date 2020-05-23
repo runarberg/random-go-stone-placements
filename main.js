@@ -10,8 +10,9 @@ function main() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const input = form.querySelector('input[name="stones"]');
-    const placements = randomPlacements(input.valueAsNumber * 2);
+    const stones = form.querySelector('input[name="stones"]');
+    const quadrantShuffle = form.querySelector('input[name="quadrant-shuffle"]').checked;
+    const placements = randomPlacements(stones.valueAsNumber * 2, { quadrantShuffle });
 
     placementsPre.textContent = formatText(placements);
 
