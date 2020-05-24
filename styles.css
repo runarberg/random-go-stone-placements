@@ -84,13 +84,6 @@
   stroke-width: 0.25px;
 }
 
-.output .board .gridlines .h-line:first-child,
-.output .board .gridlines .h-line:last-child,
-.output .board .gridlines .v-line:first-child,
-.output .board .gridlines .v-line:last-child {
-  stroke-width: 0.5px;
-}
-
 .output .board .starpoints {
   fill: black;
   stroke-width: 0;
