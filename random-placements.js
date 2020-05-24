@@ -1,14 +1,18 @@
-function allowedCoord([newCol, newRow], placements) {
-  return placements.every(({col: oldCol, row: oldRow}) => {
-    if (oldCol === newCol) {
-      return newRow < oldRow - 1 || oldRow + 1 < newRow;
+function allowedCoord([newCol, newRow], placements, { preventAdjacent }) {
+  return placements.every(({ col: oldCol, row: oldRow }) => {
+    if (preventAdjacent) {
+      if (oldCol === newCol) {
+        return newRow < oldRow - 1 || oldRow + 1 < newRow;
+      }
+
+      if (oldRow === newRow) {
+        return newCol < oldCol - 1 || oldCol + 1 < newCol;
+      }
+
+      return true;
     }
 
-    if (oldRow === newRow) {
-      return newCol < oldCol - 1 || oldCol + 1 < newCol;
-    }
-
-    return true;
+    return !(oldCol === newCol && oldRow === newRow);
   });
 }
 
@@ -53,7 +57,7 @@ function getNextPlayer(placements, handicap) {
 }
 
 function newCoord(placements, config) {
-  const { size, margins, handicap, quadrant } = config;
+  const { size, margins, handicap, quadrant, preventAdjacent } = config;
 
   let colStart = margins + 1;
   let colEnd = size - margins;
@@ -79,7 +83,7 @@ function newCoord(placements, config) {
   const col = randomPos({ start: colStart, end: colEnd });
   const row = randomPos({ start: rowStart, end: rowEnd });
 
-  if (!allowedCoord([col, row], placements)) {
+  if (!allowedCoord([col, row], placements, { preventAdjacent })) {
     return newCoord(placements, config);
   }
 
@@ -101,6 +105,7 @@ export default function randomPlacements(
     size: config.size,
     margins: config.margins,
     handicap: config.handicap,
+    preventAdjacent: config.preventAdjacent,
   };
 
   if (config.quadrantShuffle) {

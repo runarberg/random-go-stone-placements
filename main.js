@@ -18,6 +18,7 @@ function main() {
       komi: form.komi.valueAsNumber,
       handicap: form.handicap.valueAsNumber,
       margins: form.margins.valueAsNumber,
+      preventAdjacent: form.preventAdjacent.checked,
       quadrantShuffle: form.quadrantShuffle.checked,
     };
 

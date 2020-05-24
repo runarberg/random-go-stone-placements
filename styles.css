@@ -18,6 +18,7 @@
     "komi"
     "handicap"
     "margins"
+    "prevent-adjacent"
     "quadrant-shuffle"
     "submit";
 }
@@ -49,6 +50,10 @@
 
 .form .margins-field {
   grid-area: margins;
+}
+
+.form .prevent-adjacent-field {
+  grid-area: prevent-adjacent;
 }
 
 .form .quadrant-shuffle-field {
