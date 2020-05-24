@@ -1,5 +1,5 @@
 function allowedCoord([newCol, newRow], placements) {
-  return placements.every(([oldCol, oldRow]) => {
+  return placements.every(({col: oldCol, row: oldRow}) => {
     if (oldCol === newCol) {
       return newRow < oldRow - 1 || oldRow + 1 < newRow;
     }
@@ -44,35 +44,48 @@ function getRandomQuadrant(quadrantMask) {
   return 1 << index;
 }
 
-function newCoord(placements, { quadrant = 0 }) {
-  let colStart = 3;
-  let colEnd = 17;
-  let rowStart = 3;
-  let rowEnd = 17;
+function getNextPlayer(placements, handicap) {
+  if (placements.length < handicap) {
+    return "B";
+  }
+
+  return placements.length % 2 === handicap % 2 ? "B" : "W";
+}
+
+function newCoord(placements, config) {
+  const { size, margins, handicap, quadrant } = config;
+
+  let colStart = margins + 1;
+  let colEnd = size - margins;
+  let rowStart = margins + 1;
+  let rowEnd = size - margins;
+
+  const mid = (size + 1) / 2;
 
   if (quadrant === 0b1000) {
-    colEnd = 10;
-    rowEnd = 10;
+    colEnd = mid;
+    rowEnd = mid;
   } else if (quadrant === 0b0100) {
-    colStart = 10;
-    rowEnd = 10;
+    colStart = mid;
+    rowEnd = mid;
   } else if (quadrant === 0b0010) {
-    colEnd = 10;
-    rowStart = 10;
+    colEnd = mid;
+    rowStart = mid;
   } else if (quadrant === 0b0001) {
-    colStart = 10;
-    rowStart = 10;
+    colStart = mid;
+    rowStart = mid;
   }
 
   const col = randomPos({ start: colStart, end: colEnd });
   const row = randomPos({ start: rowStart, end: rowEnd });
-  const coord = [col, row];
 
-  if (!allowedCoord(coord, placements)) {
-    return newCoord(placements, { quadrant });
+  if (!allowedCoord([col, row], placements)) {
+    return newCoord(placements, config);
   }
 
-  return coord;
+  const player = getNextPlayer(placements, handicap);
+
+  return { col, row, player };
 }
 
 export default function randomPlacements(
@@ -84,7 +97,11 @@ export default function randomPlacements(
     return state.placements;
   }
 
-  let coordConfig = {};
+  const coordConfig = {
+    size: config.size,
+    margins: config.margins,
+    handicap: config.handicap,
+  };
 
   if (config.quadrantShuffle) {
     const quadrant = getRandomQuadrant(state.quadrantMask);

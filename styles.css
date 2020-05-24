@@ -14,6 +14,10 @@
   grid-gap: 1ex 1em;
   grid-template:
     "stones"
+    "size"
+    "komi"
+    "handicap"
+    "margins"
     "quadrant-shuffle"
     "submit";
 }
@@ -29,6 +33,22 @@
 
 .form .stones-field {
   grid-area: stones;
+}
+
+.form .size-field {
+  grid-area: size;
+}
+
+.form .komi-field {
+  grid-area: komi;
+}
+
+.form .handicap-field {
+  grid-area: handicap;
+}
+
+.form .margins-field {
+  grid-area: margins;
 }
 
 .form .quadrant-shuffle-field {
@@ -59,27 +79,32 @@
   width: 20em;
 }
 
-.output svg .gridlines {
+.output .board .gridlines {
   stroke: black;
   stroke-width: 0.25px;
 }
 
-.output svg .starpoints {
+.output .board .gridlines .h-line:first-child,
+.output .board .gridlines .h-line:last-child,
+.output .board .gridlines .v-line:first-child,
+.output .board .gridlines .v-line:last-child {
+  stroke-width: 0.5px;
+}
+
+.output .board .starpoints {
   fill: black;
   stroke-width: 0;
 }
 
-.output svg .stones {
+.output .board[data-size="9"] .starpoint:nth-child(2n),
+.output .board[data-size="11"] .starpoint:nth-child(2n),
+.output .board[data-size="13"] .starpoint:nth-child(2n) {
+  display: none;
+}
+
+.output .board .stones {
   stroke: black;
   stroke-width: 0.25px;
-}
-
-.output svg .stones [data-player="white"] {
-  fill: white;
-}
-
-.output svg .stones [data-player="black"] {
-  fill: black;
 }
 
 .download-anchor {

@@ -6,9 +6,8 @@ function transformColCoord(pos) {
   return col;
 }
 
-function transformPlacement([col, row], i) {
+function transformPlacement({col, row, player}, i) {
   const turn = i + 1;
-  const player = i % 2 === 0 ? "B" : "W";
   const colCoord = transformColCoord(col);
   const rowCoord = 20 - row;
 

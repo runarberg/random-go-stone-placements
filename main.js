@@ -12,16 +12,30 @@ function main() {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const stones = form.querySelector('input[name="stones"]');
-    const quadrantShuffle = form.querySelector('input[name="quadrant-shuffle"]').checked;
-    const placements = randomPlacements(stones.valueAsNumber * 2, { quadrantShuffle });
+    const formData = {
+      stones: form.stones.valueAsNumber,
+      size: form.size.valueAsNumber,
+      komi: form.komi.valueAsNumber,
+      handicap: form.handicap.valueAsNumber,
+      margins: form.margins.valueAsNumber,
+      quadrantShuffle: form.quadrantShuffle.checked,
+    };
+
+    const placements = randomPlacements(
+      formData.handicap + formData.stones * 2,
+      formData
+    );
 
     placementsPre.textContent = formatText(placements);
-    drawSVG(svg, placements);
+    drawSVG(svg, placements, formData);
 
-    const sgfFile = new File([formatSGF(placements)], "random-start.sgf", {
-      type: "application/x-go-sgf",
-    });
+    const sgfFile = new File(
+      [formatSGF(placements, formData)],
+      "random-start.sgf",
+      {
+        type: "application/x-go-sgf",
+      }
+    );
 
     downloadAnchor.href = URL.createObjectURL(sgfFile);
     downloadAnchor.download = sgfFile.name;

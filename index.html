@@ -31,8 +31,28 @@
           <input name="stones" type="number" min="0" value="3" />
         </label>
 
+        <label class="size-field">
+          Board size:
+          <input name="size" type="number" min="9" max="25" value="19" />
+        </label>
+
+        <label class="komi-field">
+          Komi:
+          <input name="komi" type="number" value="6.5" step="0.5" />
+        </label>
+
+        <label class="handicap-field">
+          Handicap:
+          <input name="handicap" type="number" value="0" />
+        </label>
+
+        <label class="margins-field">
+          Stone free margins:
+          <input name="margins" type="number" value="2" />
+        </label>
+
         <label class="quadrant-shuffle-field checkbox-field">
-          <input name="quadrant-shuffle" type="checkbox" />
+          <input name="quadrantShuffle" type="checkbox" />
           Favor placing in every quadrant
         </label>
 
@@ -42,8 +62,7 @@
       </form>
 
       <section class="output">
-        <svg id="demo-board" viewBox="0 0 102.5 102.5">
-        </svg>
+        <svg id="demo-board" viewBox="0 0 102.5 102.5"></svg>
 
         <label class="placements">
           Placements:
