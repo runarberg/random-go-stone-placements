@@ -1,10 +1,124 @@
+@font-face {
+  font-family: "Fira Mono";
+  src: url("fonts/fira/FiraMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Mono";
+  src: url("fonts/fira/FiraMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-LightItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-SemiBoldItalic.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("fonts/fira/FiraSans-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+}
+
+:root {
+  font-family: "Fira Sans", sans-serif;
+}
+
+body {
+  background: aliceblue;
+  margin: 0;
+  display: grid;
+  grid-gap: 2em 0.5ex;
+  grid-template:
+    ". header ." auto
+    ". app    ." 1fr
+    ". footer ." auto
+    / 1fr max-content 1fr;
+  min-block-size: 100vh;
+}
+
+.main-header {
+  grid-area: header;
+  text-align: center;
+}
+
+.main-header h1 {
+  font-weight: 600;
+  margin-block-end: 0.25em;
+}
+
+.main-header p {
+  font-size: 1.2em;
+  font-weight: 300;
+  margin-block: 0;
+}
+
+.main-footer {
+  font-size: 0.9em;
+  font-weight: 300;
+  grid-area: footer;
+}
+
 .app {
   align-items: start;
   display: grid;
-  grid-gap: 1em;
+  grid-area: app;
+  grid-gap: 2em;
   grid-template:
     "form output"
     / max-content max-content;
+}
+
+.app pre {
+  font-family: "Fira Mono", monospace;
 }
 
 .form {
@@ -13,19 +127,17 @@
   grid-area: form;
   grid-gap: 1ex 1em;
   grid-template:
-    "stones"
-    "size"
-    "komi"
-    "handicap"
-    "margins"
-    "prevent-adjacent"
-    "quadrant-shuffle"
-    "submit";
+    "stones   size"
+    "handicap komi"
+    "margins  prevent-adjacent"
+    "margins  quadrant-shuffle"
+    "submit   submit";
 }
 
 .form label {
   display: flex;
   flex-flow: column;
+  font-weight: 300;
 }
 
 .form label.checkbox-field {
@@ -61,6 +173,7 @@
 }
 
 .form .confirm-buttons {
+  font-family: "Fira Sans", sans-serif;
   grid-area: submit;
 }
 
@@ -68,9 +181,10 @@
   align-items: start;
   display: grid;
   grid-area: output;
+  grid-gap: 1ex 1em;
   grid-template:
-    "board    placements"
-    "download placements"
+    "board    placements" auto
+    "download placements" 1fr
     / min-content max-content;
 }
 
@@ -82,6 +196,10 @@
   grid-area: board;
   height: 20em;
   width: 20em;
+}
+
+.output svg .background {
+  fill: white;
 }
 
 .output .board .gridlines {
@@ -106,15 +224,20 @@
 }
 
 .download-anchor {
+  font-weight: 300;
   grid-area: download;
-  margin: auto;
+  margin-inline: auto;
 }
 
 .download-anchor[download]:not([href]) {
   display: none;
 }
 
-@media (max-width: 90ch) {
+.shield {
+  height: 1.2em;
+}
+
+@media (max-width: 105ch) {
   .app {
     grid-template:
       "form"

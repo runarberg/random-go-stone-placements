@@ -38,11 +38,6 @@ export default function drawSVG(svg, placements, { size }) {
   const SQUARE_SIZE = 100 / size;
   const STONE_RADIUS = SQUARE_SIZE / 2 - 0.35;
 
-  svg.setAttribute(
-    "viewBox",
-    `0 0 ${100 + STONE_RADIUS} ${100 + STONE_RADIUS}`
-  );
-
   const board = crel(
     "g",
     {

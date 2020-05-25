@@ -19,7 +19,7 @@
   </head>
 
   <body>
-    <header>
+    <header class="main-header">
       <h1>Random Go Stone Placements</h1>
       <p>Generate a random starting position for your go games.</p>
     </header>
@@ -67,7 +67,9 @@
       </form>
 
       <section class="output">
-        <svg id="demo-board" viewBox="0 0 102.5 102.5"></svg>
+        <svg id="demo-board" viewBox="0 0 100 100">
+          <rect width="100" height="100" class="background" />
+        </svg>
 
         <label class="placements">
           Placements:
@@ -84,25 +86,37 @@
       </section>
     </main>
 
-    <footer>
-      <p>Created by Rúnar Berg Baugsson Sigríðarson</p>
+    <footer class="main-footer">
+      <p>
+        Created by Rúnar Berg Baugsson Sigríðarson
+      </p>
 
-      <address>
-        &lt;<a href="mailto:runarberg@zoho.com">runarberg@zoho.com</a>&gt; (<a
-          href="https://online-go.com/player/321307/"
-          ><i>@runarberg</i></a
-        >
-        on OGS).
-      </address>
-
-      <small>© <a href="./LICENSE.txt">MIT</a> 2020</small>
+      <p>
+        Challenge me
+        <a href="https://online-go.com/player/321307/"><i>@runarberg</i></a>
+        on OGS.
+      </p>
 
       <p class="source">
-        See
+        See source code on
         <a href="https://github.com/runarberg/random-go-stone-placements"
-          >source code on GitHub</a
-        >.
+          >GitHub</a
+        >.<br />
+        <a href="https://github.com/runarberg/random-go-stone-placements/issues"
+          ><img
+            class="shield"
+            alt="GitHub issues"
+            src="https://img.shields.io/github/issues/runarberg/random-go-stone-placements"
+        /></a>
+        <a href="https://github.com/runarberg/random-go-stone-placements/pulls"
+          ><img
+            class="shield"
+            alt="GitHub pull requests"
+            src="https://img.shields.io/github/issues-pr/runarberg/random-go-stone-placements"
+        /></a>
       </p>
+
+      <small>© <a href="./LICENSE.txt">MIT</a> 2020</small>
     </footer>
   </body>
 </html>
