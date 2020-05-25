@@ -226,7 +226,7 @@ body {
 .download-anchor {
   font-weight: 300;
   grid-area: download;
-  margin-inline: auto;
+  justify-self: center;
 }
 
 .download-anchor[download]:not([href]) {
