@@ -115,7 +115,7 @@ function handleKomiChange(event) {
 function main() {
   const { searchParams } = new URL(window.location);
   const form = document.getElementById("generator-form");
-  let placements;
+  let placements = [];
 
   for (const [name, value] of searchParams) {
     if (name === "placements") {
@@ -136,11 +136,9 @@ function main() {
     } else {
       form[name].value = value;
     }
-
-    if (placements) {
-      setOutput(form.placements, placements, getFormData(form));
-    }
   }
+
+  setOutput(form.placements, placements, getFormData(form));
 
   form.addEventListener("submit", handleSubmit);
   form.komi.addEventListener("change", handleKomiChange);
