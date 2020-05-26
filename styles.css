@@ -69,14 +69,40 @@
 }
 
 :root {
-  --focus-ring: 2px 2px 5px orange, 2px -2px 5px orange, -2px -2px 5px orange,
-    -2px 2px 5px orange;
+  --main-background: aliceblue;
+  --main-color: black;
+  --border-color: skyblue;
+  --link-color: indigo;
+  --focus-color: indigo;
+  --field-background: white;
+  --goban-background: white;
+  --goban-foreground: black;
+  --focus-ring-color: orange;
+  --focus-ring: 2px 2px 5px var(--focus-ring-color),
+    2px -2px 5px var(--focus-ring-color), -2px -2px 5px var(--focus-ring-color),
+    -2px 2px 5px var(--focus-ring-color);
 
   font-family: "Fira Sans", sans-serif;
+  color: var(--main-color);
 }
 
-a:link {
-  color: indigo;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-background: midnightblue;
+    --main-color: aliceblue;
+    --border-color: slateblue;
+    --focus-color: orange;
+    --link-color: orange;
+    --field-background: indigo;
+    --goban-background: indigo;
+    --goban-foreground: white;
+    --focus-ring-color: limegreen;
+  }
+}
+
+a:link,
+a:visited {
+  color: var(--link-color);
 }
 
 button,
@@ -86,13 +112,15 @@ input:not([type="checkbox"]) {
 }
 
 input {
-  border: 1px solid skyblue;
+  background: var(--field-background);
+  border: 1px solid var(--border-color);
   border-radius: 0.5ex;
+  color: var(--color);
   padding: 0.5ex 1ex;
 }
 
 input:not([type="checkbox"]):focus {
-  border-color: indigo;
+  border-color: var(--focus-color);
 }
 
 input[type="number"] {
@@ -103,7 +131,7 @@ input[type="checkbox"] {
   align-items: center;
   -webkit-appearance: none;
   appearance: none;
-  background: white;
+  background: var(--field-background);
   block-size: 1.1em;
   display: inline-block;
   inline-size: 1.1em;
@@ -112,14 +140,14 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: indigo;
-  border-color: indigo;
+  background: var(--focus-color);
+  border-color: var(--focus-color);
   display: inline-flex;
 }
 
 input[type="checkbox"]:checked::after {
   content: "";
-  background: white;
+  background: var(--field-background);
   block-size: 100%;
   display: block;
   inline-size: 100%;
@@ -131,10 +159,10 @@ input[type="checkbox"]:checked::after {
 
 button,
 a.button {
-  background: indigo;
+  background: var(--link-color);
   border: none;
   border-radius: 0.5ex;
-  color: white;
+  color: var(--field-background);
   cursor: pointer;
   padding: 1ex 1em;
   text-decoration: none;
@@ -176,7 +204,7 @@ input[type="checkbox"]:focus-visible {
 }
 
 body {
-  background: aliceblue;
+  background: var(--main-background);
   margin: 0;
   display: grid;
   grid-gap: 2em 0.5ex;
@@ -304,16 +332,16 @@ body {
 }
 
 .output svg .background {
-  fill: white;
+  fill: var(--goban-background);
 }
 
 .output .board .gridlines {
-  stroke: black;
+  stroke: var(--goban-foreground);
   stroke-width: 0.25px;
 }
 
 .output .board .starpoints {
-  fill: black;
+  fill: var(--goban-foreground);
   stroke-width: 0;
 }
 
@@ -324,7 +352,7 @@ body {
 }
 
 .output .board .stones {
-  stroke: black;
+  stroke: var(--goban-foreground);
   stroke-width: 0.25px;
 }
 
