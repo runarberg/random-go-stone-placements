@@ -88,15 +88,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --main-background: midnightblue;
+    --main-background: black;
     --main-color: aliceblue;
-    --border-color: slateblue;
-    --focus-color: orange;
-    --link-color: orange;
-    --field-background: indigo;
-    --goban-background: indigo;
+    --border-color: indigo;
+    --focus-color: gold;
+    --link-color: gold;
+    --field-background: midnightblue;
+    --goban-background: midnightblue;
     --goban-foreground: white;
-    --focus-ring-color: limegreen;
+    --focus-ring-color: skyblue;
   }
 }
 
