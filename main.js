@@ -3,6 +3,11 @@ import formatText from "./formats/text.js";
 import formatSGF from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
 
+import("https://cdn.jsdelivr.net/npm/focus-visible@5").catch((error) => {
+  console.warn("Failed to import focus-visible");
+  console.error(error);
+});
+
 function createSGFFile(downloadAnchor, sgf) {
   const sgfFile = new File([sgf], "random-start.sgf", {
     type: "application/x-go-sgf",

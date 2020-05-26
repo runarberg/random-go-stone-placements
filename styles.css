@@ -69,7 +69,110 @@
 }
 
 :root {
+  --focus-ring: 2px 2px 5px orange, 2px -2px 5px orange, -2px -2px 5px orange,
+    -2px 2px 5px orange;
+
   font-family: "Fira Sans", sans-serif;
+}
+
+a:link {
+  color: indigo;
+}
+
+button,
+input:not([type="checkbox"]) {
+  font-size: 1em;
+  font-family: "Fira Sans", sans-serif;
+}
+
+input {
+  border: 1px solid skyblue;
+  border-radius: 0.5ex;
+  padding: 0.5ex 1ex;
+}
+
+input:not([type="checkbox"]):focus {
+  border-color: indigo;
+}
+
+input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="checkbox"] {
+  align-items: center;
+  -webkit-appearance: none;
+  appearance: none;
+  background: white;
+  block-size: 1.1em;
+  display: inline-block;
+  inline-size: 1.1em;
+  padding: 0;
+  justify-content: center;
+}
+
+input[type="checkbox"]:checked {
+  background-color: indigo;
+  border-color: indigo;
+  display: inline-flex;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  background: white;
+  block-size: 100%;
+  display: block;
+  inline-size: 100%;
+  -webkit-mask-image: url(./icons/checkmark.svg);
+  -webkit-mask-size: cover;
+  mask-image: url(./icons/checkmark.svg);
+  mask-size: cover;
+}
+
+button,
+a.button {
+  background: indigo;
+  border: none;
+  border-radius: 0.5ex;
+  color: white;
+  cursor: pointer;
+  padding: 1ex 1em;
+  text-decoration: none;
+}
+
+.js-focus-visible a:focus,
+.js-focus-visible button:focus,
+.js-focus-visible input:focus {
+  outline: none;
+}
+
+.js-focus-visible button::-moz-focus-inner {
+  border: none;
+}
+
+/* prettier-ignore */
+@supports selector (:focus-visible) {
+  a:focus,
+  button:focus,
+  input:focus {
+    outline: none;
+  }
+
+  button::-moz-focus-inner {
+    border: none;
+  }
+}
+
+a.focus-visible,
+button.focus-visible,
+input[type="checkbox"].focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+a:focus-visible,
+button:focus-visible,
+input[type="checkbox"]:focus-visible {
+  box-shadow: var(--focus-ring);
 }
 
 body {
@@ -81,6 +184,7 @@ body {
     ". header ." auto
     ". app    ." 1fr
     ". footer ." auto
+    ". .      ." 2em
     / 1fr max-content 1fr;
   min-block-size: 100vh;
 }
@@ -127,11 +231,12 @@ body {
   grid-area: form;
   grid-gap: 1ex 1em;
   grid-template:
-    "stones   size"
-    "handicap komi"
+    "stones   size            "
+    "komi     handicap        "
     "margins  prevent-adjacent"
     "margins  quadrant-shuffle"
-    "submit   submit";
+    ".        .               " 1ex
+    "submit   submit          ";
 }
 
 .form label {
@@ -173,7 +278,6 @@ body {
 }
 
 .form .confirm-buttons {
-  font-family: "Fira Sans", sans-serif;
   grid-area: submit;
 }
 
@@ -184,6 +288,7 @@ body {
   grid-gap: 1ex 1em;
   grid-template:
     "board    placements" auto
+    ".        placements" 1ex
     "download placements" 1fr
     / min-content max-content;
 }
@@ -224,7 +329,6 @@ body {
 }
 
 .download-anchor {
-  font-weight: 300;
   grid-area: download;
   justify-self: center;
 }
