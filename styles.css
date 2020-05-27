@@ -73,7 +73,7 @@
   --main-color: black;
   --border-color: skyblue;
   --link-color: indigo;
-  --focus-color: indigo;
+  --focus-color: orange;
   --field-background: white;
   --goban-background: white;
   --goban-foreground: black;
@@ -90,7 +90,7 @@
   :root {
     --main-background: black;
     --main-color: aliceblue;
-    --border-color: indigo;
+    --border-color: skyblue;
     --focus-color: gold;
     --link-color: gold;
     --field-background: midnightblue;
@@ -140,8 +140,8 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background: var(--focus-color);
-  border-color: var(--focus-color);
+  background: var(--link-color);
+  border-color: var(--link-color);
   display: inline-flex;
 }
 
