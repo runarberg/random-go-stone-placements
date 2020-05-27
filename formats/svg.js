@@ -1,11 +1,12 @@
+const SVGNS = "http://www.w3.org/2000/svg";
+
 function crel(
   tag,
-  { class: classList = {}, data = {}, ...attrs } = {},
+  { class: classList = {}, data = {}, text = "", ...attrs } = {},
   { appendTo, query } = {}
 ) {
   const update = appendTo.querySelector(query);
-  const el =
-    update || document.createElementNS("http://www.w3.org/2000/svg", tag);
+  const el = update || document.createElementNS(SVGNS, tag);
 
   Object.entries(attrs).forEach(([name, value]) => {
     el.setAttribute(name, value);
@@ -27,6 +28,8 @@ function crel(
     }
   });
 
+  el.textContent = text;
+
   if (appendTo && !update) {
     appendTo.appendChild(el);
   }
@@ -44,6 +47,7 @@ export default function drawSVG(svg, placements, { size }) {
       class: { board: true },
       data: { size },
       transform: `translate(${STONE_RADIUS}, ${STONE_RADIUS})`,
+      "aria-label": `${size}×${size} board`,
     },
     { appendTo: svg, query: ".board" }
   );
@@ -51,7 +55,7 @@ export default function drawSVG(svg, placements, { size }) {
   {
     const gridlines = crel(
       "g",
-      { class: { gridlines: true } },
+      { class: { gridlines: true }, "aria-hidden": "true" },
       { appendTo: board, query: ".gridlines" }
     );
 
@@ -106,9 +110,7 @@ export default function drawSVG(svg, placements, { size }) {
   {
     const starpoints = crel(
       "g",
-      {
-        class: { starpoints: true },
-      },
+      { class: { starpoints: true }, "aria-hidden": "true" },
       { appendTo: board, query: ".starpoints" }
     );
 
@@ -144,7 +146,7 @@ export default function drawSVG(svg, placements, { size }) {
   {
     const stones = crel(
       "g",
-      { class: { stones: true } },
+      { class: { stones: true }, "aria-label": "stones" },
       { appendTo: board, query: ".stones" }
     );
 
@@ -154,7 +156,7 @@ export default function drawSVG(svg, placements, { size }) {
       const r = STONE_RADIUS;
       const fill = player === "B" ? "black" : "white";
 
-      crel(
+      const stone = crel(
         "circle",
         {
           cx,
@@ -164,7 +166,16 @@ export default function drawSVG(svg, placements, { size }) {
           class: { stone: true },
           "data-player": player,
         },
+
         { appendTo: stones, query: `.stone:nth-child(${i + 1})` }
+      );
+
+      crel(
+        "title",
+        {
+          text: `${fill} ${String.fromCodePoint(0x40 + col)}${size - row + 1}`,
+        },
+        { appendTo: stone, query: "title" }
       );
 
       while (stones.children[placements.length]) {
