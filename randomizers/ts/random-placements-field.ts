@@ -121,7 +121,8 @@ export default function randomPlacementsField(
   });
   const stonesOuter = stonesInner.map(stn => {
     const [v, h] = stn;
-    const vhOuter: [number, number] = [margins + v, margins + h];
+    // '1 +' makes coordinates start at 1 instead of 0
+    const vhOuter: [number, number] = [1 + margins + v, 1 + margins + h];
     return vhOuter;
   });
   return assignPlayers(stonesOuter, handicap);
