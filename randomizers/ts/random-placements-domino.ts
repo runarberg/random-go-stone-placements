@@ -212,7 +212,7 @@ function randomSegs(
   return segments;
 }
 
-function randomPlacementsDomino(
+export default function randomPlacementsDomino(
   numStone: number,
   {size,
   margins,

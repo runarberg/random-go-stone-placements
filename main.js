@@ -1,4 +1,6 @@
 import randomPlacements from "./random-placements.js";
+import randomPlacementsDomino from "./randomizers/js/random-placements-domino.js";
+import randomPlacementsField from "./randomizers/js/random-placements-field.js";
 import formatText from "./formats/text.js";
 import formatSGF from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
@@ -61,7 +63,8 @@ function getFormData(form) {
     handicap: form.handicap.valueAsNumber,
     margins: form.margins.valueAsNumber,
     preventAdjacent: form.preventAdjacent.checked,
-    quadrantShuffle: form.quadrantShuffle.checked,
+    randomizerOption: document.querySelector('input[name="randomizerOption"]:checked').value,
+    quadrantShuffle: (document.querySelector('input[name="randomizerOption"]:checked').value === "quadrantShuffle"),
   };
 }
 
@@ -71,10 +74,27 @@ function handleSubmit(event) {
   const form = event.target;
   const formData = getFormData(form);
 
+  /*
   const placements = randomPlacements(
     formData.handicap + formData.stones * 2,
     formData
   );
+  */
+
+  const numStone = formData.handicap + formData.stones * 2;
+  let placements;
+  switch (formData.randomizerOption) {
+    case "plain":
+    case "quadrantShuffle":
+      placements = randomPlacements(numStone, formData);
+      break;
+    case "dominoShuffle":
+      placements = randomPlacementsDomino(numStone, formData);
+      break;
+    case "weightField":
+      placements = randomPlacementsField(numStone, formData);
+      break;
+  }
 
   setOutput(form.placements, placements, formData);
 
