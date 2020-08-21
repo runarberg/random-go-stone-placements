@@ -57,9 +57,30 @@
           Prevent adjacent stones
         </label>
 
+        <!--
         <label class="quadrant-shuffle-field checkbox-field">
           <input name="quadrantShuffle" type="checkbox" />
           Favor placing in every quadrant
+        </label>
+        -->
+
+        <label class="randomizer-options-field radio-field">
+          Randomize using:
+          <div align="left">
+          <input name="randomizerOption" type="radio" value="plain" checked />
+          Plain randomization<br>
+          <input name="randomizerOption" type="radio" value="quadrantShuffle" />
+          Quadrant shuffle<br>
+          <small>Favor placing in every quadrant.</small><br>
+          <input name="randomizerOption" type="radio" value="dominoShuffle" />
+          Domino shuffle<br>
+          <small>Reserve domino-shaped space<br>
+          for each stone.</small><br>
+          <input name="randomizerOption" type="radio" value="weightField" />
+          Weight field<br>
+          <small>Weight for each point adjusts<br>
+          after each stone is placed.</small>
+          </div>
         </label>
 
         <div class="confirm-buttons">
