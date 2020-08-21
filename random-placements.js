@@ -48,7 +48,7 @@ function getRandomQuadrant(quadrantMask) {
   return 1 << index;
 }
 
-function getNextPlayer(placements, handicap) {
+export function getNextPlayer(placements, handicap) {
   if (placements.length < handicap) {
     return "B";
   }
