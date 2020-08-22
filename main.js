@@ -63,8 +63,9 @@ function getFormData(form) {
     handicap: form.handicap.valueAsNumber,
     margins: form.margins.valueAsNumber,
     preventAdjacent: form.preventAdjacent.checked,
-    randomizerOption: document.querySelector('input[name="randomizerOption"]:checked').value,
-    quadrantShuffle: (document.querySelector('input[name="randomizerOption"]:checked').value === "quadrantShuffle"),
+    randomizerOption: document.querySelector(
+      'input[name="randomizerOption"]:checked'
+    ).value,
   };
 }
 
@@ -151,10 +152,20 @@ function main() {
             row: coord.codePointAt(1) - 0x60,
           };
         });
-    } else if (form[name].type === "checkbox") {
-      form[name].checked = value === "true";
+
+      continue;
+    }
+
+    const field = form[name];
+
+    if (!field) {
+      continue;
+    }
+
+    if (field.type === "checkbox") {
+      field.checked = value === "true";
     } else {
-      form[name].value = value;
+      field.value = value;
     }
   }
 
