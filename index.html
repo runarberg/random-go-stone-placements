@@ -5,13 +5,14 @@
     <title>Random Go Stone Placements</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <meta
-      rel="author"
+      name="author"
       content="Rúnar Berg Baugsson Sigríðarson <runarberg@zoho.com>"
     />
 
     <meta
-      rel="description"
+      name="description"
       content="Generate a random starting position for your go games"
     />
 
@@ -57,31 +58,88 @@
           Prevent adjacent stones
         </label>
 
-        <!--
-        <label class="quadrant-shuffle-field checkbox-field">
-          <input name="quadrantShuffle" type="checkbox" />
-          Favor placing in every quadrant
-        </label>
-        -->
+        <fieldset class="randomizer-field radio-fieldset">
+          <legend>Randomize using</legend>
 
-        <label class="randomizer-options-field radio-field">
-          Randomize using:
-          <div align="left">
-          <input name="randomizerOption" type="radio" value="plain" checked />
-          Plain randomization<br>
-          <input name="randomizerOption" type="radio" value="quadrantShuffle" />
-          Quadrant shuffle<br>
-          <small>Favor placing in every quadrant.</small><br>
-          <input name="randomizerOption" type="radio" value="dominoShuffle" />
-          Domino shuffle<br>
-          <small>Reserve domino-shaped space<br>
-          for each stone.</small><br>
-          <input name="randomizerOption" type="radio" value="weightField" />
-          Weight field<br>
-          <small>Weight for each point adjusts<br>
-          after each stone is placed.</small>
-          </div>
-        </label>
+          <ul class="fields">
+            <li>
+              <input
+                id="input:generator/randomizer/plain"
+                name="randomizerOption"
+                type="radio"
+                value="plain"
+                checked
+              />
+
+              <label for="input:generator/randomizer/plain">
+                Plain randomization
+              </label>
+            </li>
+
+            <li>
+              <input
+                id="input:generator/randomizer/quadrant-shuffle"
+                name="randomizerOption"
+                type="radio"
+                value="quadrantShuffle"
+                aria-describedby="field-desc:generator/randomizer/quadrant-shuffle"
+              />
+
+              <label for="input:generator/randomizer/quadrant-shuffle">
+                Quadrant shuffle
+              </label>
+
+              <p
+                id="field-desc:generator/randomizer/quadrant-shuffle"
+                class="description"
+              >
+                Favor placing in every quadrant.
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:generator/randomizer/domino-shuffle"
+                name="randomizerOption"
+                type="radio"
+                value="dominoShuffle"
+                aria-describedby="field-desc:generator/randomizer/domino-shuffle"
+              />
+
+              <label for="input:generator/randomizer/domino-shuffle">
+                Domino shuffle
+              </label>
+
+              <p
+                id="field-desc:generator/randomizer/domino-shuffle"
+                class="description"
+              >
+                Reserve domino-shaped space for each stone.
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:generator/randomizer/weight-field"
+                name="randomizerOption"
+                type="radio"
+                value="weightField"
+                aria-describedby="field-desc:generator/randomizer/weight-field"
+              />
+
+              <label for="input:generator/randomizer/weight-field">
+                Weight field
+              </label>
+
+              <p
+                id="field-desc:generator/randomizer/weight-field"
+                class="description"
+              >
+                Weight for each point adjusts after each stone is placed.
+              </p>
+            </li>
+          </ul>
+        </fieldset>
 
         <div class="confirm-buttons">
           <button class="submit-button" name="generate">Generate</button>
@@ -90,7 +148,12 @@
 
       <section class="output">
         <svg id="demo-board" viewBox="0 0 100 100" aria-label="goban">
-          <rect width="100" height="100" class="background" aria-hidden="true" />
+          <rect
+            width="100"
+            height="100"
+            class="background"
+            aria-hidden="true"
+          />
         </svg>
 
         <label class="placements">

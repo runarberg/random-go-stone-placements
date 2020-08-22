@@ -106,20 +106,24 @@ a:visited {
 }
 
 button,
-input:not([type="checkbox"]) {
+input:not([type="checkbox"]):not([type="radio"]) {
   font-size: 1em;
   font-family: "Fira Sans", sans-serif;
 }
 
-input {
-  background: var(--field-background);
+input,
+fieldset {
   border: 1px solid var(--border-color);
   border-radius: 0.5ex;
+}
+
+input {
+  background: var(--field-background);
   color: var(--color);
   padding: 0.5ex 1ex;
 }
 
-input:not([type="checkbox"]):focus {
+input:not([type="checkbox"]):not([type="radio"]):focus {
   border-color: var(--focus-color);
 }
 
@@ -127,7 +131,8 @@ input[type="number"] {
   font-variant-numeric: tabular-nums;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"],
+input[type="radio"] {
   align-items: center;
   -webkit-appearance: none;
   appearance: none;
@@ -139,22 +144,42 @@ input[type="checkbox"] {
   justify-content: center;
 }
 
-input[type="checkbox"]:checked {
+input[type="radio"] {
+  border-radius: 100%;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
   background: var(--link-color);
   border-color: var(--link-color);
   display: inline-flex;
 }
 
-input[type="checkbox"]:checked::after {
+input[type="checkbox"]:checked::after,
+input[type="radio"]:checked::after {
   content: "";
   background: var(--field-background);
   block-size: 100%;
   display: block;
   inline-size: 100%;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  mask-repeat: no-repeat;
+}
+
+input[type="checkbox"]:checked::after {
   -webkit-mask-image: url(./icons/checkmark.svg);
   -webkit-mask-size: cover;
   mask-image: url(./icons/checkmark.svg);
   mask-size: cover;
+}
+
+input[type="radio"]:checked::after {
+  -webkit-mask-image: url(./icons/circle.svg);
+  -webkit-mask-size: 42.5%;
+  mask-image: url(./icons/circle.svg);
+  mask-size: 42.5%;
 }
 
 button,
@@ -193,13 +218,15 @@ a.button {
 
 a.focus-visible,
 button.focus-visible,
-input[type="checkbox"].focus-visible {
+input[type="checkbox"].focus-visible,
+input[type="radio"].focus-visible {
   box-shadow: var(--focus-ring);
 }
 
 a:focus-visible,
 button:focus-visible,
-input[type="checkbox"]:focus-visible {
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
   box-shadow: var(--focus-ring);
 }
 
@@ -246,7 +273,7 @@ body {
   grid-gap: 2em;
   grid-template:
     "form output"
-    / max-content max-content;
+    / fit-content(42ch) max-content;
 }
 
 .app pre {
@@ -254,23 +281,27 @@ body {
 }
 
 .form {
-  align-items: start;
+  align-items: center;
   display: grid;
   grid-area: form;
   grid-gap: 1ex 1em;
   grid-template:
-    "stones   size            "
-    "komi     handicap        "
-    "margins  prevent-adjacent"
-    "margins  quadrant-shuffle"
-    ".        .               " 1ex
-    "submit   submit          ";
+    "stones     size            "
+    "komi       handicap        "
+    "margins    prevent-adjacent"
+    "randomizer randomizer      "
+    ".          .               " 1ex
+    "submit     submit          ";
+}
+
+.form label,
+.form legend {
+  font-weight: 300;
 }
 
 .form label {
   display: flex;
   flex-flow: column;
-  font-weight: 300;
 }
 
 .form label.checkbox-field {
@@ -301,8 +332,40 @@ body {
   grid-area: prevent-adjacent;
 }
 
-.form .quadrant-shuffle-field {
-  grid-area: quadrant-shuffle;
+.form .randomizer-field {
+  grid-area: randomizer;
+}
+
+.form .radio-fieldset input[type="radio"] {
+  margin: 0;
+}
+
+.form .radio-fieldset .fields {
+  display: flex;
+  flex-flow: column;
+  font-size: 0.9em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.form .radio-fieldset .fields > li {
+  align-items: center;
+  display: grid;
+  grid-column-gap: 1ex;
+  grid-template:
+    "field label"
+    ".     desc "
+    / max-content 1fr;
+  justify-content: start;
+  margin-block: 0.5ex;
+}
+
+.form .radio-fieldset .description {
+  font-size: 0.8em;
+  font-weight: 300;
+  grid-area: desc;
+  margin: 0;
 }
 
 .form .confirm-buttons {
