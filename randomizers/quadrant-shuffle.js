@@ -1,20 +1,4 @@
-function allowedCoord([newCol, newRow], placements, { preventAdjacent }) {
-  return placements.every(({ col: oldCol, row: oldRow }) => {
-    if (preventAdjacent) {
-      if (oldCol === newCol) {
-        return newRow < oldRow - 1 || oldRow + 1 < newRow;
-      }
-
-      if (oldRow === newRow) {
-        return newCol < oldCol - 1 || oldCol + 1 < newCol;
-      }
-
-      return true;
-    }
-
-    return !(oldCol === newCol && oldRow === newRow);
-  });
-}
+import { allowedCoord, getNextPlayer } from "./utils.js";
 
 function randomPos({ start = 3, end = 17 }) {
   return start + Math.floor(Math.random() * (end - start) + 1);
@@ -46,14 +30,6 @@ function getRandomQuadrant(quadrantMask) {
   });
 
   return 1 << index;
-}
-
-export function getNextPlayer(placements, handicap) {
-  if (placements.length < handicap) {
-    return "B";
-  }
-
-  return placements.length % 2 === handicap % 2 ? "B" : "W";
 }
 
 function newCoord(placements, config) {
@@ -92,7 +68,7 @@ function newCoord(placements, config) {
   return { col, row, player };
 }
 
-export default function randomPlacements(
+export default function quadrantShuffle(
   n = 0,
   config = {},
   state = { placements: [], quadrantMask: 0b1111 }
@@ -101,22 +77,18 @@ export default function randomPlacements(
     return state.placements;
   }
 
+  const nextQuadrant = getRandomQuadrant(state.quadrantMask);
+
   const coordConfig = {
     size: config.size,
     margins: config.margins,
     handicap: config.handicap,
     preventAdjacent: config.preventAdjacent,
+    quadrant: nextQuadrant,
   };
 
-  if (config.quadrantShuffle) {
-    const quadrant = getRandomQuadrant(state.quadrantMask);
-    const nextMask = state.quadrantMask ^ quadrant || 0b1111;
-
-    coordConfig.quadrant = quadrant;
-    state.quadrantMask = nextMask;
-  }
-
+  state.quadrantMask = state.quadrantMask ^ nextQuadrant || 0b1111;
   state.placements.push(newCoord(state.placements, coordConfig));
 
-  return randomPlacements(n - 1, config, state);
+  return quadrantShuffle(n - 1, config, state);
 }

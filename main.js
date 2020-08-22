@@ -1,9 +1,7 @@
-import randomPlacements from "./random-placements.js";
-import randomPlacementsDomino from "./randomizers/js/random-placements-domino.js";
-import randomPlacementsField from "./randomizers/js/random-placements-field.js";
 import formatText from "./formats/text.js";
 import formatSGF from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
+import randomizers from "./randomizers/index.js";
 
 import("https://cdn.jsdelivr.net/npm/focus-visible@5").catch((error) => {
   console.warn("Failed to import focus-visible");
@@ -56,16 +54,16 @@ function setOutput(output, placements, data) {
 }
 
 function getFormData(form) {
+  const { elements } = form;
+
   return {
-    stones: form.stones.valueAsNumber,
-    size: form.size.valueAsNumber,
-    komi: form.komi.valueAsNumber,
-    handicap: form.handicap.valueAsNumber,
-    margins: form.margins.valueAsNumber,
-    preventAdjacent: form.preventAdjacent.checked,
-    randomizerOption: document.querySelector(
-      'input[name="randomizerOption"]:checked'
-    ).value,
+    stones: elements.namedItem("stones").valueAsNumber,
+    size: elements.namedItem("size").valueAsNumber,
+    komi: elements.namedItem("komi").valueAsNumber,
+    handicap: elements.namedItem("handicap").valueAsNumber,
+    margins: elements.namedItem("margins").valueAsNumber,
+    preventAdjacent: elements.namedItem("preventAdjacent").checked,
+    randomizer: elements.namedItem("randomizer").value,
   };
 }
 
@@ -74,28 +72,8 @@ function handleSubmit(event) {
 
   const form = event.target;
   const formData = getFormData(form);
-
-  /*
-  const placements = randomPlacements(
-    formData.handicap + formData.stones * 2,
-    formData
-  );
-  */
-
-  const numStone = formData.handicap + formData.stones * 2;
-  let placements;
-  switch (formData.randomizerOption) {
-    case "plain":
-    case "quadrantShuffle":
-      placements = randomPlacements(numStone, formData);
-      break;
-    case "dominoShuffle":
-      placements = randomPlacementsDomino(numStone, formData);
-      break;
-    case "weightField":
-      placements = randomPlacementsField(numStone, formData);
-      break;
-  }
+  const numStones = formData.handicap + formData.stones * 2;
+  const placements = randomizers[formData.randomizer](numStones, formData);
 
   setOutput(form.placements, placements, formData);
 

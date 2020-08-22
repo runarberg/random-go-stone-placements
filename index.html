@@ -64,22 +64,30 @@
           <ul class="fields">
             <li>
               <input
-                id="input:generator/randomizer/plain"
-                name="randomizerOption"
+                id="input:generator/randomizer/uniform"
+                name="randomizer"
                 type="radio"
-                value="plain"
+                value="uniform"
+                aria-describedby="field-desc:generator/randomizer/uniform"
                 checked
               />
 
-              <label for="input:generator/randomizer/plain">
-                Plain randomization
+              <label for="input:generator/randomizer/uniform">
+                Simple randomization
               </label>
+
+              <p
+                id="field-desc:generator/randomizer/uniform"
+                class="description"
+              >
+                Each intersection has equal chance.
+              </p>
             </li>
 
             <li>
               <input
                 id="input:generator/randomizer/quadrant-shuffle"
-                name="randomizerOption"
+                name="randomizer"
                 type="radio"
                 value="quadrantShuffle"
                 aria-describedby="field-desc:generator/randomizer/quadrant-shuffle"
@@ -100,7 +108,7 @@
             <li>
               <input
                 id="input:generator/randomizer/domino-shuffle"
-                name="randomizerOption"
+                name="randomizer"
                 type="radio"
                 value="dominoShuffle"
                 aria-describedby="field-desc:generator/randomizer/domino-shuffle"
@@ -121,7 +129,7 @@
             <li>
               <input
                 id="input:generator/randomizer/weight-field"
-                name="randomizerOption"
+                name="randomizer"
                 type="radio"
                 value="weightField"
                 aria-describedby="field-desc:generator/randomizer/weight-field"
