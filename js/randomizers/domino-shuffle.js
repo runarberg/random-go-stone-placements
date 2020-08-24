@@ -266,15 +266,13 @@ class GridRects {
       let weightsNeighb;
 
       do {
-        idxFirst = pick(range(0, this.rects.length - 1), this.weights); // pick from all
+        idxFirst = pickIndex(this.weights);
 
         idxsNeighb = neighbors(this.lens, this.toVh(idxFirst))
           .map((idx) => this.fromVh(idx))
           .sort((a, b) => a - b);
 
-        weightsNeighb = this.weights.filter((_, idx) => {
-          return idxsNeighb.includes(idx);
-        });
+        weightsNeighb = this.weights.filter((_, idx) => idxsNeighb.includes(idx));
       } while (Math.max(...weightsNeighb) === 0);
 
       // pick the second rectangle

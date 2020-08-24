@@ -98,9 +98,7 @@ export function pickIndex(weights) {
 
   const total = weights.reduce((acc, val) => acc + val, 0);
   const nRand = Math.floor(Math.random() * total);
-  return cumul(weights).findIndex((val) => {
-    return val > nRand;
-  });
+  return cumul(weights).findIndex((val) => val > nRand);
 }
 
 /**
