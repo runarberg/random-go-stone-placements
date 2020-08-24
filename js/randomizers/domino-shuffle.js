@@ -114,32 +114,32 @@ class Rect {
 }
 
 /**
- * From line segment, get endpoint inclusive
+ * From line segment, get upper endpoint inclusive
  *
  * @param { number } start
- * @param { number } seg
+ * @param { number } segment
  * @returns { number }
  */
-function segToEnd(start, seg) {
-  return start + seg - 1;
+function segmentToEnd(start, segment) {
+  return start + segment - 1;
 }
 
 /**
- * From line segments, get list of both endpoints, taking into account
+ * From line segments, get list of both lower and upper endpoints, taking into account
  * separation between segments
  *
  * @param { number } start
- * @param { number[] } segs
- * @param { number } sep
+ * @param { number[] } segments
+ * @param { number } separation
  * @returns { Point[] }
  */
-function segsToEnds(start, segs, sep) {
-  let curr = start;
-  const res = Array.from({ length: segs.length });
+function segmentsToEnds(start, segments, separation) {
+  let current = start;
+  const res = Array.from({ length: segments.length });
 
-  segs.forEach((seg, idx) => {
-    res[idx] = [curr, segToEnd(curr, seg)];
-    curr += seg + sep;
+  segments.forEach((seg, idx) => {
+    res[idx] = [current, segmentToEnd(current, seg)];
+    current += seg + separation;
   });
 
   return res;
@@ -183,10 +183,10 @@ class GridRects {
   /**
    * @param { number } numStone
    * @param { number } boundLow
-   * @param { number } sepMin
+   * @param { number } separationMin
    * @param { [number[], number[]] } lensSideRect
    */
-  constructor(numStone, boundLow, sepMin, lensSideRect) {
+  constructor(numStone, boundLow, separationMin, lensSideRect) {
     /**
      * @private
      * @type { Point }
@@ -224,8 +224,8 @@ class GridRects {
 
     // set northwest and southeast corner points for each rectangle
     const ends = [
-      segsToEnds(boundLow, lensSideRect[0], sepMin),
-      segsToEnds(boundLow, lensSideRect[1], sepMin),
+      segmentsToEnds(boundLow, lensSideRect[0], separationMin),
+      segmentsToEnds(boundLow, lensSideRect[1], separationMin),
     ];
     this.rects.forEach((rect, idx) => {
       const idxVh = this.toVh(idx);
@@ -335,18 +335,18 @@ class NotEnoughSpaceError extends Error {}
  *
  * @param { number } sizeBoard
  * @param { number } marginEdge
- * @param { number } sepMin
+ * @param { number } separationMin
  * @param { Point } bounds
  * @param { Point } numsRect
  * @returns { [number[], number[]] }
  */
-function randomSegs(sizeBoard, marginEdge, sepMin, bounds, numsRect) {
+function randomSegs(sizeBoard, marginEdge, separationMin, bounds, numsRect) {
   /** @type { [number[], number[]] } */
   const segments = [[], []];
 
   range(0, 1).forEach((axis) => {
     const lenAvailable =
-      sizeBoard - 2 * marginEdge - sepMin * (numsRect[axis] - 1);
+      sizeBoard - 2 * marginEdge - separationMin * (numsRect[axis] - 1);
     const lenSideMin = Math.floor(lenAvailable / numsRect[axis]);
 
     if (lenSideMin < 1) {
@@ -358,10 +358,10 @@ function randomSegs(sizeBoard, marginEdge, sepMin, bounds, numsRect) {
     range(1, numsRect[axis] - 1)
       .reverse()
       .forEach((numRectRemain) => {
-        const lenSideMax = lenRemain - (lenSideMin + sepMin) * numRectRemain;
+        const lenSideMax = lenRemain - (lenSideMin + separationMin) * numRectRemain;
         const seg = pick(range(lenSideMin, lenSideMax));
         segments[axis].push(seg);
-        lenRemain -= seg + sepMin;
+        lenRemain -= seg + separationMin;
       });
 
     segments[axis].push(lenRemain);
@@ -386,9 +386,9 @@ export default function dominoShuffle(
   const bounds = [1 + margins, size - margins];
 
   /** @type { [number[], number[]] } */
-  let segs;
+  let segments;
   try {
-    segs = randomSegs(
+    segments = randomSegs(
       size,
       margins,
       separation,
@@ -408,7 +408,7 @@ export default function dominoShuffle(
   /** @type { Point[] } */
   const stones = [];
 
-  new GridRects(numStone, bounds[0], separation, segs)
+  new GridRects(numStone, bounds[0], separation, segments)
     .randomPairs(numStone)
     .forEach((rct) => {
       stones.push(rct.randomPoint(bounds));
