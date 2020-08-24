@@ -340,7 +340,7 @@ class NotEnoughSpaceError extends Error {}
  * @param { Point } numsRect
  * @returns { [number[], number[]] }
  */
-function randomSegs(sizeBoard, marginEdge, separationMin, bounds, numsRect) {
+function randomSegments(sizeBoard, marginEdge, separationMin, bounds, numsRect) {
   /** @type { [number[], number[]] } */
   const segments = [[], []];
 
@@ -388,7 +388,7 @@ export default function dominoShuffle(
   /** @type { [number[], number[]] } */
   let segments;
   try {
-    segments = randomSegs(
+    segments = randomSegments(
       size,
       margins,
       separation,
