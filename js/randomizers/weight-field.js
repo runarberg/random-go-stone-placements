@@ -163,13 +163,11 @@ class Board {
     });
 
     /// points to increase weight
-    range(1 + this.separation, this.maxRadius(stone)).forEach(
-      (radius) => {
-        this.indicesCircleTaxicab(stone, radius).forEach((point) => {
-          this.weights[point] *= radius;
-        });
-      },
-    );
+    range(1 + this.separation, this.maxRadius(stone)).forEach((radius) => {
+      this.indicesCircleTaxicab(stone, radius).forEach((point) => {
+        this.weights[point] *= radius;
+      });
+    });
 
     return this.toVh(stone);
   }

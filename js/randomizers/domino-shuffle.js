@@ -272,7 +272,9 @@ class GridRects {
           .map((idx) => this.fromVh(idx))
           .sort((a, b) => a - b);
 
-        weightsNeighb = this.weights.filter((_, idx) => idxsNeighb.includes(idx));
+        weightsNeighb = this.weights.filter((_, idx) =>
+          idxsNeighb.includes(idx),
+        );
       } while (Math.max(...weightsNeighb) === 0);
 
       // pick the second rectangle
@@ -340,7 +342,13 @@ class NotEnoughSpaceError extends Error {}
  * @param { Point } numsRect
  * @returns { [number[], number[]] }
  */
-function randomSegments(sizeBoard, marginEdge, separationMin, bounds, numsRect) {
+function randomSegments(
+  sizeBoard,
+  marginEdge,
+  separationMin,
+  bounds,
+  numsRect,
+) {
   /** @type { [number[], number[]] } */
   const segments = [[], []];
 
@@ -358,7 +366,8 @@ function randomSegments(sizeBoard, marginEdge, separationMin, bounds, numsRect) 
     range(1, numsRect[axis] - 1)
       .reverse()
       .forEach((numRectRemain) => {
-        const lenSideMax = lenRemain - (lenSideMin + separationMin) * numRectRemain;
+        const lenSideMax =
+          lenRemain - (lenSideMin + separationMin) * numRectRemain;
         const seg = pick(range(lenSideMin, lenSideMax));
         segments[axis].push(seg);
         lenRemain -= seg + separationMin;
