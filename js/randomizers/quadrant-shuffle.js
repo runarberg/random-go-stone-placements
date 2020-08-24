@@ -1,12 +1,32 @@
+/**
+ * @typedef { import("../main.js").Placement } Placement
+ * @typedef { import("../main.js").Config } Config
+ *
+ * @typedef { object } State
+ * @property { Placement[] } placements
+ * @property { number } quadrantMask
+ * @property { number } quadrant
+ */
+
 import { allowedCoord, getNextPlayer } from "./utils.js";
 
+/**
+ * @param { object } obj
+ * @param { number } obj.start
+ * @param { number } obj.end
+ * @returns { number }
+ */
 function randomPos({ start = 3, end = 17 }) {
   return start + Math.floor(Math.random() * (end - start) + 1);
 }
 
+/**
+ * @param { number } quadrantMask
+ * @returns { number }
+ */
 function getRandomQuadrant(quadrantMask) {
   const bits = Array.from(quadrantMask.toString(2).padStart(4, "0"), (n) =>
-    Number.parseInt(n)
+    Number.parseInt(n, 10),
   ).reverse();
   const once = bits.reduce((count, bit) => count + bit, 0);
 
@@ -32,8 +52,16 @@ function getRandomQuadrant(quadrantMask) {
   return 1 << index;
 }
 
-function newCoord(placements, config) {
-  const { size, margins, handicap, quadrant, preventAdjacent } = config;
+/**
+ * Create a new random placement
+ *
+ * @param { State } state
+ * @param { Config } config
+ * @returns { Placement }
+ */
+function newCoord(state, config) {
+  const { placements, quadrant } = state;
+  const { size, margins, handicap, preventAdjacent } = config;
 
   let colStart = margins + 1;
   let colEnd = size - margins;
@@ -60,7 +88,7 @@ function newCoord(placements, config) {
   const row = randomPos({ start: rowStart, end: rowEnd });
 
   if (!allowedCoord([col, row], placements, { preventAdjacent })) {
-    return newCoord(placements, config);
+    return newCoord(state, config);
   }
 
   const player = getNextPlayer(placements, handicap);
@@ -68,10 +96,16 @@ function newCoord(placements, config) {
   return { col, row, player };
 }
 
+/**
+ * @param { number } n
+ * @param { Config } config
+ * @param { State | undefined } state
+ * @returns { Placement[] }
+ */
 export default function quadrantShuffle(
-  n = 0,
-  config = {},
-  state = { placements: [], quadrantMask: 0b1111 }
+  n,
+  config,
+  state = { placements: [], quadrantMask: 0b1111, quadrant: 0 },
 ) {
   if (n <= 0) {
     return state.placements;
@@ -79,16 +113,9 @@ export default function quadrantShuffle(
 
   const nextQuadrant = getRandomQuadrant(state.quadrantMask);
 
-  const coordConfig = {
-    size: config.size,
-    margins: config.margins,
-    handicap: config.handicap,
-    preventAdjacent: config.preventAdjacent,
-    quadrant: nextQuadrant,
-  };
-
+  state.quadrant = nextQuadrant;
   state.quadrantMask = state.quadrantMask ^ nextQuadrant || 0b1111;
-  state.placements.push(newCoord(state.placements, coordConfig));
+  state.placements.push(newCoord(state, config));
 
   return quadrantShuffle(n - 1, config, state);
 }

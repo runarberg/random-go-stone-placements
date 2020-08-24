@@ -1,9 +1,27 @@
+/**
+ * @typedef { import("../main.js").Placement } Placement
+ * @typedef { import("../main.js").Config } Config
+ */
+
 import { getNextPlayer, allowedCoord } from "./utils.js";
 
+/**
+ * @param { object } obj
+ * @param { number } obj.start
+ * @param { number } obj.end
+ * @returns { number }
+ */
 function randomPos({ start = 3, end = 17 }) {
   return start + Math.floor(Math.random() * (end - start) + 1);
 }
 
+/**
+ * Create a new random placement
+ *
+ * @param { Placement[] } placements
+ * @param { Config } config
+ * @returns { Placement }
+ */
 function newCoord(placements, config) {
   const { size, margins, handicap, preventAdjacent } = config;
 
@@ -21,23 +39,19 @@ function newCoord(placements, config) {
   return { col, row, player };
 }
 
-export default function uniform(
-  n = 0,
-  config = {},
-  state = { placements: [] }
-) {
+/**
+ * @typedef { { placements: Placement[] } } State
+ * @param { number } n
+ * @param { Config } config
+ * @param { State | undefined } state
+ * @returns { Placement[] }
+ */
+export default function uniform(n, config, state = { placements: [] }) {
   if (n <= 0) {
     return state.placements;
   }
 
-  const coordConfig = {
-    size: config.size,
-    margins: config.margins,
-    handicap: config.handicap,
-    preventAdjacent: config.preventAdjacent,
-  };
-
-  state.placements.push(newCoord(state.placements, coordConfig));
+  state.placements.push(newCoord(state.placements, config));
 
   return uniform(n - 1, config, state);
 }

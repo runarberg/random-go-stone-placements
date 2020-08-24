@@ -4,15 +4,153 @@
   "description": "Generate a random starting position for your go games",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "check": "tsc",
+    "lint": "eslint --ignore-path .ignore .",
+    "lint:fix": "npm run lint -- --fix",
+    "start": "python3 -m http.server",
+    "test": "c8 ava",
+    "test:watch": "ava --watch"
   },
   "author": "Rúnar Berg Baugsson Sigríðarson <runarberg@zoho.com>",
   "contributors": [
     "sabu36"
   ],
   "license": "MIT",
+  "c8": {
+    "reporter": [
+      "html",
+      "text",
+      "text-summary"
+    ],
+    "include": [
+      "src/**/*.js",
+      "!src/**/*.{spec,test}.js",
+      "!src/**/__tests__/*.js"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "node": false,
+      "browser": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "2020",
+      "sourceType": "module"
+    },
+    "settings": {
+      "jsdoc": {
+        "mode": "typescript"
+      }
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:ava/recommended",
+      "plugin:import/recommended",
+      "plugin:jsdoc/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "accessor-pairs": "error",
+      "array-callback-return": "error",
+      "class-methods-use-this": "error",
+      "eqeqeq": [
+        "error",
+        "always",
+        {
+          "null": "ignore"
+        }
+      ],
+      "grouped-accessor-pairs": "error",
+      "import/extensions": [
+        "error",
+        "ignorePackages"
+      ],
+      "import/first": "error",
+      "import/no-commonjs": "error",
+      "import/no-duplicates": "error",
+      "import/order": [
+        "warn",
+        {
+          "newlines-between": "always",
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ],
+      "jsdoc/check-indentation": "warn",
+      "jsdoc/no-undefined-types": "error",
+      "jsdoc/require-hyphen-before-param-description": "warn",
+      "jsdoc/require-param-description": "off",
+      "jsdoc/require-param": "error",
+      "jsdoc/require-param-type": "error",
+      "jsdoc/require-property-description": "off",
+      "jsdoc/require-property-type": "error",
+      "jsdoc/require-returns": "error",
+      "jsdoc/require-returns-description": "off",
+      "jsdoc/require-returns-type": "error",
+      "no-alert": "error",
+      "no-caller": "error",
+      "no-console": "warn",
+      "no-debugger": "warn",
+      "no-else-return": [
+        "error",
+        {
+          "allowElseIf": false
+        }
+      ],
+      "no-eval": "error",
+      "no-extend-native": "error",
+      "no-extra-bind": "error",
+      "no-implicit-coercion": "error",
+      "no-implied-eval": "error",
+      "no-invalid-this": "error",
+      "no-labels": "error",
+      "no-lone-blocks": "error",
+      "no-multi-str": "error",
+      "no-new": "error",
+      "no-new-func": "error",
+      "no-new-wrappers": "error",
+      "no-octal-escape": "error",
+      "no-param-reassign": "error",
+      "no-return-assign": "error",
+      "no-return-await": "error",
+      "no-script-url": "error",
+      "no-self-compare": "error",
+      "no-sequences": "error",
+      "no-shadow": "error",
+      "no-template-curly-in-string": "error",
+      "no-throw-literal": "error",
+      "no-unmodified-loop-condition": "error",
+      "no-unused-expressions": "error",
+      "no-useless-backreference": "error",
+      "no-useless-concat": "error",
+      "no-useless-return": "error",
+      "no-var": "error",
+      "no-void": "error",
+      "object-shorthand": "error",
+      "prefer-arrow-callback": "error",
+      "prefer-const": "error",
+      "prefer-destructuring": "error",
+      "prefer-promise-reject-errors": "error",
+      "prefer-template": "error",
+      "radix": "error",
+      "require-atomic-updates": "error"
+    }
+  },
+  "prettier": {
+    "trailingComma": "all"
+  },
   "devDependencies": {
-    "eslint": "^7.0.0",
-    "prettier": "2.0.5"
+    "ava": "^3.12.0",
+    "c8": "^7.2.0",
+    "eslint": "^7.3.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-ava": "^11.0.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsdoc": "^30.2.4",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.0.5",
+    "typescript": "^4.0.2"
   }
 }
