@@ -301,10 +301,6 @@ class GridRects {
 
     return rectsStone;
   }
-
-  get lenRow() {
-    return this.lens[1];
-  }
 }
 
 /**
