@@ -167,7 +167,7 @@ class Board {
       (radius) => {
         this.indicesCircleTaxicab(stone, radius).forEach((point) => {
           if (this.weights[point] > 0) {
-            this.weights[point] *= radius - 1;
+            this.weights[point] *= radius;
           }
         });
       },
