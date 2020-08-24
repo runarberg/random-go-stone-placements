@@ -1,3 +1,5 @@
+![CI](https://github.com/runarberg/random-go-stone-placements/workflows/CI/badge.svg)
+
 Random Go Stone Placements
 ==========================
 
