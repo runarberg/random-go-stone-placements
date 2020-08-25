@@ -2,7 +2,8 @@
   "name": "random-go-stone-placements",
   "version": "1.0.0",
   "description": "Generate a random starting position for your go games",
-  "main": "main.js",
+  "main": "js/main.js",
+  "type": "module",
   "scripts": {
     "check": "tsc",
     "lint": "eslint --ignore-path .ignore .",
@@ -16,22 +17,28 @@
     "sabu36"
   ],
   "license": "MIT",
+  "ava": {
+    "require": [
+      "./test/_setup-browser-env.js"
+    ]
+  },
   "c8": {
     "reporter": [
-      "html",
+      "lcov",
       "text",
       "text-summary"
     ],
     "include": [
-      "src/**/*.js",
-      "!src/**/*.{spec,test}.js",
-      "!src/**/__tests__/*.js"
+      "js/**/*.js",
+      "!js/**/*.{spec,test}.js",
+      "!js/**/__tests__/*.js"
     ]
   },
   "eslintConfig": {
     "env": {
       "node": false,
-      "browser": true
+      "browser": true,
+      "es2020": true
     },
     "parserOptions": {
       "ecmaVersion": "2020",
@@ -79,7 +86,14 @@
         }
       ],
       "jsdoc/check-indentation": "warn",
-      "jsdoc/no-undefined-types": "error",
+      "jsdoc/no-undefined-types": [
+        "error",
+        {
+          "definedTypes": [
+            "Pick"
+          ]
+        }
+      ],
       "jsdoc/require-hyphen-before-param-description": "warn",
       "jsdoc/require-param-description": "off",
       "jsdoc/require-param": "error",
@@ -142,6 +156,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
+    "@types/sinon": "^9.0.5",
     "ava": "^3.12.0",
     "c8": "^7.2.0",
     "eslint": "^7.3.0",
@@ -150,7 +165,9 @@
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsdoc": "^30.2.4",
     "eslint-plugin-prettier": "^3.1.4",
+    "jsdom": "^16.4.0",
     "prettier": "^2.0.5",
+    "sinon": "^9.0.3",
     "typescript": "^4.0.2"
   }
 }
