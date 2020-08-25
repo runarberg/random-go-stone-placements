@@ -43,7 +43,7 @@ function transformPlacement({ col, row }) {
  * Formats output into an sgf string
  *
  * @param { Placement[] } placements
- * @param { Config } config
+ * @param { Pick<Config, "komi" | "size"> } config
  * @returns { string }
  */
 export default function formatSGF(placements, { komi, size }) {
@@ -59,5 +59,7 @@ export default function formatSGF(placements, { komi, size }) {
     .map(transformPlacement)
     .join("");
 
-  return `(;GM[1]FF[4]CA[UTF-8]AP[random-go-stones:1.0.0]KM[${komi}]SZ[${size}]DT[${date}]AB${blackStones}AW${whiteStones})`;
+  return `(;GM[1]FF[4]CA[UTF-8]AP[random-go-stones:1.0.0]KM[${komi}]SZ[${size}]DT[${date}]${
+    blackStones ? `AB${blackStones}` : ""
+  }${whiteStones ? `AW${whiteStones}` : ""})`;
 }
