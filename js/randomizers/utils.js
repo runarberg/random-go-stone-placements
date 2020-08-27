@@ -201,14 +201,13 @@ export function medianNonzero(nums) {
   const idxStart = ascending.findIndex((val) => val > 0);
   const lengthNonzero = ascending.length - idxStart;
   const idxMiddle = idxStart + Math.floor(lengthNonzero / 2);
-  
+
   if (lengthNonzero % 2) {
     // odd length
     return ascending[idxMiddle];
-  } else {
-    // even length
-    return (ascending[idxMiddle - 1] + ascending[idxMiddle]) / 2;
   }
+  // even length
+  return (ascending[idxMiddle - 1] + ascending[idxMiddle]) / 2;
 }
 
 /**
