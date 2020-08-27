@@ -74,21 +74,6 @@ function circleTaxicab(radius) {
 }
 
 /**
- * Larger of the two
- *
- * @param { number } a
- * @param { number } b
- * @returns { number }
- */
-function larger(a, b) {
-  if (a > b) {
-    return a;
-  }
-
-  return b;
-}
-
-/**
  * Field of weights over the board
  */
 class Board {
@@ -123,7 +108,7 @@ class Board {
     const [v, h] = this.toVh(center);
     const maxVH = this.size - 1;
 
-    return larger(v, maxVH - v) + larger(h, maxVH - h);
+    return Math.max(v, maxVH - v) + Math.max(h, maxVH - h);
   }
 
   /**
