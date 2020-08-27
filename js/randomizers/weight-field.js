@@ -11,6 +11,7 @@ import {
   isInGrid,
   fromVhMaker,
   toVhMaker,
+  medianNonzero,
   assignPlayers,
 } from "./utils.js";
 
@@ -137,7 +138,7 @@ class Board {
   placeStone() {
     const stone = pickIndex(this.weights);
 
-    // points to exclude for future placements
+    //// points to exclude for future placements
     this.weights[stone] = 0;
 
     // within separation
@@ -147,12 +148,16 @@ class Board {
       });
     });
 
-    /// points to increase weight
+    //// points to increase weight
     range(1 + this.separation, this.maxRadius(stone)).forEach((radius) => {
       this.indicesCircleTaxicab(stone, radius).forEach((point) => {
         this.weights[point] *= radius;
       });
     });
+
+    //// cut off peaks if too high
+    const weightMax = 2 * medianNonzero(this.weights);
+    this.weights = this.weights.map((wgt) => Math.min(wgt, weightMax));
 
     return this.toVh(stone);
   }
