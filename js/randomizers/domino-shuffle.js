@@ -8,29 +8,12 @@ import {
   len,
   range,
   pickIndex,
-  isInGrid,
+  pick,
+  neighbors,
   fromVhMaker,
   toVhMaker,
   assignPlayers,
 } from "./utils.js";
-
-/**
- * Random element in list, optionally using relative weights
- *
- * @param { number[] } options
- * @param { number[] } weights
- * @returns { number }
- */
-function pick(
-  options,
-  weights = Array.from({ length: options.length }).fill(1),
-) {
-  if (options.length !== weights.length) {
-    throw new Error("Unequal length");
-  }
-
-  return options[pickIndex(weights)];
-}
 
 /**
  * Numbers in trapezial shape;
@@ -143,37 +126,6 @@ function segmentsToEnds(start, segments, separation) {
   });
 
   return res;
-}
-
-/**
- * In 2-d array, indices of neighbors in cardinal directions
- *
- * @param { Point } lens
- * @param { Point } vh
- * @returns { Point[] }
- */
-function neighbors(lens, [v, h]) {
-  /** @type { Point[] } */
-  const idxsNeighb = [];
-
-  /** @type { Point[] } */
-  const idMatrix = [
-    [1, 0],
-    [0, 1],
-  ];
-
-  idMatrix.forEach(([dv, dh]) => {
-    [-1, 1].forEach((sign) => {
-      /** @type { Point } */
-      const candidate = [v + sign * dv, h + sign * dh];
-
-      if (isInGrid(lens, candidate)) {
-        idxsNeighb.push(candidate);
-      }
-    });
-  });
-
-  return idxsNeighb;
 }
 
 /**
