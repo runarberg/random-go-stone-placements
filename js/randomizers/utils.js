@@ -191,6 +191,27 @@ export function neighbors(lens, [v, h]) {
 }
 
 /**
+ * Median of list of numbers, skipping 0s
+ *
+ * @param { number[] } nums
+ * @returns { number }
+ */
+export function medianNonzero(nums) {
+  const ascending = nums.slice().sort((a, b) => a - b);
+  const idxStart = ascending.findIndex((val) => val > 0);
+  const lengthNonzero = ascending.length - idxStart;
+  const idxMiddle = idxStart + Math.floor(lengthNonzero / 2);
+  
+  if (lengthNonzero % 2) {
+    // odd length
+    return ascending[idxMiddle];
+  } else {
+    // even length
+    return (ascending[idxMiddle - 1] + ascending[idxMiddle]) / 2;
+  }
+}
+
+/**
  * Assign each stone to either player
  *
  * @param { Point[] } stones
