@@ -1,5 +1,5 @@
 /**
- * Randomly place stones via weight field over the board
+ * Randomly place stones via adaptive weights over the board
  *
  * @typedef { import("../main.js").Placement } Placement
  * @typedef { import("../main.js").Config } Config
@@ -168,7 +168,7 @@ class Board {
  * @param { Config } config
  * @returns { Placement[] }
  */
-export default function weightField(
+export default function adaptiveWeights(
   numStone,
   { size, margins, handicap, preventAdjacent },
 ) {

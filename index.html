@@ -59,26 +59,26 @@
           Prevent adjacent stones
         </label>
 
-        <fieldset class="randomizer-field radio-fieldset">
-          <legend>Randomize using</legend>
+        <fieldset class="generator-field radio-fieldset">
+          <legend>Generate with</legend>
 
           <ul class="fields">
             <li>
               <input
-                id="input:generator/randomizer/uniform"
-                name="randomizer"
+                id="input:generator/uniform"
+                name="generator"
                 type="radio"
                 value="uniform"
-                aria-describedby="field-desc:generator/randomizer/uniform"
+                aria-describedby="field-desc:generator/uniform"
                 checked
               />
 
-              <label for="input:generator/randomizer/uniform">
-                Simple randomization
+              <label for="input:generator/uniform">
+                Uniform weights
               </label>
 
               <p
-                id="field-desc:generator/randomizer/uniform"
+                id="field-desc:generator/uniform"
                 class="description"
               >
                 Each intersection has equal chance.
@@ -87,19 +87,19 @@
 
             <li>
               <input
-                id="input:generator/randomizer/quadrant-shuffle"
-                name="randomizer"
+                id="input:generator/quadrant-shuffle"
+                name="generator"
                 type="radio"
                 value="quadrantShuffle"
-                aria-describedby="field-desc:generator/randomizer/quadrant-shuffle"
+                aria-describedby="field-desc:generator/quadrant-shuffle"
               />
 
-              <label for="input:generator/randomizer/quadrant-shuffle">
+              <label for="input:generator/quadrant-shuffle">
                 Quadrant shuffle
               </label>
 
               <p
-                id="field-desc:generator/randomizer/quadrant-shuffle"
+                id="field-desc:generator/quadrant-shuffle"
                 class="description"
               >
                 Favor placing in every quadrant.
@@ -108,19 +108,19 @@
 
             <li>
               <input
-                id="input:generator/randomizer/domino-shuffle"
-                name="randomizer"
+                id="input:generator/domino-shuffle"
+                name="generator"
                 type="radio"
                 value="dominoShuffle"
-                aria-describedby="field-desc:generator/randomizer/domino-shuffle"
+                aria-describedby="field-desc:generator/domino-shuffle"
               />
 
-              <label for="input:generator/randomizer/domino-shuffle">
+              <label for="input:generator/domino-shuffle">
                 Domino shuffle
               </label>
 
               <p
-                id="field-desc:generator/randomizer/domino-shuffle"
+                id="field-desc:generator/domino-shuffle"
                 class="description"
               >
                 Reserve domino-shaped space for each stone.
@@ -129,19 +129,19 @@
 
             <li>
               <input
-                id="input:generator/randomizer/weight-field"
-                name="randomizer"
+                id="input:generator/adaptive-weights"
+                name="generator"
                 type="radio"
-                value="weightField"
-                aria-describedby="field-desc:generator/randomizer/weight-field"
+                value="adaptiveWeights"
+                aria-describedby="field-desc:generator/adaptive-weights"
               />
 
-              <label for="input:generator/randomizer/weight-field">
-                Weight field
+              <label for="input:generator/adaptive-weights">
+                Adaptive weights
               </label>
 
               <p
-                id="field-desc:generator/randomizer/weight-field"
+                id="field-desc:generator/adaptive-weights"
                 class="description"
               >
                 Weight for each intersection adjusts after each stone is placed.
