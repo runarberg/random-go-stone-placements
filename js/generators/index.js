@@ -1,7 +1,7 @@
+import adaptiveWeights from "./adaptive-weights.js";
 import dominoShuffle from "./domino-shuffle.js";
 import quadrantShuffle from "./quadrant-shuffle.js";
 import uniform from "./uniform.js";
-import adaptiveWeights from "./adaptive-weights.js";
 
 /**
  * @typedef { import("../main.js").Config } Config
