@@ -7,18 +7,18 @@ import adaptiveWeights from "./adaptive-weights.js";
  * @typedef { import("../main.js").Config } Config
  * @typedef { import("../main.js").Placement } Placement
  *
- * @typedef { "dominoShuffle" | "quadrantShuffle" | "uniform" | "adaptiveWeights" } Randomizer
+ * @typedef { "dominoShuffle" | "quadrantShuffle" | "uniform" | "adaptiveWeights" } Generator
  */
 
 // eslint-disable-next-line jsdoc/valid-types
 /**
- * @type { { [name in Randomizer]: (numStones: number, config: Config) =>  Placement[]} }
+ * @type { { [name in Generator]: (numStones: number, config: Config) =>  Placement[]} }
  */
-const randomizers = {
+const generators = {
   dominoShuffle,
   quadrantShuffle,
   uniform,
   adaptiveWeights,
 };
 
-export default randomizers;
+export default generators;

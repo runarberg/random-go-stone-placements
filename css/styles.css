@@ -289,7 +289,7 @@ body {
     "stones     size            "
     "komi       handicap        "
     "margins    prevent-adjacent"
-    "randomizer randomizer      "
+    "generator generator      "
     ".          .               " 1ex
     "submit     submit          ";
 }
@@ -332,8 +332,8 @@ body {
   grid-area: prevent-adjacent;
 }
 
-.form .randomizer-field {
-  grid-area: randomizer;
+.form .generator-field {
+  grid-area: generator;
 }
 
 .form .radio-fieldset input[type="radio"] {

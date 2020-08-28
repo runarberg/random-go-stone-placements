@@ -1,10 +1,10 @@
 import formatSGF, { createSGFFile } from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
 import formatText from "./formats/text.js";
-import randomizers from "./randomizers/index.js";
+import generators from "./generators/index.js";
 
 /**
- * @typedef { import("./randomizers/index.js").Randomizer } Randomizer
+ * @typedef { import("./generators/index.js").Generator } Generator
  *
  * @typedef { object } Placement - A specific stone placement
  * @property { number } col - The column number
@@ -18,7 +18,7 @@ import randomizers from "./randomizers/index.js";
  * @property { number } handicap - How many extra stones for black
  * @property { number } margins - How many stone free lines from the edge
  * @property { boolean } preventAdjacent - Prevent putting stone adjacent to an existing stone
- * @property { Randomizer } randomizer - Which randomizaton method to use
+ * @property { Generator } generator - Which randomizaton method to use
  */
 
 /* eslint-disable no-console */
@@ -90,7 +90,7 @@ function getConfig(form) {
   const handicap = elements.namedItem("handicap");
   const margins = elements.namedItem("margins");
   const preventAdjacent = elements.namedItem("preventAdjacent");
-  const randomizer = elements.namedItem("randomizer");
+  const generator = elements.namedItem("generator");
 
   if (
     !(stones instanceof HTMLInputElement) ||
@@ -99,20 +99,20 @@ function getConfig(form) {
     !(handicap instanceof HTMLInputElement) ||
     !(margins instanceof HTMLInputElement) ||
     !(preventAdjacent instanceof HTMLInputElement) ||
-    !(randomizer instanceof RadioNodeList)
+    !(generator instanceof RadioNodeList)
   ) {
     throw new Error("DOM Failure");
   }
 
-  const randomizerValue = randomizer.value;
+  const generatorValue = generator.value;
 
   if (
-    randomizerValue !== "dominoShuffle" &&
-    randomizerValue !== "quadrantShuffle" &&
-    randomizerValue !== "uniform" &&
-    randomizerValue !== "adaptiveWeights"
+    generatorValue !== "dominoShuffle" &&
+    generatorValue !== "quadrantShuffle" &&
+    generatorValue !== "uniform" &&
+    generatorValue !== "adaptiveWeights"
   ) {
-    throw new Error("Randomizer not supported");
+    throw new Error("Generator not supported");
   }
 
   return {
@@ -122,7 +122,7 @@ function getConfig(form) {
     handicap: handicap.valueAsNumber,
     margins: margins.valueAsNumber,
     preventAdjacent: preventAdjacent.checked,
-    randomizer: randomizerValue,
+    generator: generatorValue,
   };
 }
 
@@ -140,7 +140,7 @@ function handleSubmit(event) {
 
   const config = getConfig(form);
   const numStones = config.handicap + config.stones * 2;
-  const placements = randomizers[config.randomizer](numStones, config);
+  const placements = generators[config.generator](numStones, config);
   const output = form.elements.namedItem("placements");
   if (!(output instanceof HTMLOutputElement)) {
     throw new Error("DOM failure");
