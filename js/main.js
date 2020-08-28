@@ -110,7 +110,7 @@ function getConfig(form) {
     randomizerValue !== "dominoShuffle" &&
     randomizerValue !== "quadrantShuffle" &&
     randomizerValue !== "uniform" &&
-    randomizerValue !== "weightField"
+    randomizerValue !== "adaptiveWeights"
   ) {
     throw new Error("Randomizer not supported");
   }

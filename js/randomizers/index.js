@@ -1,13 +1,13 @@
 import dominoShuffle from "./domino-shuffle.js";
 import quadrantShuffle from "./quadrant-shuffle.js";
 import uniform from "./uniform.js";
-import weightField from "./weight-field.js";
+import adaptiveWeights from "./adaptive-weights.js";
 
 /**
  * @typedef { import("../main.js").Config } Config
  * @typedef { import("../main.js").Placement } Placement
  *
- * @typedef { "dominoShuffle" | "quadrantShuffle" | "uniform" | "weightField" } Randomizer
+ * @typedef { "dominoShuffle" | "quadrantShuffle" | "uniform" | "adaptiveWeights" } Randomizer
  */
 
 // eslint-disable-next-line jsdoc/valid-types
@@ -18,7 +18,7 @@ const randomizers = {
   dominoShuffle,
   quadrantShuffle,
   uniform,
-  weightField,
+  adaptiveWeights,
 };
 
 export default randomizers;
