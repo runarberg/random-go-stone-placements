@@ -21,13 +21,13 @@ import generators from "./generators/index.js";
  * @property { Generator } generator - Which randomizaton method to use
  */
 
-/* eslint-disable no-console */
 // @ts-ignore
-import("https://cdn.jsdelivr.net/npm/focus-visible@5").catch((error) => {
+import("focus-visible").catch((error) => {
+  /* eslint-disable no-console */
   console.warn("Failed to import focus-visible");
   console.error(error);
+  /* eslint-enable no-console */
 });
-/* eslint-enable no-console */
 
 /**
  * @param { Placement[] } placements
