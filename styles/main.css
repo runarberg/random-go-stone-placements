@@ -1,0 +1,441 @@
+@font-face {
+  font-family: "Fira Mono";
+  src: url("../assets/fonts/fira/FiraMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Mono";
+  src: url("../assets/fonts/fira/FiraMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-LightItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-SemiBoldItalic.woff2") format("woff2");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Sans";
+  src: url("../assets/fonts/fira/FiraSans-BoldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+}
+
+:root {
+  --main-background: aliceblue;
+  --main-color: black;
+  --border-color: skyblue;
+  --link-color: indigo;
+  --focus-color: orange;
+  --field-background: white;
+  --goban-background: white;
+  --goban-foreground: black;
+  --focus-ring-color: orange;
+  --focus-ring: 2px 2px 5px var(--focus-ring-color),
+    2px -2px 5px var(--focus-ring-color), -2px -2px 5px var(--focus-ring-color),
+    -2px 2px 5px var(--focus-ring-color);
+
+  font-family: "Fira Sans", sans-serif;
+  color: var(--main-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-background: black;
+    --main-color: aliceblue;
+    --border-color: skyblue;
+    --focus-color: gold;
+    --link-color: gold;
+    --field-background: midnightblue;
+    --goban-background: midnightblue;
+    --goban-foreground: white;
+    --focus-ring-color: skyblue;
+  }
+}
+
+a:link,
+a:visited {
+  color: var(--link-color);
+}
+
+button,
+input:not([type="checkbox"]):not([type="radio"]) {
+  font-size: 1em;
+  font-family: "Fira Sans", sans-serif;
+}
+
+input,
+fieldset {
+  border: 1px solid var(--border-color);
+  border-radius: 0.5ex;
+}
+
+input {
+  background: var(--field-background);
+  color: var(--color);
+  padding: 0.5ex 1ex;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus {
+  border-color: var(--focus-color);
+}
+
+input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  align-items: center;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--field-background);
+  block-size: 1.1em;
+  display: inline-block;
+  inline-size: 1.1em;
+  padding: 0;
+  justify-content: center;
+}
+
+input[type="radio"] {
+  border-radius: 100%;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background: var(--link-color);
+  border-color: var(--link-color);
+  display: inline-flex;
+}
+
+input[type="checkbox"]:checked::after,
+input[type="radio"]:checked::after {
+  content: "";
+  background: var(--field-background);
+  block-size: 100%;
+  display: block;
+  inline-size: 100%;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  mask-repeat: no-repeat;
+}
+
+input[type="checkbox"]:checked::after {
+  -webkit-mask-image: url("../assets/icons/checkmark.svg");
+  -webkit-mask-size: cover;
+  mask-image: url("../assets/icons/checkmark.svg");
+  mask-size: cover;
+}
+
+input[type="radio"]:checked::after {
+  -webkit-mask-image: url("../assets/icons/circle.svg");
+  -webkit-mask-size: 42.5%;
+  mask-image: url("../assets/icons/circle.svg");
+  mask-size: 42.5%;
+}
+
+button,
+a.button {
+  background: var(--link-color);
+  border: none;
+  border-radius: 0.5ex;
+  color: var(--field-background);
+  cursor: pointer;
+  padding: 1ex 1em;
+  text-decoration: none;
+}
+
+.js-focus-visible a:focus,
+.js-focus-visible button:focus,
+.js-focus-visible input:focus {
+  outline: none;
+}
+
+.js-focus-visible button::-moz-focus-inner {
+  border: none;
+}
+
+/* prettier-ignore */
+@supports selector (:focus-visible) {
+  a:focus,
+  button:focus,
+  input:focus {
+    outline: none;
+  }
+
+  button::-moz-focus-inner {
+    border: none;
+  }
+}
+
+a.focus-visible,
+button.focus-visible,
+input[type="checkbox"].focus-visible,
+input[type="radio"].focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+a:focus-visible,
+button:focus-visible,
+input[type="checkbox"]:focus-visible,
+input[type="radio"]:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+body {
+  background: var(--main-background);
+  margin: 0;
+  display: grid;
+  grid-gap: 2em 0.5ex;
+  grid-template:
+    ". header ." auto
+    ". app    ." 1fr
+    ". footer ." auto
+    ". .      ." 2em
+    / 1fr max-content 1fr;
+  min-block-size: 100vh;
+}
+
+.main-header {
+  grid-area: header;
+  text-align: center;
+}
+
+.main-header h1 {
+  font-weight: 600;
+  margin-block-end: 0.25em;
+}
+
+.main-header p {
+  font-size: 1.2em;
+  font-weight: 300;
+  margin-block: 0;
+}
+
+.main-footer {
+  font-size: 0.9em;
+  font-weight: 300;
+  grid-area: footer;
+}
+
+.app {
+  align-items: start;
+  display: grid;
+  grid-area: app;
+  grid-gap: 2em;
+  grid-template:
+    "form output"
+    / fit-content(42ch) max-content;
+}
+
+.app pre {
+  font-family: "Fira Mono", monospace;
+}
+
+.form {
+  align-items: center;
+  display: grid;
+  grid-area: form;
+  grid-gap: 1ex 1em;
+  grid-template:
+    "stones     size            "
+    "komi       handicap        "
+    "margins    prevent-adjacent"
+    "generator generator      "
+    ".          .               " 1ex
+    "submit     submit          ";
+}
+
+.form label,
+.form legend {
+  font-weight: 300;
+}
+
+.form label {
+  display: flex;
+  flex-flow: column;
+}
+
+.form label.checkbox-field {
+  flex-flow: row;
+}
+
+.form .stones-field {
+  grid-area: stones;
+}
+
+.form .size-field {
+  grid-area: size;
+}
+
+.form .komi-field {
+  grid-area: komi;
+}
+
+.form .handicap-field {
+  grid-area: handicap;
+}
+
+.form .margins-field {
+  grid-area: margins;
+}
+
+.form .prevent-adjacent-field {
+  grid-area: prevent-adjacent;
+}
+
+.form .generator-field {
+  grid-area: generator;
+}
+
+.form .radio-fieldset input[type="radio"] {
+  margin: 0;
+}
+
+.form .radio-fieldset .fields {
+  display: flex;
+  flex-flow: column;
+  font-size: 0.9em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.form .radio-fieldset .fields > li {
+  align-items: center;
+  display: grid;
+  grid-column-gap: 1ex;
+  grid-template:
+    "field label"
+    ".     desc "
+    / max-content 1fr;
+  justify-content: start;
+  margin-block: 0.5ex;
+}
+
+.form .radio-fieldset .description {
+  font-size: 0.8em;
+  font-weight: 300;
+  grid-area: desc;
+  margin: 0;
+}
+
+.form .confirm-buttons {
+  grid-area: submit;
+}
+
+.output {
+  align-items: start;
+  display: grid;
+  grid-area: output;
+  grid-gap: 1ex 1em;
+  grid-template:
+    "board    placements" auto
+    ".        placements" 1ex
+    "download placements" 1fr
+    / min-content max-content;
+}
+
+.output .placements {
+  grid-area: placements;
+}
+
+.output svg {
+  grid-area: board;
+  height: 20em;
+  width: 20em;
+}
+
+.output svg .background {
+  fill: var(--goban-background);
+}
+
+.output .board .gridlines {
+  stroke: var(--goban-foreground);
+  stroke-width: 0.25px;
+}
+
+.output .board .starpoints {
+  fill: var(--goban-foreground);
+  stroke-width: 0;
+}
+
+.output .board[data-size="9"] .starpoint:nth-child(2n),
+.output .board[data-size="11"] .starpoint:nth-child(2n),
+.output .board[data-size="13"] .starpoint:nth-child(2n) {
+  display: none;
+}
+
+.output .board .stones {
+  stroke: var(--goban-foreground);
+  stroke-width: 0.25px;
+}
+
+.download-anchor {
+  grid-area: download;
+  justify-self: center;
+}
+
+.download-anchor[download]:not([href]) {
+  display: none;
+}
+
+.shield {
+  height: 1.2em;
+}
+
+@media (max-width: 105ch) {
+  .app {
+    grid-template:
+      "form"
+      "output";
+  }
+}
