@@ -1,6 +1,6 @@
 {
   "name": "random-go-stone-placements",
-  "version": "1.0.0",
+  "version": "1.0.0-preview.1",
   "description": "Generate a random starting position for your go games",
   "main": "js/main.js",
   "type": "module",
