@@ -17,8 +17,8 @@ export default function stars(config, needBoard = false) {
   const elements = [];
 
   if (needBoard) {
-    return { elements, board: Grid([0, 0], [1, 1]) };
+    return { elements, board: new Grid([0, 0], [1, 1]) };
   }
 
-  return { elements, board: null };
+  return { elements, board: new Grid([0, 0], [1, 1]) };
 }

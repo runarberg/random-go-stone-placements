@@ -1,5 +1,5 @@
 /**
- * @typedef { import("../main.js").Placement } Placement
+ * @typedef { import("../../main.js").Placement } Placement
  */
 
 /**
@@ -88,12 +88,14 @@ export function range(start, end) {
  * each element in another list and
  * combine outputs into a single list
  *
- * @param { (obj: Object) => Object[] } func
- * @param { Object[] } argsArray
- * @returns { Object[] }
+ * @param { (arg: any) => any[] } func
+ * @param { any[] } argsArray
+ * @returns { any[] }
  */
 export function applyConcat(func, argsArray) {
+  /** @type { any[] } */
   let res = [];
+
   argsArray.forEach((arg) => { res = res.concat(func(arg)) });
   return res;
 }

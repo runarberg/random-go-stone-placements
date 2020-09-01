@@ -13,7 +13,7 @@ export default class Grid {
    * @param { number[] } values
    * @param { number } valueInit
    */
-  constructor(start = [0, 0], end, values = null, valueInit = 1) {
+  constructor(start = [0, 0], end, values = [], valueInit = 1) {
     /**
      * @readonly
      * @type { Point }
@@ -32,9 +32,9 @@ export default class Grid {
      * @readonly
      * @type { number[] }
      */
-    this.values = undefined;
+    this.values = [];
 
-    if (values !== null) {
+    if (values.length !== 0) {
       if (values.length !== lengthTotal) {
         throw new Error("values has invalid length");
       }
@@ -128,6 +128,7 @@ export default class Grid {
    * @returns { Grid }
    */
   slice(start, end) {
+    /** @type { number[] } */
     let valuesSlice = [];
 
     range(start[0], end[0]).forEach((v) => {
