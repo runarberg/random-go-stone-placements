@@ -12,7 +12,7 @@ import { range, applyConcat } from "./common.js";
 export function regionRect(start, end) {
   return applyConcat(
     (v) => range(start[1], end[1]).map((h) => [v, h]),
-    range(start[0], end[0])
+    range(start[0], end[0]),
   );
 }
 
@@ -24,9 +24,10 @@ export function regionRect(start, end) {
  * @returns { Point[] }
  */
 function pairsWithTotal(total) {
-  return range(0, Math.floor(total / 2) + 1).map((smaller) =>
-    [smaller, total - smaller]
-  );
+  return range(0, Math.floor(total / 2) + 1).map((smaller) => [
+    smaller,
+    total - smaller,
+  ]);
 }
 
 /**
@@ -37,7 +38,7 @@ function pairsWithTotal(total) {
  */
 function circleTaxicabRelative(radius) {
   /** @type { Point[] } */
-  const vecs = [];  // relative positions
+  const vecs = []; // relative positions
 
   pairsWithTotal(radius).forEach(([a, b]) => {
     const diagMatrix = [
@@ -58,9 +59,8 @@ function circleTaxicabRelative(radius) {
         const candidate = [signV * vert, signH * horz];
 
         if (
-          !vecs.some((vec) =>
-            vec[0] === candidate[0] &&
-            vec[1] === candidate[1],
+          !vecs.some(
+            (vec) => vec[0] === candidate[0] && vec[1] === candidate[1],
           )
         ) {
           vecs.push(candidate);
@@ -84,8 +84,10 @@ function circleTaxicabRelative(radius) {
  */
 function isInBounds(start, end, point) {
   return (
-    start[0] <= point[0] && point[0] < end[0] &&
-    start[1] <= point[1] && point[1] < end[1]
+    start[0] <= point[0] &&
+    point[0] < end[0] &&
+    start[1] <= point[1] &&
+    point[1] < end[1]
   );
 }
 
@@ -97,15 +99,15 @@ function isInBounds(start, end, point) {
  * @param { Point } end
  * @returns { (center: Point, radius: number) => Point[] }
  */
-export function circleTaxicabMaker(start, end){
+export function circleTaxicabMaker(start, end) {
   return function (center, radius) {
-    return (
-      circleTaxicabRelative(radius).map(([dv, dh]) => {
+    return circleTaxicabRelative(radius)
+      .map(([dv, dh]) => {
         /** @type { [number, number] } */
         const point = [center[0] + dv, center[1] + dh];
         return point;
-      }).filter((point) => isInBounds(start, end, point))
-    );
+      })
+      .filter((point) => isInBounds(start, end, point));
   };
 }
 

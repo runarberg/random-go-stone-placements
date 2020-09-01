@@ -64,8 +64,8 @@ export function assignPlayers(stones, handicap) {
     placements.push({
       col,
       row,
-      player: getNextPlayer(placements, handicap)
-    })
+      player: getNextPlayer(placements, handicap),
+    }),
   );
 
   return placements;
@@ -79,8 +79,7 @@ export function assignPlayers(stones, handicap) {
  * @returns { number[] }
  */
 export function range(start, end) {
-  return Array.from(Array(end - start).keys())
-              .map((val) => val + start);
+  return Array.from(Array(end - start).keys()).map((val) => val + start);
 }
 
 /**
@@ -96,6 +95,8 @@ export function applyConcat(func, argsArray) {
   /** @type { any[] } */
   let res = [];
 
-  argsArray.forEach((arg) => { res = res.concat(func(arg)) });
+  argsArray.forEach((arg) => {
+    res = res.concat(func(arg));
+  });
   return res;
 }

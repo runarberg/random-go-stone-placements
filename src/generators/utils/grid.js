@@ -41,8 +41,7 @@ export default class Grid {
 
       this.values = values.slice();
     } else {
-      this.values = Array.from({ length: lengthTotal })
-                         .fill(valueInit);
+      this.values = Array.from({ length: lengthTotal }).fill(valueInit);
     }
   }
 
@@ -77,10 +76,7 @@ export default class Grid {
    * @returns { number }
    */
   fromVh(vhOuter) {
-    const vhInner = [
-      vhOuter[0] - this.start[0],
-      vhOuter[1] - this.start[1]
-    ];
+    const vhInner = [vhOuter[0] - this.start[0], vhOuter[1] - this.start[1]];
 
     return vhInner[0] * this.lengthAlong(1) + vhInner[1];
   }
@@ -93,7 +89,7 @@ export default class Grid {
   fromVhes(vhesOuter) {
     return vhesOuter.map((vhOuter) => this.fromVh(vhOuter));
   }
-    
+
   /**
    * @param { Point[] } vhesOuter
    * @returns { number[] }
@@ -101,7 +97,7 @@ export default class Grid {
   valuesAt(vhesOuter) {
     const idxesInner = this.fromVhes(vhesOuter);
 
-    return this.values.filter((_,idx) => idxesInner.includes(idx));
+    return this.values.filter((_, idx) => idxesInner.includes(idx));
   }
 
   /**
@@ -112,13 +108,15 @@ export default class Grid {
   applyAt(func, vhesOuter) {
     const idxesInner = this.fromVhes(vhesOuter);
 
-    return new Grid(this.start, this.end,
+    return new Grid(
+      this.start,
+      this.end,
       this.values.map((val, idx) => {
         if (idxesInner.includes(idx)) {
           return func(val);
         }
         return val;
-      })
+      }),
     );
   }
 
@@ -132,10 +130,9 @@ export default class Grid {
     let valuesSlice = [];
 
     range(start[0], end[0]).forEach((v) => {
-      valuesSlice = valuesSlice.concat(this.values.slice(
-        this.fromVh([v, start[1]]),
-        this.fromVh([v, end[1]])
-      ))
+      valuesSlice = valuesSlice.concat(
+        this.values.slice(this.fromVh([v, start[1]]), this.fromVh([v, end[1]])),
+      );
     });
 
     return new Grid(start, end, valuesSlice);
