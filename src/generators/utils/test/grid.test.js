@@ -6,23 +6,8 @@ import { regionRect } from "../weights.js";
 // npm test "./src/generators/utils/test/grid.test.js"
 
 test("Grid.toVh", (t) => {
-  const insOuts = [
-    [
-      [ [[0, 0], [6, 6]], 14 ],
-      [2, 2]
-    ],
-    [
-      [ [[2, 1], [5, 4]], 5 ],
-      [3, 3]
-    ]
-  ];
-
-  insOuts.forEach((inOut) =>
-    t.deepEqual(
-      (new Grid(...(inOut[0][0]))).toVh(inOut[0][1]),
-      inOut[1]
-    )
-  );
+  t.deepEqual((new Grid([0, 0], [6, 6])).toVh(14), [2, 2]);
+  t.deepEqual((new Grid([2, 1], [5, 4])).toVh(5), [3, 3]);
 });
 
 test(`
