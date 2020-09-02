@@ -79,7 +79,7 @@ export function assignPlayers(stones, handicap) {
  * @returns { number[] }
  */
 export function range(start, end) {
-  return Array.from(Array(end - start).keys()).map((val) => val + start);
+  return Array.from({ length: end - start }, (_, i) => i + start);
 }
 
 /**
