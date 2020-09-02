@@ -3,8 +3,9 @@ import test from "ava";
 import {
   regionRect,
   circleTaxicabMaker,
-  maxRadiusTaxicab,
   medianNonzero,
+  distanceToBoundaryMaker,
+  distanceTaxicabMaker,
   testablesUnexported,
 } from "../weights.js";
 
@@ -69,12 +70,38 @@ test("cumulative", (t) => {
   t.deepEqual(cumulative([5, 6, 4, 2]), [5, 11, 15, 17]);
 });
 
-test("maxRadiusTaxicab", (t) => {
-  t.is(maxRadiusTaxicab([0, 0], [6, 6], [4, 3]), 7);
-  t.is(maxRadiusTaxicab([2, 1], [5, 5], [4, 1]), 5);
-});
-
 test("medianNonzero", (t) => {
   t.is(medianNonzero([9, 7, 3, 6, 3, 1, 8]), 6);
   t.is(medianNonzero([3, 5, 8, 2, 9, 1, 6, 4]), 4.5);
+});
+
+test("distanceToBoundaryMaker", (t) => {
+  const distanceToBoundaryNoOuter = distanceToBoundaryMaker([0, 0], [6, 5]);
+
+  t.is(distanceToBoundaryNoOuter([3, 2]), 2);
+  t.is(distanceToBoundaryNoOuter([2, 2]), 2);
+  t.is(distanceToBoundaryNoOuter([2, 3]), 1);
+  t.is(distanceToBoundaryNoOuter([3, 3]), 1);
+  t.is(distanceToBoundaryNoOuter([3, 4]), 0);
+
+  const distanceToBoundaryWithOuter = distanceToBoundaryMaker(
+    [1, 0],
+    [5, 5],
+    [0, 0],
+    [6, 5],
+  );
+
+  t.is(distanceToBoundaryWithOuter([2, 2]), 1);
+  t.is(distanceToBoundaryWithOuter([2, 0]), 1);
+  t.is(distanceToBoundaryWithOuter([3, 2]), 1);
+  t.is(distanceToBoundaryWithOuter([3, 3]), 1);
+  t.is(distanceToBoundaryWithOuter([3, 4]), 1);
+  t.is(distanceToBoundaryWithOuter([4, 3]), 0);
+});
+
+test("distanceTaxicabMaker", (t) => {
+  const distanceTaxicab = distanceTaxicabMaker([3, 2]);
+
+  t.is(distanceTaxicab([6, 5]), 6);
+  t.is(distanceTaxicab([0, 1]), 4);
 });

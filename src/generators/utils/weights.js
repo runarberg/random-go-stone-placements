@@ -118,21 +118,6 @@ export function circleTaxicabMaker(start, end) {
 }
 
 /**
- * Taxicab distance to farthest corner
- *
- * @param { Point } start
- * @param { Point } end
- * @param { Point } point
- * @returns { number }
- */
-export function maxRadiusTaxicab(start, end, point) {
-  return (
-    Math.max(point[0] - start[0], end[0] - point[0] - 1) +
-    Math.max(point[1] - start[1], end[1] - point[1] - 1)
-  );
-}
-
-/**
  * From list of numbers to list of cumulative sums
  *
  * @param { number[] } nums
@@ -200,6 +185,48 @@ export function medianNonzero(nums) {
   }
   // even length
   return (ascending[idxMiddle - 1] + ascending[idxMiddle]) / 2;
+}
+
+/**
+ * Distance to nearest side in rectangular region
+ * bounded by 2 points on opposite corners [start, end)
+ *
+ * If any of the sides of inner rectangle coincides with
+ * a side of outer rectangle (if provided), that side
+ * won't be used for distance calculation
+ *
+ * @param { Point } start
+ * @param { Point } end
+ * @param { Point } startOuter
+ * @param { Point } endOuter
+ * @returns { (point: Point) => number }
+ */
+export function distanceToBoundaryMaker(
+  start,
+  end,
+  startOuter = [-1, -1],
+  endOuter = [-1, -1],
+) {
+  return function (point) {
+    const distanceMax = Math.min(end[0] - start[0] - 1, end[1] - start[1] - 1);
+
+    return Math.min(
+      start[0] === startOuter[0] ? distanceMax : point[0] - start[0],
+      start[1] === startOuter[1] ? distanceMax : point[1] - start[1],
+      end[0] === endOuter[0] ? distanceMax : end[0] - point[0] - 1,
+      end[1] === endOuter[1] ? distanceMax : end[1] - point[1] - 1,
+    );
+  };
+}
+
+/**
+ * @param { Point } origin
+ * @returns { (point: Point) => number }
+ */
+export function distanceTaxicabMaker(origin) {
+  return function (point) {
+    return Math.abs(origin[0] - point[0]) + Math.abs(origin[1] - point[1]);
+  };
 }
 
 export const testablesUnexported = {
