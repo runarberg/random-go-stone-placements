@@ -1,4 +1,4 @@
-import { range, applyConcat } from "./common.js";
+import { range } from "./common.js";
 
 /**
  * Points in rectangular region, bound by [start, end)
@@ -10,9 +10,15 @@ import { range, applyConcat } from "./common.js";
  * @returns { Point[] }
  */
 export function regionRect(start, end) {
-  return applyConcat(
-    (v) => range(start[1], end[1]).map((h) => [v, h]),
-    range(start[0], end[0]),
+  const vs = range(start[0], end[0]);
+  const hs = range(start[1], end[1]);
+
+  return vs.flatMap((v) =>
+    hs.map(
+      (h) =>
+        /** @type { Point } */
+        ([v, h]),
+    ),
   );
 }
 

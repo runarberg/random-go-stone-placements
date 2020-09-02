@@ -81,22 +81,3 @@ export function assignPlayers(stones, handicap) {
 export function range(start, end) {
   return Array.from({ length: end - start }, (_, i) => i + start);
 }
-
-/**
- * Apply function that returns list on
- * each element in another list and
- * combine outputs into a single list
- *
- * @param { (arg: any) => any[] } func
- * @param { any[] } argsArray
- * @returns { any[] }
- */
-export function applyConcat(func, argsArray) {
-  /** @type { any[] } */
-  let res = [];
-
-  argsArray.forEach((arg) => {
-    res = res.concat(func(arg));
-  });
-  return res;
-}

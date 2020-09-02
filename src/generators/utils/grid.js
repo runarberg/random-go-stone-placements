@@ -126,15 +126,12 @@ export default class Grid {
    * @returns { Grid }
    */
   slice(start, end) {
-    /** @type { number[] } */
-    let valuesSlice = [];
-
-    range(start[0], end[0]).forEach((v) => {
-      valuesSlice = valuesSlice.concat(
+    return new Grid(
+      start,
+      end,
+      range(start[0], end[0]).flatMap((v) =>
         this.values.slice(this.fromVh([v, start[1]]), this.fromVh([v, end[1]])),
-      );
-    });
-
-    return new Grid(start, end, valuesSlice);
+      ),
+    );
   }
 }
