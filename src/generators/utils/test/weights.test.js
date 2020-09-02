@@ -5,6 +5,7 @@ import {
   circleTaxicabMaker,
   maxRadiusTaxicab,
   medianNonzero,
+  testablesUnexported,
 } from "../weights.js";
 
 // npm test "./src/generators/utils/test/weights.test.js"
@@ -61,6 +62,11 @@ test("circleTaxicabMaker", (t) => {
     [2, 3],
     [3, 2],
   ]);
+});
+
+test("cumulative", (t) => {
+  const { cumulative } = testablesUnexported;
+  t.deepEqual(cumulative([5, 6, 4, 2]), [5, 11, 15, 17]);
 });
 
 test("maxRadiusTaxicab", (t) => {

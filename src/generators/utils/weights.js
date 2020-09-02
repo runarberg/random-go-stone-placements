@@ -201,3 +201,7 @@ export function medianNonzero(nums) {
   // even length
   return (ascending[idxMiddle - 1] + ascending[idxMiddle]) / 2;
 }
+
+export const testablesUnexported = {
+  cumulative,
+};
