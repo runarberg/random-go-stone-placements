@@ -9,12 +9,12 @@ import quadrants from "./regions/quadrants.js";
  *
  * @typedef { "dominoes" | "quadrants" | "stars" } Allocator
  *
- * @typedef { { elements: Object[], board: Grid } } Allocation
+ * @typedef { { elements: Object[], weights: Grid } } Allocation
  */
 
 // eslint-disable-next-line jsdoc/valid-types
 /*
- * @type { { [name in Allocator]: (config: Config, needBoard: boolean) => Allocation } }
+ * @type { { [name in Allocator]: (config: Config, needWeights: boolean) => Allocation } }
  */
 const allocators = {
   dominoes,

@@ -19,16 +19,16 @@ function neighborsMaker(start, end) {
 
 /**
  * @param { Config } config
- * @param { boolean } needBoard
+ * @param { boolean } needWeights
  * @returns { Allocation }
  */
-export default function dominoes(config, needBoard = false) {
+export default function dominoes(config, needWeights = false) {
   /** @type { Rectangle[] } */
   const elements = [];
 
-  if (needBoard) {
-    return { elements, board: new Grid([0, 0], [1, 1]) };
+  if (needWeights) {
+    return { elements, weights: new Grid([0, 0], [1, 1]) };
   }
 
-  return { elements, board: new Grid([0, 0], [1, 1]) };
+  return { elements, weights: new Grid([0, 0], [1, 1]) };
 }
