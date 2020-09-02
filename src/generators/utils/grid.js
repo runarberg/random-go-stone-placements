@@ -102,6 +102,14 @@ export default class Grid {
 
   /**
    * @param { (val: number) => number } func
+   * @returns { Grid }
+   */
+  apply(func) {
+    return new Grid(this.start, this.end, this.values.map(func));
+  }
+
+  /**
+   * @param { (val: number) => number } func
    * @param { Point[] } vhesOuter
    * @returns { Grid }
    */
@@ -113,6 +121,26 @@ export default class Grid {
       this.end,
       this.values.map((val, idx) => {
         if (idxesInner.includes(idx)) {
+          return func(val);
+        }
+        return val;
+      }),
+    );
+  }
+
+  /**
+   * @param { (val: number) => number } func
+   * @param { Point[] } vhesOuter
+   * @returns { Grid }
+   */
+  applyExcept(func, vhesOuter) {
+    const idxesInner = this.fromVhes(vhesOuter);
+
+    return new Grid(
+      this.start,
+      this.end,
+      this.values.map((val, idx) => {
+        if (!idxesInner.includes(idx)) {
           return func(val);
         }
         return val;

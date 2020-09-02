@@ -12,19 +12,52 @@ test("Grid.toVh", (t) => {
 
 test(`
   Grid.valuesAt,
+  Grid.apply,
   Grid.applyAt,
+  Grid.applyExcept,
   Grid.slice
 `, (t) => {
-  const grid0 = new Grid([0, 0], [6, 6]);
+  const gridInit = new Grid([0, 0], [6, 6]);
 
-  const grid1 = grid0.applyAt((val) => 2 * val, regionRect([2, 1], [5, 4]));
+  const gridApply = gridInit.apply((val) => 2 * val);
 
-  t.deepEqual(grid1.valuesAt(regionRect([3, 3], [6, 5])), [2, 1, 2, 1, 1, 1]);
+  t.is(
+    gridApply.values.reduce((acc, val) => acc + val, 0),
+    72,
+  );
 
-  const grid2 = grid1.slice([1, 0], [4, 5]);
+  const gridApplyAt = gridInit.applyAt(
+    (val) => 2 * val,
+    regionRect([2, 1], [5, 4]),
+  );
 
-  t.is(grid2.lengthAlong(0), 3);
-  t.is(grid2.lengthAlong(1), 5);
+  t.deepEqual(gridApplyAt.valuesAt(regionRect([3, 3], [6, 5])), [
+    2,
+    1,
+    2,
+    1,
+    1,
+    1,
+  ]);
 
-  t.deepEqual(grid2.valuesAt(regionRect([1, 2], [4, 3])), [1, 2, 2]);
+  const gridApplyExcept = gridInit.applyExcept(
+    (val) => 2 * val,
+    regionRect([2, 1], [5, 4]),
+  );
+
+  t.deepEqual(gridApplyExcept.valuesAt(regionRect([3, 3], [6, 5])), [
+    1,
+    2,
+    1,
+    2,
+    2,
+    2,
+  ]);
+
+  const gridSlice = gridApplyAt.slice([1, 0], [4, 5]);
+
+  t.is(gridSlice.lengthAlong(0), 3);
+  t.is(gridSlice.lengthAlong(1), 5);
+
+  t.deepEqual(gridSlice.valuesAt(regionRect([1, 2], [4, 3])), [1, 2, 2]);
 });
