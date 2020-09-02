@@ -30,5 +30,5 @@ export default function dominoes(config, needWeights = false) {
     return { elements, weights: new Grid([0, 0], [1, 1]) };
   }
 
-  return { elements, weights: new Grid([0, 0], [1, 1]) };
+  return { elements, weights: null };
 }

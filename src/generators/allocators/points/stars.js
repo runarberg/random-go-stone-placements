@@ -5,20 +5,18 @@
  * @typedef { [number, number] } Point
  */
 
-import Grid from "../../utils/grid.js";
-
 /**
  * @param { Config } config
  * @param { boolean } needWeights
  * @returns { Allocation }
  */
 export default function stars(config, needWeights = false) {
+  if (needWeights) {
+    throw new Error("no option to return weights");
+  }
+
   /** @type { Point[] } */
   const elements = [];
 
-  if (needWeights) {
-    return { elements, weights: new Grid([0, 0], [1, 1]) };
-  }
-
-  return { elements, weights: new Grid([0, 0], [1, 1]) };
+  return { elements, weights: null };
 }

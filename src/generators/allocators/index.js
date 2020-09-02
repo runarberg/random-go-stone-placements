@@ -9,7 +9,9 @@ import quadrants from "./regions/quadrants.js";
  *
  * @typedef { "dominoes" | "quadrants" | "stars" } Allocator
  *
- * @typedef { { elements: Object[], weights: Grid } } Allocation
+ * @typedef { [number, number] } Point
+ * @typedef { [Point, Point] } Rectangle
+ * @typedef { { elements: Point[] | Rectangle[], weights: Grid | null } } Allocation
  */
 
 // eslint-disable-next-line jsdoc/valid-types
