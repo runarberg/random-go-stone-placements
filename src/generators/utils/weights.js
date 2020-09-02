@@ -108,11 +108,11 @@ function isInBounds(start, end, point) {
 export function circleTaxicabMaker(start, end) {
   return function (center, radius) {
     return circleTaxicabRelative(radius)
-      .map(([dv, dh]) => {
-        /** @type { [number, number] } */
-        const point = [center[0] + dv, center[1] + dh];
-        return point;
-      })
+      .map(
+        ([dv, dh]) =>
+          /** @type { [number, number] } */
+          ([center[0] + dv, center[1] + dh]),
+      )
       .filter((point) => isInBounds(start, end, point));
   };
 }
