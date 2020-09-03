@@ -5,6 +5,7 @@
  * @typedef { [number, number] } Point
  */
 
+/** @type { Point[] } */
 const starsAll = [
   [3, 15],
   [15, 3],
@@ -33,7 +34,25 @@ export default function stars(numStone, { size }, needWeights = false) {
   }
 
   /** @type { Point[] } */
-  const elements = [];
+  let elements;
+
+  switch (numStone) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 7:
+    case 9:
+    default:
+      // default is larger than 9; tentative
+      elements = starsAll.slice(size);
+      break;
+    case 6:
+    case 8:
+      elements = starsAll.slice(4).concat(starsAll.slice(5, numStone + 1));
+      break;
+  }
 
   return { elements, weights: null };
 }
