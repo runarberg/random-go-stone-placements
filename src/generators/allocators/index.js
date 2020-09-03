@@ -16,7 +16,7 @@ import quadrants from "./regions/quadrants.js";
 
 // eslint-disable-next-line jsdoc/valid-types
 /*
- * @type { { [name in Allocator]: (config: Config, needWeights: boolean) => Allocation } }
+ * @type { { [name in Allocator]: (numStone: number, config: Config, needWeights: boolean) => Allocation } }
  */
 const allocators = {
   dominoes,

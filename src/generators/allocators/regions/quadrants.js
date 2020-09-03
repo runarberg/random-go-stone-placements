@@ -9,11 +9,12 @@
 import Grid from "../../utils/grid.js";
 
 /**
+ * @param { number } numStone
  * @param { Config } config
  * @param { boolean } needWeights
  * @returns { Allocation }
  */
-export default function quadrants(config, needWeights = false) {
+export default function quadrants(numStone, config, needWeights = false) {
   /** @type { Rectangle[] } */
   const elements = [];
 

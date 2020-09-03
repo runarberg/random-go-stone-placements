@@ -18,11 +18,12 @@ function neighborsMaker(start, end) {
 */
 
 /**
+ * @param { number } numStone
  * @param { Config } config
  * @param { boolean } needWeights
  * @returns { Allocation }
  */
-export default function dominoes(config, needWeights = false) {
+export default function dominoes(numStone, config, needWeights = false) {
   /** @type { Rectangle[] } */
   const elements = [];
 
