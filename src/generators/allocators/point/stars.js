@@ -1,6 +1,5 @@
 /**
  * @typedef { import("../../../main.js").Config } Config
- * @typedef { import("../index.js").Allocation } Allocation
  *
  * @typedef { [number, number] } Point
  */
@@ -21,20 +20,12 @@ const starsAll = [
 /**
  * @param { number } numStone
  * @param { Config } config
- * @param { boolean } needWeights
- * @returns { Allocation }
+ * @returns { Point[] }
  */
-export default function stars(numStone, { size }, needWeights = false) {
-  if (needWeights) {
-    throw new Error("no option to return weights");
-  }
-
+export default function stars(numStone, { size }) {
   if (size !== 19) {
     throw new Error("only works for board size: 19");
   }
-
-  /** @type { Point[] } */
-  let elements;
 
   switch (numStone) {
     case 1:
@@ -45,14 +36,10 @@ export default function stars(numStone, { size }, needWeights = false) {
     case 7:
     case 9:
     default:
-      // default is larger than 9; tentative
-      elements = starsAll.slice(size);
-      break;
+      // default covers larger than 9; tentative
+      return starsAll.slice(0, numStone);
     case 6:
     case 8:
-      elements = starsAll.slice(4).concat(starsAll.slice(5, numStone + 1));
-      break;
+      return starsAll.slice(0, 4).concat(starsAll.slice(5, numStone + 1));
   }
-
-  return { elements, weights: null };
 }

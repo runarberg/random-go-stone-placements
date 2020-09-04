@@ -1,6 +1,5 @@
 /**
  * @typedef { import("../../../main.js").Config } Config
- * @typedef { import("../index.js").Allocation } Allocation
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
@@ -147,24 +146,30 @@ function randomSegments(start, end, separationMin, numsSeg) {
 }
 
 /**
+ * @param { number } size
+ * @param { Rectangle[] } rectangles
+ * @returns { Grid }
+ */
+export function initWeightsDominoes(size, rectangles) {
+  return new Grid([0, 0], [size, size]).applyExcept(
+    () => 0,
+    rectangles.flatMap(([start, end]) => regionRect(start, end)),
+  );
+}
+
+/**
  * @param { number } numStone
  * @param { Config } config
- * @param { boolean } needWeights
- * @returns { Allocation }
+ * @returns { Rectangle[] }
  */
-export default function dominoes(
-  numStone,
-  { size, margins, preventAdjacent },
-  needWeights = false,
-) {
+export default function dominoes(numStone, { size, margins, preventAdjacent }) {
   const start = margins;
   const end = size - margins;
   const separation = preventAdjacent ? 1 : 0;
   const numsCell = calcNumsCell(numStone);
   const segs = randomSegments(start, end, separation, numsCell);
 
-  /** @type { Rectangle[] } */
-  const elements = randomDominoes(calcNumsCell(numStone), numStone).map(
+  return randomDominoes(calcNumsCell(numStone), numStone).map(
     ([first, second]) =>
       /** @type { Rectangle } */ ([
         // nw corner from first, se corner from second
@@ -172,16 +177,4 @@ export default function dominoes(
         [segs[0][second[0]][1], segs[1][second[1]][1]],
       ]),
   );
-
-  if (!needWeights) {
-    return { elements, weights: null };
-  }
-
-  return {
-    elements,
-    weights: new Grid([0, 0], [size, size]).applyExcept(
-      () => 0,
-      elements.flatMap(([nw, se]) => regionRect(nw, se)),
-    ),
-  };
 }

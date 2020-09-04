@@ -1,12 +1,13 @@
 import test from "ava";
 
-//import dominoes from "../dominoes.js";
+//import dominoes, { initWeightsDominoes } from "../dominoes.js";
 
 /**
- * @typedef { import("../../index.js").Allocation } Allocation
  * @typedef { import("../../../../main.js").Config } Config
  */
 
+// To test, remove commenting before import and inside test
+//
 // npm test "./src/generators/allocators/regions/test/dominoes.test.js"
 
 test("dominoes", (t) => {
@@ -23,7 +24,7 @@ test("dominoes", (t) => {
     generator: "uniform",
   };
 
-  dominoes(7, config, true).weights.consoleLog();
+  initWeightsDominoes(config.size, dominoes(7, config)).consoleLog();
   */
 
   t.pass();
