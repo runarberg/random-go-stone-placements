@@ -25,7 +25,7 @@ test("quadrants", (t) => {
     generator: "uniform",
   };
 
-  // first argument 'numStone' is not used
+  // first argument 'totalStones' is not used
   const weightsOdd = initWeightsQuadrants(
     configOdd.size,
     quadrants(0, configOdd),
@@ -70,7 +70,7 @@ test("quadrants", (t) => {
     generator: "uniform",
   };
 
-  // first argument 'numStone' is not used
+  // first argument 'totalStones' is not used
   const weightsEven = initWeightsQuadrants(
     configEven.size,
     quadrants(0, configEven),

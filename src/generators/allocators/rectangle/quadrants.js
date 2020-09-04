@@ -31,11 +31,11 @@ export function initWeightsQuadrants(size, rectangles) {
 }
 
 /**
- * @param { number } numStone
+ * @param { number } totalStones
  * @param { Config } config
  * @returns { Rectangle[] }
  */
-export default function quadrants(numStone, { size, margins }) {
+export default function quadrants(totalStones, { size, margins }) {
   const start = margins;
   const end = size - margins;
   const centerLower = Math.floor((size - 1) / 2);

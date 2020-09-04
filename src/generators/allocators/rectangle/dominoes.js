@@ -19,10 +19,10 @@ import {
  * Number of cells along each axis required
  * in preparation for placing dominoes
  *
- * @param { number } numStone
+ * @param { number } totalStones
  * @returns { Point }
  */
-function calcNumsCell(numStone) {
+function calcNumsCell(totalStones) {
   /** @type { Point } */
   const nums = [0, 0]; // [numVertical, numHorizontal]
   let parity = 1;
@@ -30,7 +30,7 @@ function calcNumsCell(numStone) {
   // the factor of 3 seems to allow randomly placing
   // dominoes without running out of space
   // even in worst case
-  while (nums[0] * nums[1] < numStone * 3) {
+  while (nums[0] * nums[1] < totalStones * 3) {
     if (parity % 2) {
       nums[0] += 1;
     } else {
@@ -58,15 +58,15 @@ function neighborsMaker(start, end) {
  * Random adjoining pair of cells (= domino) for each stone
  *
  * @param { Point } numsCell
- * @param { number } numStone
+ * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-function randomDominoes(numsCell, numStone) {
-  let weights = new Grid([0, 0], numsCell, [], 1 << numStone);
+function randomDominoes(numsCell, totalStones) {
+  let weights = new Grid([0, 0], numsCell, [], 1 << totalStones);
 
   const neighbors = neighborsMaker([0, 0], numsCell);
 
-  return range(0, numStone).map(() => {
+  return range(0, totalStones).map(() => {
     /** @type { Point } */
     let first;
 
@@ -158,18 +158,21 @@ export function initWeightsDominoes(size, rectangles) {
 }
 
 /**
- * @param { number } numStone
+ * @param { number } totalStones
  * @param { Config } config
  * @returns { Rectangle[] }
  */
-export default function dominoes(numStone, { size, margins, preventAdjacent }) {
+export default function dominoes(
+  totalStones,
+  { size, margins, preventAdjacent },
+) {
   const start = margins;
   const end = size - margins;
   const separation = preventAdjacent ? 1 : 0;
-  const numsCell = calcNumsCell(numStone);
+  const numsCell = calcNumsCell(totalStones);
   const segs = randomSegments(start, end, separation, numsCell);
 
-  return randomDominoes(calcNumsCell(numStone), numStone).map(
+  return randomDominoes(calcNumsCell(totalStones), totalStones).map(
     ([first, second]) =>
       /** @type { Rectangle } */ ([
         // nw corner from first, se corner from second

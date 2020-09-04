@@ -133,12 +133,12 @@ function segmentsToEnds(start, segments, separation) {
  */
 class GridRects {
   /**
-   * @param { number } numStone
+   * @param { number } totalStones
    * @param { number } boundLow
    * @param { number } separationMin
    * @param { [number[], number[]] } lensSideRect
    */
-  constructor(numStone, boundLow, separationMin, lensSideRect) {
+  constructor(totalStones, boundLow, separationMin, lensSideRect) {
     /**
      * @private
      * @type { Point }
@@ -150,7 +150,7 @@ class GridRects {
      * @type { number[] }
      */
     this.weights = Array.from({ length: this.lens[0] * this.lens[1] }).fill(
-      1 << numStone,
+      1 << totalStones,
     );
 
     /**
@@ -199,14 +199,14 @@ class GridRects {
   /**
    * Random adjoining pair (= domino) of rectangles for each stone
    *
-   * @param { number } numStone
+   * @param { number } totalStones
    * @returns { Rect[] }
    */
-  randomPairs(numStone) {
+  randomPairs(totalStones) {
     /** @type { Rect[] } */
     const rectsStone = [];
 
-    range(1, numStone).forEach(() => {
+    range(1, totalStones).forEach(() => {
       // ensure pairing when picking first rectangle
       /** @type { number } */
       let idxFirst;
@@ -260,17 +260,17 @@ class GridRects {
 /**
  * Calculate number of rows and columns of rectangles to subdivide into
  *
- * @param { number } numStone
+ * @param { number } totalStones
  * @returns { Point }
  */
-function calcNumsRect(numStone) {
+function calcNumsRect(totalStones) {
   /** @type { Point } */
   const nums = [0, 0]; // [numRow, numCol]
   let parity = 1;
   // so far, the factor of 3 seems to allow randomly placing
   //   pair of rectangles (= dominoes) without running out of space
 
-  while (nums[0] * nums[1] < numStone * 3) {
+  while (nums[0] * nums[1] < totalStones * 3) {
     if (parity % 2) {
       nums[0] += 1;
     } else {
@@ -332,12 +332,12 @@ function randomSegments(
 }
 
 /**
- * @param { number } numStone
+ * @param { number } totalStones
  * @param { Config } config
  * @returns { Placement[] }
  */
 export default function dominoShuffle(
-  numStone,
+  totalStones,
   { size, margins, handicap, preventAdjacent },
 ) {
   // TODO: Allow any separation.
@@ -354,7 +354,7 @@ export default function dominoShuffle(
       margins,
       separation,
       bounds,
-      calcNumsRect(numStone),
+      calcNumsRect(totalStones),
     );
   } catch (error) {
     if (error instanceof NotEnoughSpaceError) {
@@ -369,8 +369,8 @@ export default function dominoShuffle(
   /** @type { Point[] } */
   const stones = [];
 
-  new GridRects(numStone, bounds[0], separation, segments)
-    .randomPairs(numStone)
+  new GridRects(totalStones, bounds[0], separation, segments)
+    .randomPairs(totalStones)
     .forEach((rct) => {
       stones.push(rct.randomPoint(bounds));
     });

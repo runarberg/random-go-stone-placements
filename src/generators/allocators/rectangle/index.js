@@ -12,7 +12,7 @@ import quadrants from "./quadrants.js";
 
 // eslint-disable-next-line jsdoc/valid-types
 /*
- * @type { { [name in RectAllocator]: (numStone: number, config: Config) => Rectangle[] } }
+ * @type { { [name in RectAllocator]: (totalStones: number, config: Config) => Rectangle[] } }
  */
 const rectAllocators = {
   dominoes,

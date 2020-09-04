@@ -164,12 +164,12 @@ class Board {
 }
 
 /**
- * @param { number } numStone
+ * @param { number } totalStones
  * @param { Config } config
  * @returns { Placement[] }
  */
 export default function adaptiveWeights(
-  numStone,
+  totalStones,
   { size, margins, handicap, preventAdjacent },
 ) {
   // TODO: Allow any separation.
@@ -179,7 +179,7 @@ export default function adaptiveWeights(
   /** @type { Point[] } */
   const stonesInner = [];
 
-  range(1, numStone).forEach(() => {
+  range(1, totalStones).forEach(() => {
     stonesInner.push(boardInner.placeStone());
   });
 

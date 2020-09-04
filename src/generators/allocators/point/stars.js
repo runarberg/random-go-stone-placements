@@ -18,16 +18,16 @@ const starsAll = [
 ];
 
 /**
- * @param { number } numStone
+ * @param { number } totalStones
  * @param { Config } config
  * @returns { Point[] }
  */
-export default function stars(numStone, { size }) {
+export default function stars(totalStones, { size }) {
   if (size !== 19) {
     throw new Error("only works for board size: 19");
   }
 
-  switch (numStone) {
+  switch (totalStones) {
     case 1:
     case 2:
     case 3:
@@ -37,9 +37,9 @@ export default function stars(numStone, { size }) {
     case 9:
     default:
       // default covers larger than 9; tentative
-      return starsAll.slice(0, numStone);
+      return starsAll.slice(0, totalStones);
     case 6:
     case 8:
-      return starsAll.slice(0, 4).concat(starsAll.slice(5, numStone + 1));
+      return starsAll.slice(0, 4).concat(starsAll.slice(5, totalStones + 1));
   }
 }

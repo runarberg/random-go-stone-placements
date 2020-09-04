@@ -10,7 +10,7 @@ import stars from "./stars.js";
 
 // eslint-disable-next-line jsdoc/valid-types
 /*
- * @type { { [name in PointAllocator]: (numStone: number, config: Config) => Point[] } }
+ * @type { { [name in PointAllocator]: (totalStones: number, config: Config) => Point[] } }
  */
 const pointAllocators = {
   stars,
