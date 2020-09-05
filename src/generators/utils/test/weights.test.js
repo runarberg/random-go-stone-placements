@@ -70,11 +70,11 @@ test("medianNonzero", (t) => {
 test("distanceToBoundaryMaker", (t) => {
   const distanceToBoundaryNoOuter = distanceToBoundaryMaker([0, 0], [6, 5]);
 
-  t.is(distanceToBoundaryNoOuter([3, 2]), 2);
-  t.is(distanceToBoundaryNoOuter([2, 2]), 2);
-  t.is(distanceToBoundaryNoOuter([2, 3]), 1);
-  t.is(distanceToBoundaryNoOuter([3, 3]), 1);
-  t.is(distanceToBoundaryNoOuter([3, 4]), 0);
+  t.is(distanceToBoundaryNoOuter([3, 2]), 3);
+  t.is(distanceToBoundaryNoOuter([2, 2]), 3);
+  t.is(distanceToBoundaryNoOuter([2, 3]), 2);
+  t.is(distanceToBoundaryNoOuter([3, 3]), 2);
+  t.is(distanceToBoundaryNoOuter([3, 4]), 1);
 
   const distanceToBoundaryWithOuter = distanceToBoundaryMaker(
     [1, 0],
@@ -83,12 +83,12 @@ test("distanceToBoundaryMaker", (t) => {
     [6, 5],
   );
 
-  t.is(distanceToBoundaryWithOuter([2, 2]), 1);
-  t.is(distanceToBoundaryWithOuter([2, 0]), 1);
-  t.is(distanceToBoundaryWithOuter([3, 2]), 1);
-  t.is(distanceToBoundaryWithOuter([3, 3]), 1);
-  t.is(distanceToBoundaryWithOuter([3, 4]), 1);
-  t.is(distanceToBoundaryWithOuter([4, 3]), 0);
+  t.is(distanceToBoundaryWithOuter([2, 2]), 2);
+  t.is(distanceToBoundaryWithOuter([2, 0]), 2);
+  t.is(distanceToBoundaryWithOuter([3, 2]), 2);
+  t.is(distanceToBoundaryWithOuter([3, 3]), 2);
+  t.is(distanceToBoundaryWithOuter([3, 4]), 2);
+  t.is(distanceToBoundaryWithOuter([4, 3]), 1);
 });
 
 test("distanceTaxicabMaker", (t) => {

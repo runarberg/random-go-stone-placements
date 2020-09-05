@@ -15,14 +15,13 @@ import {
 } from "./utils/weights.js";
 
 /**
- * @param { number } totalStones
  * @param { Config } config
- * @returns { Placement[] }
+ * @param { Grid } weights
+ * @param { Point } point
+ * @returns { Grid }
  */
-export default function adaptiveWeights(
-  totalStones,
-  { size, margins, handicap, preventAdjacent },
-) {
+export function adjustWeights(config, weights, point) {
+  const { size, margins, preventAdjacent } = config;
   const separation = preventAdjacent ? 1 : 0;
 
   /** @type { Point } */
@@ -31,6 +30,35 @@ export default function adaptiveWeights(
   const end = [size - margins, size - margins];
 
   const circleTaxicab = circleTaxicabMaker(start, end);
+  const distanceTaxicab = distanceTaxicabMaker(point);
+
+  const weightsNew = weights
+    // exclude within separation
+    .applyAt(
+      () => 0,
+      range(0, separation + 1).flatMap((radius) =>
+        circleTaxicab(point, radius),
+      ),
+    )
+    // multiply weight by taxicab distance
+    .apply((wgt, idx) => wgt * distanceTaxicab(weights.toVh(idx)));
+
+  // cut off peaks if too high
+  const weightMax = 2 * medianNonzero(weightsNew.values);
+  return weightsNew.apply((wgt) => Math.min(wgt, weightMax));
+}
+
+/**
+ * @param { number } totalStones
+ * @param { Config } config
+ * @returns { Placement[] }
+ */
+export default function adaptiveWeights(totalStones, config) {
+  const { size, margins, handicap } = config;
+  /** @type { Point } */
+  const start = [margins, margins];
+  /** @type { Point } */
+  const end = [size - margins, size - margins];
 
   /** @type { Point[] } */
   const stones = [];
@@ -40,22 +68,7 @@ export default function adaptiveWeights(
       const stone = weights.toVh(pickIndex(weights.values));
       stones.push(stone);
 
-      const distanceTaxicab = distanceTaxicabMaker(stone);
-
-      const weightsNew = weights
-        // exclude within separation
-        .applyAt(
-          () => 0,
-          range(0, separation + 1).flatMap((radius) =>
-            circleTaxicab(stone, radius),
-          ),
-        )
-        // multiply weight by taxicab distance
-        .apply((wgt, idx) => wgt * distanceTaxicab(weights.toVh(idx)));
-
-      // cut off peaks if too high
-      const weightMax = 2 * medianNonzero(weightsNew.values);
-      return weightsNew.apply((wgt) => Math.min(wgt, weightMax));
+      return adjustWeights(config, weights, stone);
     },
     // exclude margins
     new Grid([0, 0], [size, size]).applyExcept(() => 0, regionRect(start, end)),

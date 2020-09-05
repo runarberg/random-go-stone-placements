@@ -3,43 +3,13 @@
  */
 
 /**
- * Is the new placement in a legal position?
- *
- * @param { [number, number] } pos
- * @param { Placement[] } placements
- * @param { { preventAdjacent: boolean } } options
- * @returns { boolean }
- */
-export function allowedCoord(
-  [newCol, newRow],
-  placements,
-  { preventAdjacent },
-) {
-  return placements.every(({ col: oldCol, row: oldRow }) => {
-    if (preventAdjacent) {
-      if (oldCol === newCol) {
-        return newRow < oldRow - 1 || oldRow + 1 < newRow;
-      }
-
-      if (oldRow === newRow) {
-        return newCol < oldCol - 1 || oldCol + 1 < newCol;
-      }
-
-      return true;
-    }
-
-    return !(oldCol === newCol && oldRow === newRow);
-  });
-}
-
-/**
  * Choose black or white for next stone
  *
  * @param { Placement[] } placements
  * @param { number } handicap
  * @returns { "B" | "W" }
  */
-export function getNextPlayer(placements, handicap) {
+function getNextPlayer(placements, handicap) {
   if (placements.length < handicap) {
     return "B";
   }
