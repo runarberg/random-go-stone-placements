@@ -155,6 +155,11 @@ export function pickIndex(weights) {
   }
 
   const total = weights.reduce((acc, val) => acc + val, 0);
+
+  if (total < 0) {
+    throw new Error("total weights overflowed");
+  }
+
   const nRand = Math.random() * total;
   return cumulative(weights).findIndex((val) => val > nRand);
 }

@@ -1,167 +1,18 @@
 /**
- * Randomly place stones via adaptive weights over the board
- *
  * @typedef { import("../main.js").Placement } Placement
  * @typedef { import("../main.js").Config } Config
  * @typedef { [number, number] } Point
  */
+
+import { range, assignPlayers } from "./utils/common.js";
+import Grid from "./utils/grid.js";
 import {
-  range,
+  regionRect,
+  circleTaxicabMaker,
   pickIndex,
-  isInGrid,
-  fromVhMaker,
-  toVhMaker,
   medianNonzero,
-  assignPlayers,
-} from "./utils.js";
-
-/**
- * Every pair [a, b] where a + b === total
- *
- * @param { number } total
- * @returns { Point[] }
- */
-function pairsWithTotal(total) {
-  /** @type { Point[] } */
-  const pairs = [];
-
-  range(0, Math.floor(total / 2)).forEach((smaller) => {
-    pairs.push([smaller, total - smaller]);
-  });
-
-  return pairs;
-}
-
-/**
- * Relative positions of points on taxicab circle
- *
- * @param { number } radius
- * @returns { Point[] }
- */
-function circleTaxicab(radius) {
-  /** @type { Point[] } */
-  const vecs = []; // relative positions
-
-  pairsWithTotal(radius).forEach(([a, b]) => {
-    const diagMatrix = [
-      [a, b],
-      [b, a],
-    ];
-
-    diagMatrix.forEach(([vert, horz]) => {
-      const signMatrix = [
-        [1, 1],
-        [-1, 1],
-        [1, -1],
-        [-1, -1],
-      ];
-
-      signMatrix.forEach(([signV, signH]) => {
-        /** @type {Point} */
-        const candidate = [signV * vert, signH * horz];
-
-        if (
-          !vecs.some(
-            (vec) => vec[0] === candidate[0] && vec[1] === candidate[1],
-          )
-        ) {
-          vecs.push(candidate);
-        }
-      });
-    });
-  });
-
-  return vecs;
-}
-
-/**
- * Field of weights over the board
- */
-class Board {
-  /**
-   * @param { number } size
-   * @param { number } separation
-   */
-  constructor(size, separation) {
-    /** @type { number } */
-    this.size = size;
-
-    /** @type { number[] } */
-    this.weights = Array.from({ length: Math.pow(this.size, 2) }).fill(1);
-
-    /** @type { number } */
-    this.separation = separation;
-
-    /** @type { (idx: number) => Point } */
-    this.toVh = toVhMaker(size);
-
-    /** @type { (point: Point) => number } */
-    this.fromVh = fromVhMaker(size);
-  }
-
-  /**
-   * Taxicab distance to farthest corner
-   *
-   * @param { number } center
-   * @returns { number }
-   */
-  maxRadius(center) {
-    const [v, h] = this.toVh(center);
-    const maxVH = this.size - 1;
-
-    return Math.max(v, maxVH - v) + Math.max(h, maxVH - h);
-  }
-
-  /**
-   * Points at given taxicab distance, in flat index
-   *
-   * @param { number } center
-   * @param { number } radius
-   * @returns { number[] }
-   */
-  indicesCircleTaxicab(center, radius) {
-    return circleTaxicab(radius)
-      .map(([dv, dh]) => {
-        const [v, h] = this.toVh(center);
-        /** @type { Point } */
-        const vh = [v + dv, h + dh];
-
-        return vh;
-      })
-      .filter((vh) => isInGrid([this.size, this.size], vh))
-      .map((vh) => this.fromVh(vh));
-  }
-
-  /**
-   * @returns { Point }
-   */
-  placeStone() {
-    const stone = pickIndex(this.weights);
-
-    //// points to exclude for future placements
-    this.weights[stone] = 0;
-
-    // within separation
-    range(1, this.separation).forEach((radius) => {
-      this.indicesCircleTaxicab(stone, radius).forEach((point) => {
-        this.weights[point] = 0;
-      });
-    });
-
-    //// points to increase weight
-    range(1 + this.separation, this.maxRadius(stone)).forEach((radius) => {
-      this.indicesCircleTaxicab(stone, radius).forEach((point) => {
-        this.weights[point] *= radius;
-      });
-    });
-
-    //// cut off peaks if too high
-    const weightMax = 2 * medianNonzero(this.weights);
-    this.weights = this.weights.map((wgt) => Math.min(wgt, weightMax));
-
-    return this.toVh(stone);
-  }
-}
+  distanceTaxicabMaker,
+} from "./utils/weights.js";
 
 /**
  * @param { number } totalStones
@@ -172,24 +23,54 @@ export default function adaptiveWeights(
   totalStones,
   { size, margins, handicap, preventAdjacent },
 ) {
-  // TODO: Allow any separation.
   const separation = preventAdjacent ? 1 : 0;
-  const boardInner = new Board(size - 2 * margins, separation);
+
+  /** @type { Point } */
+  const start = [margins, margins];
+  /** @type { Point } */
+  const end = [size - margins, size - margins];
+
+  const circleTaxicab = circleTaxicabMaker(start, end);
 
   /** @type { Point[] } */
-  const stonesInner = [];
+  const stones = [];
 
-  range(1, totalStones).forEach(() => {
-    stonesInner.push(boardInner.placeStone());
-  });
+  range(0, totalStones).reduce(
+    (weights) => {
+      const stone = weights.toVh(pickIndex(weights.values));
+      stones.push(stone);
 
-  const stonesOuter = stonesInner.map(([v, h]) => {
-    /** @type { Point } */
-    // '1 +' makes coordinates start at 1 instead of 0
-    const vhOuter = [1 + margins + v, 1 + margins + h];
+      const distanceTaxicab = distanceTaxicabMaker(stone);
 
-    return vhOuter;
-  });
+      const weightsNew = weights
+        // exclude within separation
+        .applyAt(
+          () => 0,
+          range(0, separation + 1).flatMap((radius) =>
+            circleTaxicab(stone, radius),
+          ),
+        )
+        // multiply weight by taxicab distance
+        .apply(
+          /** @type { (wgt: number, idx: number) => number } */
+          (wgt, idx) => wgt * distanceTaxicab(weights.toVh(idx)),
+        );
 
-  return assignPlayers(stonesOuter, handicap);
+      // cut off peaks if too high
+      const weightMax = 2 * medianNonzero(weightsNew.values);
+      return weightsNew.apply((wgt) => Math.min(wgt, weightMax));
+    },
+    // exclude margins
+    new Grid([0, 0], [size, size]).applyExcept(() => 0, regionRect(start, end)),
+  );
+
+  return assignPlayers(
+    stones.map(
+      ([v, h]) =>
+        // make coordinates start at 1 instead of 0
+        /** @type { Point } */
+        ([1 + v, 1 + h]),
+    ),
+    handicap,
+  );
 }

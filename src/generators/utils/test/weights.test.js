@@ -54,6 +54,7 @@ test("circleTaxicabMaker", (t) => {
     [2, 3],
     [3, 2],
   ]);
+  t.deepEqual(circleTaxicabMaker([0, 0], [6, 6])([3, 2], 0), [[3, 2]]);
 });
 
 test("cumulative", (t) => {
