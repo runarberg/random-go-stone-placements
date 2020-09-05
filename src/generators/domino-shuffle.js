@@ -8,13 +8,11 @@
 
 import { adjustWeights } from "./adaptive-weights.js";
 import dominoes from "./allocators/rectangle/dominoes.js";
+import { initWeightsStair } from "./stair.js";
 import { assignPlayers } from "./utils/common.js";
 import Grid from "./utils/grid.js";
 import { pickUniformRect } from "./utils/prob-dist.js";
-import {
-  pickIndexWithWeights,
-  distanceToBoundaryMaker,
-} from "./utils/weights.js";
+import { pickIndexWithWeights } from "./utils/weights.js";
 
 /**
  * @param { Rectangle[] } rectangles
@@ -25,33 +23,13 @@ function withUniform(rectangles) {
 }
 
 /**
- * @param { Config } config
  * @param { Rectangle[] } rectangles
  * @returns { Point[] }
  */
-function withStair(config, rectangles) {
-  const { size, margins } = config;
-  const start = margins;
-  const end = size - margins;
-
+function withStair(rectangles) {
   return rectangles.reduce((/** @type { Point[] } */ acc, [nw, se]) => {
-    const distanceToBoundary = distanceToBoundaryMaker(
-      nw,
-      se,
-      [start, start],
-      [end, end],
-    );
-
-    const blank = new Grid(nw, se);
-
-    acc.push(
-      blank.toVh(
-        pickIndexWithWeights(
-          blank.apply((_, idx) => distanceToBoundary(blank.toVh(idx))).values,
-        ),
-      ),
-    );
-
+    const weights = initWeightsStair(nw, se);
+    acc.push(weights.toVh(pickIndexWithWeights(weights.values)));
     return acc;
   }, []);
 }
@@ -59,11 +37,25 @@ function withStair(config, rectangles) {
 /**
  * @param { Config } config
  * @param { Rectangle[] } rectangles
+ * @param { boolean } isStair
  * @returns { Point[] }
  */
-function withAdaptive(config, rectangles) {
-  const { size } = config;
-  let weights = new Grid([0, 0], [size, size]);
+function withAdaptive(config, rectangles, isStair) {
+  const { size, margins } = config;
+
+  /** @type { Grid } */
+  let weights;
+
+  if (!isStair) {
+    weights = new Grid([0, 0], [size, size]);
+  } else {
+    /** @type { Point } */
+    const start = [margins, margins];
+    /** @type { Point } */
+    const end = [size - margins, size - margins];
+
+    weights = initWeightsStair(start, end);
+  }
 
   return rectangles.reduce((/** @type { Point[] } */ acc, [nw, se]) => {
     const subweights = weights.slice(nw, se);
@@ -82,7 +74,7 @@ function withAdaptive(config, rectangles) {
  * @returns { Placement[] }
  */
 export default function dominoShuffle(totalStones, config) {
-  const placementOption = "withUniform";
+  const placementOption = "withStairAdaptive";
 
   const rectangles = dominoes(totalStones, config);
 
@@ -94,10 +86,13 @@ export default function dominoShuffle(totalStones, config) {
       stones = withUniform(rectangles);
       break;
     case "withStair":
-      stones = withStair(config, rectangles);
+      stones = withStair(rectangles);
       break;
     case "withAdaptive":
-      stones = withAdaptive(config, rectangles);
+      stones = withAdaptive(config, rectangles, false);
+      break;
+    case "withStairAdaptive":
+      stones = withAdaptive(config, rectangles, true);
       break;
     default:
       throw new Error("unsupported placement option");

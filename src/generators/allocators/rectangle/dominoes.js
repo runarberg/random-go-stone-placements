@@ -8,7 +8,6 @@
 import { range } from "../../utils/common.js";
 import Grid from "../../utils/grid.js";
 import {
-  regionRect,
   orderPairs,
   circleTaxicabMaker,
   pickIndexWithWeights,
@@ -143,18 +142,6 @@ function randomSegments(start, end, separationMin, numsSeg) {
   });
 
   return segments;
-}
-
-/**
- * @param { number } size
- * @param { Rectangle[] } rectangles
- * @returns { Grid }
- */
-export function initWeightsDominoes(size, rectangles) {
-  return new Grid([0, 0], [size, size]).applyExcept(
-    () => 0,
-    rectangles.flatMap(([start, end]) => regionRect(start, end)),
-  );
 }
 
 /**
