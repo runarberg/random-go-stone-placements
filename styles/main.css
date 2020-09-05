@@ -286,12 +286,14 @@ body {
   grid-area: form;
   grid-gap: 1ex 1em;
   grid-template:
-    "stones     size            "
-    "komi       handicap        "
-    "margins    prevent-adjacent"
-    "generator generator      "
-    ".          .               " 1ex
-    "submit     submit          ";
+    "stones         size            "
+    "komi           handicap        "
+    "margins        prevent-adjacent"
+    "allocator-type allocator-points"
+    "allocator-rect placer-points   "
+    "placer-rect    weight-adjuster "
+    ".              .               " 1ex
+    "submit         submit          ";
 }
 
 .form label,
@@ -332,8 +334,28 @@ body {
   grid-area: prevent-adjacent;
 }
 
-.form .generator-field {
-  grid-area: generator;
+.form .allocator-type-field {
+  grid-area: allocator-type;
+}
+
+.form .allocator-points-field {
+  grid-area: allocator-points;
+}
+
+.form .allocator-rect-field {
+  grid-area: allocator-rect;
+}
+
+.form .placer-points-field {
+  grid-area: placer-points;
+}
+
+.form .placer-rect-field {
+  grid-area: placer-rect;
+}
+
+.form .weight-adjuster-field {
+  grid-area: weight-adjuster;
 }
 
 .form .radio-fieldset input[type="radio"] {
