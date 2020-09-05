@@ -11,8 +11,8 @@ import {
   regionRect,
   orderPairs,
   circleTaxicabMaker,
-  pickIndex,
-  pick,
+  pickIndexWithWeights,
+  pickWithWeights,
 } from "../../utils/weights.js";
 
 /**
@@ -78,13 +78,13 @@ function randomDominoes(numsCell, totalStones) {
 
     // ensure pairing when picking first cell
     do {
-      first = weights.toVh(pickIndex(weights.values));
+      first = weights.toVh(pickIndexWithWeights(weights.values));
       neighborsFirst = neighbors(first);
       weightsNeighbsFirst = weights.valuesAt(neighborsFirst);
     } while (Math.max(...weightsNeighbsFirst) === 0);
 
     const second = weights.toVh(
-      pick(weights.fromVhes(neighborsFirst), weightsNeighbsFirst),
+      pickWithWeights(weights.fromVhes(neighborsFirst), weightsNeighbsFirst),
     );
 
     // adjust weights
@@ -130,7 +130,7 @@ function randomSegments(start, end, separationMin, numsSeg) {
       .forEach((numSegRemain) => {
         const lenSegMax =
           lenRemain - (lenSegMin + separationMin) * numSegRemain;
-        const lenSeg = pick(range(lenSegMin, lenSegMax + 1));
+        const lenSeg = pickWithWeights(range(lenSegMin, lenSegMax + 1));
 
         /** @type { Point } */
         segments[axis].push([coordinate, coordinate + lenSeg]);

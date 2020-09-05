@@ -9,7 +9,7 @@ import Grid from "./utils/grid.js";
 import {
   regionRect,
   circleTaxicabMaker,
-  pickIndex,
+  pickIndexWithWeights,
   medianNonzero,
   distanceTaxicabMaker,
 } from "./utils/weights.js";
@@ -65,7 +65,7 @@ export default function adaptiveWeights(totalStones, config) {
 
   range(0, totalStones).reduce(
     (weights) => {
-      const stone = weights.toVh(pickIndex(weights.values));
+      const stone = weights.toVh(pickIndexWithWeights(weights.values));
       stones.push(stone);
 
       return adjustWeights(config, weights, stone);

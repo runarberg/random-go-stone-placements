@@ -11,7 +11,10 @@ import dominoes from "./allocators/rectangle/dominoes.js";
 import { assignPlayers } from "./utils/common.js";
 import Grid from "./utils/grid.js";
 import { pickUniformRect } from "./utils/prob-dist.js";
-import { pickIndex, distanceToBoundaryMaker } from "./utils/weights.js";
+import {
+  pickIndexWithWeights,
+  distanceToBoundaryMaker,
+} from "./utils/weights.js";
 
 /**
  * @param { Rectangle[] } rectangles
@@ -43,7 +46,7 @@ function withStair(config, rectangles) {
 
     acc.push(
       blank.toVh(
-        pickIndex(
+        pickIndexWithWeights(
           blank.apply((_, idx) => distanceToBoundary(blank.toVh(idx))).values,
         ),
       ),
@@ -64,7 +67,7 @@ function withAdaptive(config, rectangles) {
 
   return rectangles.reduce((/** @type { Point[] } */ acc, [nw, se]) => {
     const subweights = weights.slice(nw, se);
-    const stone = subweights.toVh(pickIndex(subweights.values));
+    const stone = subweights.toVh(pickIndexWithWeights(subweights.values));
     acc.push(stone);
 
     weights = adjustWeights(config, weights, stone);

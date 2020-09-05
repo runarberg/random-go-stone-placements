@@ -145,7 +145,7 @@ function cumulative(nums) {
  * @param { number[] } weights
  * @returns { number }
  */
-export function pickIndex(weights) {
+export function pickIndexWithWeights(weights) {
   if (weights.some((weight) => weight < 0)) {
     throw new Error("Negative weight");
   }
@@ -171,7 +171,7 @@ export function pickIndex(weights) {
  * @param { number[] } weights
  * @returns { number }
  */
-export function pick(
+export function pickWithWeights(
   options,
   weights = Array.from({ length: options.length }).fill(1),
 ) {
@@ -179,7 +179,7 @@ export function pick(
     throw new Error("Unequal length");
   }
 
-  return options[pickIndex(weights)];
+  return options[pickIndexWithWeights(weights)];
 }
 
 /**
