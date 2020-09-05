@@ -99,7 +99,7 @@ export default class Grid {
   }
 
   /**
-   * @param { (val: number) => number } func
+   * @param { (val: number, idx: number) => number } func
    * @returns { Grid }
    */
   apply(func) {

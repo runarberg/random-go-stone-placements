@@ -51,10 +51,7 @@ export default function adaptiveWeights(
           ),
         )
         // multiply weight by taxicab distance
-        .apply(
-          /** @type { (wgt: number, idx: number) => number } */
-          (wgt, idx) => wgt * distanceTaxicab(weights.toVh(idx)),
-        );
+        .apply((wgt, idx) => wgt * distanceTaxicab(weights.toVh(idx)));
 
       // cut off peaks if too high
       const weightMax = 2 * medianNonzero(weightsNew.values);
