@@ -98,6 +98,15 @@ function isInBounds(start, end, point) {
 }
 
 /**
+ * @param { [number, number] } a
+ * @param { [number, number] } b
+ * @returns { number }
+ */
+export function orderPairs(a, b) {
+  return a[0] - b[0] || a[1] - b[1];
+}
+
+/**
  * Points on taxicab circle with given center and radius,
  * within bounds defined by start and end
  *
@@ -113,7 +122,8 @@ export function circleTaxicabMaker(start, end) {
           /** @type { [number, number] } */
           ([center[0] + dv, center[1] + dh]),
       )
-      .filter((point) => isInBounds(start, end, point));
+      .filter((point) => isInBounds(start, end, point))
+      .sort(orderPairs);
   };
 }
 
@@ -145,6 +155,11 @@ export function pickIndex(weights) {
   }
 
   const total = weights.reduce((acc, val) => acc + val, 0);
+
+  if (total < 0) {
+    throw new Error("total weights overflowed");
+  }
+
   const nRand = Math.random() * total;
   return cumulative(weights).findIndex((val) => val > nRand);
 }

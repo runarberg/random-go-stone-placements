@@ -12,7 +12,7 @@ import uniform from "./uniform.js";
 
 // eslint-disable-next-line jsdoc/valid-types
 /**
- * @type { { [name in Generator]: (numStones: number, config: Config) =>  Placement[]} }
+ * @type { { [name in Generator]: (totalStones: number, config: Config) =>  Placement[]} }
  */
 const generators = {
   dominoShuffle,

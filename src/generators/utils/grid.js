@@ -71,7 +71,6 @@ export default class Grid {
    * Convert from vertical and horizontal indices
    * used for outer grid to flat index used for this.values
    *
-   * @private
    * @param { Point } vhOuter
    * @returns { number }
    */
@@ -82,7 +81,6 @@ export default class Grid {
   }
 
   /**
-   * @private
    * @param { Point[] } vhesOuter
    * @returns { number[] }
    */
@@ -101,7 +99,7 @@ export default class Grid {
   }
 
   /**
-   * @param { (val: number) => number } func
+   * @param { (val: number, idx: number) => number } func
    * @returns { Grid }
    */
   apply(func) {
@@ -159,6 +157,32 @@ export default class Grid {
       end,
       range(start[0], end[0]).flatMap((v) =>
         this.values.slice(this.fromVh([v, start[1]]), this.fromVh([v, end[1]])),
+      ),
+    );
+  }
+
+  /**
+   * @private
+   * @param { number } wgt
+   * @returns { string }
+   */
+  padWeight(wgt) {
+    const width = Math.max(...this.values).toString().length;
+    return wgt.toString().padStart(width, " ");
+  }
+
+  /**
+   * @param { Point } start
+   * @param { Point } end
+   */
+  consoleLog(start = this.start, end = this.end) {
+    range(start[0], end[0]).forEach((v) =>
+      // eslint-disable-next-line no-console
+      console.log(
+        this.values
+          .slice(this.fromVh([v, start[1]]), this.fromVh([v, end[1]]))
+          .map((wgt) => this.padWeight(wgt))
+          .join(" "),
       ),
     );
   }

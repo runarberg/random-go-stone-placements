@@ -139,8 +139,8 @@ function handleSubmit(event) {
   }
 
   const config = getConfig(form);
-  const numStones = config.handicap + config.stones * 2;
-  const placements = generators[config.generator](numStones, config);
+  const totalStones = config.handicap + config.stones * 2;
+  const placements = generators[config.generator](totalStones, config);
   const output = form.elements.namedItem("placements");
   if (!(output instanceof HTMLOutputElement)) {
     throw new Error("DOM failure");
