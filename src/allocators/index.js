@@ -15,7 +15,7 @@ import quadrants from "./quadrants.js";
 
 // eslint-disable-next-line jsdoc/valid-types
 /*
- * @type { { [name in Allocator]: (totalStones: number, config: Config) => Allocation } }
+ * @type { { [name in Allocator]: (config: Config, totalStones: number) => Allocation } }
  */
 const allocators = {
   whole,

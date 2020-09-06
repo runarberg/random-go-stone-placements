@@ -145,13 +145,13 @@ function randomSegments(start, end, separationMin, numsSeg) {
 }
 
 /**
- * @param { number } totalStones
  * @param { Config } config
+ * @param { number } totalStones
  * @returns { Rectangle[] }
  */
 export default function dominoes(
-  totalStones,
   { size, margins, preventAdjacent },
+  totalStones,
 ) {
   const start = margins;
   const end = size - margins;

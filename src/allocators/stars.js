@@ -18,11 +18,11 @@ const starsAll = [
 ];
 
 /**
- * @param { number } totalStones
  * @param { Config } config
+ * @param { number } totalStones
  * @returns { Point[] }
  */
-export default function stars(totalStones, { size }) {
+export default function stars({ size }, totalStones) {
   if (size !== 19) {
     throw new Error("only works for board size: 19");
   }

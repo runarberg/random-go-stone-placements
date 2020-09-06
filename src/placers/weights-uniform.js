@@ -4,7 +4,7 @@
  * @typedef { [number, number] } Point
  */
 
-import { range, assignPlayers } from "./utils/common.js";
+import { range } from "./utils/common.js";
 import Grid from "./utils/grid.js";
 import {
   regionRect,
@@ -16,71 +16,65 @@ import {
 
 /**
  * @param { Config } config
- * @param { Grid } weights
- * @param { Point } point
  * @returns { Grid }
  */
-export function adjustWeights(config, weights, point) {
-  const { size, margins, preventAdjacent } = config;
-  const separation = preventAdjacent ? 1 : 0;
-
+export function initWeightsQuadrants({ size, margins }) {
   /** @type { Point } */
   const start = [margins, margins];
   /** @type { Point } */
   const end = [size - margins, size - margins];
 
-  const circleTaxicab = circleTaxicabMaker(start, end);
-  const distanceTaxicab = distanceTaxicabMaker(point);
+  if (size % 2 === 0) {
+    return new Grid(start, end);
+  }
 
-  const weightsNew = weights
-    // exclude within separation
+  const middle = (size - 1) / 2;
+
+  return new Grid(start, end, 4)
     .applyAt(
-      () => 0,
-      range(0, separation + 1).flatMap((radius) =>
-        circleTaxicab(point, radius),
-      ),
+      (val) => val >> 1,
+      regionRect([start[0], middle], [end[0], middle + 1])
     )
-    // multiply weight by taxicab distance
-    .apply((wgt, idx) => wgt * distanceTaxicab(weights.toVh(idx)));
-
-  // cut off peaks if too high
-  const weightMax = 2 * medianNonzero(weightsNew.values);
-  return weightsNew.apply((wgt) => Math.min(wgt, weightMax));
+    .applyAt(
+      (val) => val >> 1,
+      regionRect([middle, start[1]], [middle + 1, end[1]])
+    );
 }
 
 /**
- * @param { number } totalStones
  * @param { Config } config
- * @returns { Placement[] }
+ * @param { Allocation } allocation
+ * @returns { Point[] }
  */
-export default function adaptiveWeights(totalStones, config) {
-  const { size, margins, handicap } = config;
+export default function weightsUniform(config, allocation) {
+  if (typeof allocation !== "Rectangle[]") {
+    throw new Error("unsupported allocation type");
+  }
+
+  const { size, margins, placer } = config;
+
   /** @type { Point } */
   const start = [margins, margins];
   /** @type { Point } */
   const end = [size - margins, size - margins];
 
-  /** @type { Point[] } */
-  const stones = [];
+  /** @type { Grid } */
+  let weights;
 
-  range(0, totalStones).reduce(
-    (weights) => {
-      const stone = weights.toVh(pickIndexWithWeights(weights.values));
-      stones.push(stone);
+  if (placer === "quadrants") {
+    weights = initWeighsQuadrants(config);
+  } else {
+    weights = new Grid(start, end);
+  }
+  
+  return allocation.reduce((stones, [start, end]) => {
+    const subweights = weights.slice(start, end);
 
-      return adjustWeights(config, weights, stone);
-    },
-    // exclude margins
-    new Grid([0, 0], [size, size]).applyExcept(() => 0, regionRect(start, end)),
-  );
+    const stn = subweights.toVh(pickIndexWithWeights(subweights.values));
+    stones.push(stn);
 
-  return assignPlayers(
-    stones.map(
-      ([v, h]) =>
-        // make coordinates start at 1 instead of 0
-        /** @type { Point } */
-        ([1 + v, 1 + h]),
-    ),
-    handicap,
-  );
+    weights = weightAdjusters[weightAdjuster](config, weights, stn);
+
+    return stones;
+  });
 }

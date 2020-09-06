@@ -5,59 +5,128 @@
  * @typedef { [Point, Point] } Rectangle
  */
 
-import Grid from "../../utils/grid.js";
-import { regionRect } from "../../utils/weights.js";
-
 /**
- * @param { number } size
- * @param { Rectangle[] } rectangles
- * @returns { Grid }
+ * @param { number } quadrantMask
+ * @returns { number }
  */
-export function initWeightsQuadrants(size, rectangles) {
-  if (size % 2 === 0) {
-    return new Grid([0, 0], [size, size]).applyExcept(
-      () => 0,
-      rectangles.flatMap(([start, end]) => regionRect(start, end)),
-    );
+function getRandomQuadrant(quadrantMask) {
+  const bits = Array.from(quadrantMask.toString(2).padStart(4, "0"), (n) =>
+    Number.parseInt(n, 10),
+  ).reverse();
+  const once = bits.reduce((count, bit) => count + bit, 0);
+
+  if (once === 1) {
+    return quadrantMask;
   }
 
-  return rectangles
-    .reduce(
-      (acc, [start, end]) =>
-        acc.applyAt((wgt) => wgt >> 1, regionRect(start, end)),
-      new Grid([0, 0], [size, size], [], 1 << 4),
-    )
-    .apply((wgt) => (wgt === 1 << 4 ? 0 : wgt));
+  // Get a random nth of the available bits.
+  const nth = Math.floor(Math.random() * once);
+  let bitsLeft = nth + 1;
+  const index = bits.findIndex((bit) => {
+    if (bit) {
+      bitsLeft -= 1;
+    }
+
+    if (bitsLeft === 0) {
+      return true;
+    }
+
+    return false;
+  });
+
+  return 1 << index;
 }
 
 /**
- * @param { number } totalStones
+ * @param { number } quadrant
+ * @returns { number }
+ */
+function calcIdxQuadrant(quadrant) {
+  return quadrant & 0b1000
+    ? 0
+    : quadrant & 0b0100
+    ? 1
+    : quadrant & 0b0010
+    ? 2
+    : 3;
+}
+
+/**
+ * @typedef { object } State
+ * @property { number } quadrantMask
+ * @property { number[] } indexes
+ *
+ * @param { State | undefined } state
+ * @param { number } n
+ * @returns { number[] }
+ */
+function getIndexesQuadrants(
+  state = {
+    quadrantMask: 0b1111,
+    indexes: [],
+  },
+  n,
+) {
+  if (n <= 0) {
+    return state.indexes;
+  }
+
+  const nextQuadrant = getRandomQuadrant(state.quadrantMask);
+  state.indexes.push(calcIdxQuadrant(nextQuadrant));
+  state.quadrantMask = state.quadrantMask ^ nextQuadrant || 0b1111;
+
+  return getIndexesQuadrants(state, n - 1);
+}
+
+/**
  * @param { Config } config
+ * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-export default function quadrants(totalStones, { size, margins }) {
+export default function quadrants({ size, margins }, totalStones) {
   const start = margins;
   const end = size - margins;
-  const centerLower = Math.floor((size - 1) / 2);
-  const centerUpper = Math.ceil((size - 1) / 2);
+  const middle = size / 2;
+
+  let midEnd;
+  let midStart;
+
+  switch (config.placer) {
+    case "distUniform":
+    case "distNormal":
+      midEnd = middle;
+      midStart = middle;
+      break;
+    case "weightsUniform":
+    case "weightsStair":
+      midEnd = Math.ceil(middle);
+      midStart = Math.floor(middle);
+      break;
+    default:
+      throw new Error("unsupported placer option");
+  }
 
   /** @type { Rectangle[] } */
-  return [
+  const quadrantsAll =  [
     [
       [start, start],
-      [centerLower + 1, centerLower + 1],
+      [midEnd, midEnd],
     ],
     [
-      [start, centerUpper],
-      [centerLower + 1, end],
+      [start, midStart],
+      [midEnd, end],
     ],
     [
-      [centerUpper, start],
-      [end, centerLower + 1],
+      [midStart, start],
+      [end, midEnd],
     ],
     [
-      [centerUpper, centerUpper],
+      [midStart, midStart],
       [end, end],
     ],
   ];
+
+  return getIndexesQuadrants(totalStones).map(
+    (idx) => quadrantsAll[idx]
+  );
 }

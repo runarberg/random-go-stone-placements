@@ -13,7 +13,7 @@ import weightsStair from "./weights-stair.js";
 
 // eslint-disable-next-line jsdoc/valid-types
 /**
- * @type { { [name in Placer]: (totalStones: number, config: Config, allocation: Allocation) =>  Point[] } }
+ * @type { { [name in Placer]: (config: Config, allocation: Allocation) =>  Point[] } }
  */
 const placers = {
   distUniform,
