@@ -1,24 +1,25 @@
-import adaptiveWeights from "./adaptive-weights.js";
-import dominoShuffle from "./domino-shuffle.js";
-import quadrantShuffle from "./quadrant-shuffle.js";
-import uniform from "./uniform.js";
+import distUniform from "./dist-uniform.js";
+//import distNormal from "./dist-normal.js";
+import weightsUniform from "./weights-uniform.js";
+import weightsStair from "./weights-stair.js";
 
 /**
  * @typedef { import("../main.js").Config } Config
- * @typedef { import("../main.js").Placement } Placement
+ * @typedef { import("../allocators/index.js").Allocation } Allocation
  *
- * @typedef { "dominoShuffle" | "quadrantShuffle" | "uniform" | "adaptiveWeights" } Generator
+ * @typedef { [number, number] } Point
+ * @typedef { "distUniform" | "distNormal" | "weightsUniform" | "weightsStair" } Placer
  */
 
 // eslint-disable-next-line jsdoc/valid-types
 /**
- * @type { { [name in Generator]: (totalStones: number, config: Config) =>  Placement[]} }
+ * @type { { [name in Placer]: (totalStones: number, config: Config, allocation: Allocation) =>  Point[] } }
  */
-const generators = {
-  dominoShuffle,
-  quadrantShuffle,
-  uniform,
-  adaptiveWeights,
+const placers = {
+  distUniform,
+  distNormal,
+  weightsUniform,
+  weightsStair,
 };
 
-export default generators;
+export default placers;
