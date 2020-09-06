@@ -1,5 +1,5 @@
 /**
- * @typedef { import("../../../main.js").Config } Config
+ * @typedef { import("../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
@@ -42,11 +42,11 @@ function getRandomQuadrant(quadrantMask) {
  * @returns { number }
  */
 function calcIdxQuadrant(quadrant) {
-  return quadrant & 0b1000
+  return quadrant === 0b1000
     ? 0
-    : quadrant & 0b0100
+    : quadrant === 0b0100
     ? 1
-    : quadrant & 0b0010
+    : quadrant === 0b0010
     ? 2
     : 3;
 }
@@ -56,16 +56,16 @@ function calcIdxQuadrant(quadrant) {
  * @property { number } quadrantMask
  * @property { number[] } indexes
  *
- * @param { State | undefined } state
  * @param { number } n
+ * @param { State | undefined } state
  * @returns { number[] }
  */
 function getIndexesQuadrants(
+  n,
   state = {
     quadrantMask: 0b1111,
     indexes: [],
   },
-  n,
 ) {
   if (n <= 0) {
     return state.indexes;
@@ -75,7 +75,7 @@ function getIndexesQuadrants(
   state.indexes.push(calcIdxQuadrant(nextQuadrant));
   state.quadrantMask = state.quadrantMask ^ nextQuadrant || 0b1111;
 
-  return getIndexesQuadrants(state, n - 1);
+  return getIndexesQuadrants(n - 1, state);
 }
 
 /**
@@ -83,7 +83,7 @@ function getIndexesQuadrants(
  * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-export default function quadrants({ size, margins }, totalStones) {
+export default function quadrants({ size, margins, placer }, totalStones) {
   const start = margins;
   const end = size - margins;
   const middle = size / 2;
@@ -91,9 +91,9 @@ export default function quadrants({ size, margins }, totalStones) {
   let midEnd;
   let midStart;
 
-  switch (config.placer) {
+  switch (placer) {
     case "distUniform":
-    case "distNormal":
+      //case "distNormal":
       midEnd = middle;
       midStart = middle;
       break;
@@ -107,7 +107,7 @@ export default function quadrants({ size, margins }, totalStones) {
   }
 
   /** @type { Rectangle[] } */
-  const quadrantsAll =  [
+  const quadrantsAll = [
     [
       [start, start],
       [midEnd, midEnd],
@@ -126,7 +126,5 @@ export default function quadrants({ size, margins }, totalStones) {
     ],
   ];
 
-  return getIndexesQuadrants(totalStones).map(
-    (idx) => quadrantsAll[idx]
-  );
+  return getIndexesQuadrants(totalStones).map((idx) => quadrantsAll[idx]);
 }

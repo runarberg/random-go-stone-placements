@@ -9,7 +9,7 @@ import {
   testablesUnexported,
 } from "../weights.js";
 
-// npm test "./src/generators/utils/test/weights.test.js"
+// npm test "./src/utils/test/weights.test.js"
 
 test("regionRect", (t) => {
   t.deepEqual(regionRect([0, 0], [4, 3]), [

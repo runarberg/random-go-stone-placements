@@ -1,14 +1,13 @@
 import distUniform from "./dist-uniform.js";
 //import distNormal from "./dist-normal.js";
-import weightsUniform from "./weights-uniform.js";
-import weightsStair from "./weights-stair.js";
+import { weightsUniform, weightsStair } from "./place-with-weights.js";
 
 /**
  * @typedef { import("../main.js").Config } Config
  * @typedef { import("../allocators/index.js").Allocation } Allocation
  *
  * @typedef { [number, number] } Point
- * @typedef { "distUniform" | "distNormal" | "weightsUniform" | "weightsStair" } Placer
+ * @typedef { "distUniform" | "weightsUniform" | "weightsStair" } Placer
  */
 
 // eslint-disable-next-line jsdoc/valid-types
@@ -17,7 +16,7 @@ import weightsStair from "./weights-stair.js";
  */
 const placers = {
   distUniform,
-  distNormal,
+  //distNormal,
   weightsUniform,
   weightsStair,
 };

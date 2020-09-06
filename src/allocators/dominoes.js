@@ -1,18 +1,18 @@
 /**
- * @typedef { import("../../../main.js").Config } Config
+ * @typedef { import("../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
  */
 
-import { range } from "../../utils/common.js";
-import Grid from "../../utils/grid.js";
+import { range } from "../utils/common.js";
+import Grid from "../utils/grid.js";
 import {
   orderPairs,
   circleTaxicabMaker,
   pickIndexWithWeights,
   pickWithWeights,
-} from "../../utils/weights.js";
+} from "../utils/weights.js";
 
 /**
  * Number of cells along each axis required
@@ -61,7 +61,7 @@ function neighborsMaker(start, end) {
  * @returns { Rectangle[] }
  */
 function randomDominoes(numsCell, totalStones) {
-  let weights = new Grid([0, 0], numsCell, [], 1 << totalStones);
+  let weights = new Grid([0, 0], numsCell, 1 << totalStones);
 
   const neighbors = neighborsMaker([0, 0], numsCell);
 

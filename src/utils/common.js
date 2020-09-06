@@ -1,5 +1,5 @@
 /**
- * @typedef { import("../../main.js").Placement } Placement
+ * @typedef { import("../main.js").Placement } Placement
  */
 
 /**
@@ -26,7 +26,7 @@ function getNextPlayer(placements, handicap) {
  * @param { number } handicap
  * @returns { Placement[] }
  */
-export function assignPlayers(stones, handicap) {
+function assignPlayers(stones, handicap) {
   /** @type { Placement[] } */
   const placements = [];
 
@@ -39,6 +39,22 @@ export function assignPlayers(stones, handicap) {
   );
 
   return placements;
+}
+
+/**
+ * @param { Point[] } stones
+ * @param { number } handicap
+ * @returns { Placement[] }
+ */
+export function preparePlacements(stones, handicap) {
+  return assignPlayers(
+    stones.map(
+      ([col, row]) =>
+        /** @type { Point } */
+        ([col + 1, row + 1]),
+    ),
+    handicap,
+  );
 }
 
 /**

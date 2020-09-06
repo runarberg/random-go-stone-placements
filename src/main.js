@@ -1,10 +1,14 @@
+import allocators from "./allocators/index.js";
 import formatSGF, { createSGFFile } from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
 import formatText from "./formats/text.js";
-import generators from "./generators/index.js";
+import placers from "./placers/index.js";
+import { preparePlacements } from "./utils/common.js";
 
 /**
- * @typedef { import("./generators/index.js").Generator } Generator
+ * @typedef { import("./allocators/index.js").Allocator } Allocator
+ * @typedef { import("./placers/index.js").Placer } Placer
+ * @typedef { import("./placers/weight-adjusters.js").WeightAdjuster } WeightAdjuster
  *
  * @typedef { object } Placement - A specific stone placement
  * @property { number } col - The column number
@@ -18,7 +22,9 @@ import generators from "./generators/index.js";
  * @property { number } handicap - How many extra stones for black
  * @property { number } margins - How many stone free lines from the edge
  * @property { boolean } preventAdjacent - Prevent putting stone adjacent to an existing stone
- * @property { Generator } generator - Which randomizaton method to use
+ * @property { Allocator } allocator - Which pre-allocation method to use
+ * @property { Placer } placer - Which placement method to use
+ * @property { WeightAdjuster } weightAdjuster - If using weight-based placement method, how to adjust weights
  */
 
 // @ts-ignore
@@ -90,7 +96,9 @@ function getConfig(form) {
   const handicap = elements.namedItem("handicap");
   const margins = elements.namedItem("margins");
   const preventAdjacent = elements.namedItem("preventAdjacent");
-  const generator = elements.namedItem("generator");
+  const allocator = elements.namedItem("allocator");
+  const placer = elements.namedItem("placer");
+  const weightAdjuster = elements.namedItem("weightAdjuster");
 
   if (
     !(stones instanceof HTMLInputElement) ||
@@ -99,20 +107,39 @@ function getConfig(form) {
     !(handicap instanceof HTMLInputElement) ||
     !(margins instanceof HTMLInputElement) ||
     !(preventAdjacent instanceof HTMLInputElement) ||
-    !(generator instanceof RadioNodeList)
+    !(allocator instanceof RadioNodeList) ||
+    !(placer instanceof RadioNodeList) ||
+    !(weightAdjuster instanceof RadioNodeList)
   ) {
     throw new Error("DOM Failure");
   }
 
-  const generatorValue = generator.value;
+  const allocatorValue = allocator.value;
+  const placerValue = placer.value;
+  const weightAdjusterValue = weightAdjuster.value;
 
   if (
-    generatorValue !== "dominoShuffle" &&
-    generatorValue !== "quadrantShuffle" &&
-    generatorValue !== "uniform" &&
-    generatorValue !== "adaptiveWeights"
+    allocatorValue !== "whole" &&
+    allocatorValue !== "stars" &&
+    allocatorValue !== "quadrants" &&
+    allocatorValue !== "dominoes"
   ) {
-    throw new Error("Generator not supported");
+    throw new Error("Allocator not supported");
+  }
+
+  if (
+    placerValue !== "distUniform" &&
+    placerValue !== "weightsUniform" &&
+    placerValue !== "weightsStair"
+  ) {
+    throw new Error("Placer not supported");
+  }
+
+  if (
+    weightAdjusterValue !== "constant" &&
+    weightAdjusterValue !== "linearTaxicabDistance"
+  ) {
+    throw new Error("Weight adjuster not supported");
   }
 
   return {
@@ -122,7 +149,9 @@ function getConfig(form) {
     handicap: handicap.valueAsNumber,
     margins: margins.valueAsNumber,
     preventAdjacent: preventAdjacent.checked,
-    generator: generatorValue,
+    allocator: allocatorValue,
+    placer: placerValue,
+    weightAdjuster: weightAdjusterValue,
   };
 }
 
@@ -140,7 +169,9 @@ function handleSubmit(event) {
 
   const config = getConfig(form);
   const totalStones = config.handicap + config.stones * 2;
-  const placements = generators[config.generator](totalStones, config);
+  const allocation = allocators[config.allocator](config, totalStones);
+  const stones = placers[config.placer](config, allocation);
+  const placements = preparePlacements(stones, config.handicap);
   const output = form.elements.namedItem("placements");
   if (!(output instanceof HTMLOutputElement)) {
     throw new Error("DOM failure");

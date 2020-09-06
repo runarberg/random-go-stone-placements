@@ -1,10 +1,10 @@
-import whole from "./whole.js";
-import stars from "./stars.js";
 import dominoes from "./dominoes.js";
 import quadrants from "./quadrants.js";
+import stars from "./stars.js";
+import whole from "./whole.js";
 
 /**
- * @typedef { import("../../../main.js").Config } Config
+ * @typedef { import("../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle

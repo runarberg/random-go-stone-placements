@@ -1,11 +1,12 @@
 /**
- * @typedef { import("../../main.js").Config } Config
+ * @typedef { import("../main.js").Config } Config
+ * @typedef { import("./index.js").Allocation } Allocation
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
  */
 
-import { pickUniformRect, allowedCoord } from "./utils/prob-dist.js";
+import { pickUniformRect, allowedCoord } from "../utils/prob-dist.js";
 
 /**
  * @param { Config } config
@@ -13,13 +14,9 @@ import { pickUniformRect, allowedCoord } from "./utils/prob-dist.js";
  * @returns { Point[] }
  */
 export default function distUniform(config, allocation) {
-  if (typeof allocation !== "Rectangle[]") {
-    throw new Error("unsupported allocation type");
-  }
-
   const { preventAdjacent } = config;
-  
-  return allocation.reduce((stones, [start, end]) => {
+
+  return allocation.reduce((/** @type { Point[] } */ stones, [start, end]) => {
     /** @type { Point } */
     let stn;
 

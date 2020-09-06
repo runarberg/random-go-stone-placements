@@ -59,6 +59,7 @@
           Prevent adjacent stones
         </label>
 
+        <!--
         <fieldset class="generator-field radio-fieldset">
           <legend>Generate with</legend>
 
@@ -149,6 +150,209 @@
             </li>
           </ul>
         </fieldset>
+        -->
+
+        <fieldset class="allocator-field radio-fieldset">
+          <legend>allocator</legend>
+
+          <ul class="fields">
+            <li>
+              <input
+                id="input:allocator/whole"
+                name="allocator"
+                type="radio"
+                value="whole"
+                aria-describedby="field-desc:allocator/whole"
+                checked
+              />
+
+              <label for="input:allocator/whole">
+                whole board
+              </label>
+
+              <p
+                id="field-desc:allocator/whole"
+                class="description"
+              >
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:allocator/stars"
+                name="allocator"
+                type="radio"
+                value="stars"
+                aria-describedby="field-desc:allocator/stars"
+              />
+
+              <label for="input:allocator/stars">
+                star points
+              </label>
+
+              <p
+                id="field-desc:allocator/stars"
+                class="description"
+              >
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:allocator/quadrants"
+                name="allocator"
+                type="radio"
+                value="quadrants"
+                aria-describedby="field-desc:allocator/quadrants"
+              />
+
+              <label for="input:allocator/quadrants">
+                quadrants
+              </label>
+
+              <p
+                id="field-desc:allocator/quadrants"
+                class="description"
+              >
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:allocator/dominoes"
+                name="allocator"
+                type="radio"
+                value="adaptiveWeights"
+                aria-describedby="field-desc:allocator/dominoes"
+              />
+
+              <label for="input:allocator/dominoes">
+                dominoes 
+              </label>
+
+              <p
+                id="field-desc:allocator/dominoes"
+                class="description"
+              >
+              </p>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset class="placer-field radio-fieldset">
+          <legend>placer</legend>
+
+          <ul class="fields">
+            <li>
+              <input
+                id="input:placer/distUniform"
+                name="placer"
+                type="radio"
+                value="distUniform"
+                aria-describedby="field-desc:placer/distUniform"
+                checked
+              />
+
+              <label for="input:placer/distUniform">
+                uniform distribution 
+              </label>
+
+              <p
+                id="field-desc:placer/distUniform"
+                class="description"
+              >
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:placer/weightsUniform"
+                name="placer"
+                type="radio"
+                value="weightsUniform"
+                aria-describedby="field-desc:placer/weightsUniform"
+              />
+
+              <label for="input:placer/weightsUniform">
+                uniform weights
+              </label>
+
+              <p
+                id="field-desc:placer/weightsUniform"
+                class="description"
+              >
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:placer/weightsStair"
+                name="placer"
+                type="radio"
+                value="weightsStair"
+                aria-describedby="field-desc:placer/weightsStair"
+              />
+
+              <label for="input:placer/weightsStair">
+                stair shaped weights
+              </label>
+
+              <p
+                id="field-desc:placer/weightsStair"
+                class="description"
+              >
+              </p>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset class="weightAdjuster-field radio-fieldset">
+          <legend>weightAdjuster</legend>
+
+          <ul class="fields">
+            <li>
+              <input
+                id="input:weightAdjuster/constant"
+                name="weightAdjuster"
+                type="radio"
+                value="constant"
+                aria-describedby="field-desc:weightAdjuster/constant"
+                checked
+              />
+
+              <label for="input:weightAdjuster/constant">
+                no adjustment
+              </label>
+
+              <p
+                id="field-desc:weightAdjuster/constant"
+                class="description"
+              >
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:weightAdjuster/linearTaxicabDistance"
+                name="weightAdjuster"
+                type="radio"
+                value="linearTaxicabDistance"
+                aria-describedby="field-desc:weightAdjuster/linearTaxicabDistance"
+              />
+
+              <label for="input:weightAdjuster/linearTaxicabDistance">
+                multiply by taxicab distance 
+              </label>
+
+              <p
+                id="field-desc:weightAdjuster/linearTaxicabDistance"
+                class="description"
+              >
+              </p>
+            </li>
+          </ul>
+        </fieldset>
+
 
         <div class="confirm-buttons">
           <button class="submit-button" name="generate">Generate</button>

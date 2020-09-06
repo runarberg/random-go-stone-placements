@@ -1,5 +1,5 @@
 /**
- * @typedef { import("../../../main.js").Config } Config
+ * @typedef { import("../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
@@ -10,10 +10,7 @@
  * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-export default function whole(
-  { size, margins },
-  totalStones,
-) {
+export default function whole({ size, margins }, totalStones) {
   /** @type { Point } */
   const start = [margins, margins];
   /** @type { Point } */
