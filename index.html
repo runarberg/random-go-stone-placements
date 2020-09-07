@@ -153,9 +153,29 @@
         -->
 
         <fieldset class="allocator-field radio-fieldset">
-          <legend>allocator</legend>
+          <legend>Pre-allocate into</legend>
 
           <ul class="fields">
+            <li>
+              <input
+                id="input:allocator/stars"
+                name="allocator"
+                type="radio"
+                value="stars"
+                aria-describedby="field-desc:allocator/stars"
+              />
+
+              <label for="input:allocator/stars">
+                Star points
+              </label>
+
+              <p
+                id="field-desc:allocator/stars"
+                class="description"
+              >
+              </p>
+            </li>
+
             <li>
               <input
                 id="input:allocator/whole"
@@ -167,31 +187,11 @@
               />
 
               <label for="input:allocator/whole">
-                whole board
+                Whole board
               </label>
 
               <p
                 id="field-desc:allocator/whole"
-                class="description"
-              >
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:allocator/stars"
-                name="allocator"
-                type="radio"
-                value="stars"
-                aria-describedby="field-desc:allocator/stars"
-              />
-
-              <label for="input:allocator/stars">
-                star points
-              </label>
-
-              <p
-                id="field-desc:allocator/stars"
                 class="description"
               >
               </p>
@@ -207,7 +207,7 @@
               />
 
               <label for="input:allocator/quadrants">
-                quadrants
+                Quadrants
               </label>
 
               <p
@@ -222,12 +222,12 @@
                 id="input:allocator/dominoes"
                 name="allocator"
                 type="radio"
-                value="adaptiveWeights"
+                value="dominoes"
                 aria-describedby="field-desc:allocator/dominoes"
               />
 
               <label for="input:allocator/dominoes">
-                dominoes 
+                Dominoes 
               </label>
 
               <p
@@ -240,9 +240,30 @@
         </fieldset>
 
         <fieldset class="placer-field radio-fieldset">
-          <legend>placer</legend>
+          <legend>Place stones from</legend>
 
           <ul class="fields">
+            <li>
+              <input
+                id="input:placer/pointsUnaltered"
+                name="placer"
+                type="radio"
+                value="pointsUnaltered"
+                aria-describedby="field-desc:placer/pointsUnaltered"
+                checked
+              />
+
+              <label for="input:placer/pointsUnaltered">
+                Place points as they are 
+              </label>
+
+              <p
+                id="field-desc:placer/pointsUnaltered"
+                class="description"
+              >
+              </p>
+            </li>
+
             <li>
               <input
                 id="input:placer/distUniform"
@@ -254,7 +275,7 @@
               />
 
               <label for="input:placer/distUniform">
-                uniform distribution 
+                Uniform distribution 
               </label>
 
               <p
@@ -274,7 +295,7 @@
               />
 
               <label for="input:placer/weightsUniform">
-                uniform weights
+                Uniform weights
               </label>
 
               <p
@@ -294,7 +315,7 @@
               />
 
               <label for="input:placer/weightsStair">
-                stair shaped weights
+                Stair shaped weights
               </label>
 
               <p
@@ -307,7 +328,7 @@
         </fieldset>
 
         <fieldset class="weightAdjuster-field radio-fieldset">
-          <legend>weightAdjuster</legend>
+          <legend>Adjust weights by</legend>
 
           <ul class="fields">
             <li>
@@ -321,7 +342,7 @@
               />
 
               <label for="input:weightAdjuster/constant">
-                no adjustment
+                None
               </label>
 
               <p
@@ -341,7 +362,7 @@
               />
 
               <label for="input:weightAdjuster/linearTaxicabDistance">
-                multiply by taxicab distance 
+                Multiplying by taxicab distance 
               </label>
 
               <p

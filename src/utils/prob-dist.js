@@ -8,7 +8,7 @@
  * @returns { number }
  */
 function randomInt(start, end) {
-  return start + Math.floor(Math.random() * (end - start));
+  return Math.floor(start + Math.random() * (end - start));
 }
 
 /**

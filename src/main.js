@@ -129,6 +129,7 @@ function getConfig(form) {
 
   if (
     placerValue !== "distUniform" &&
+    placerValue !== "pointsUnaltered" &&
     placerValue !== "weightsUniform" &&
     placerValue !== "weightsStair"
   ) {

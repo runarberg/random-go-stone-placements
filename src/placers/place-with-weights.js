@@ -73,21 +73,21 @@ function placeWithWeights(config, allocation) {
   /** @type { Grid } */
   let weights;
 
-  if (placer === "weightsUniform" && allocator === "quadrants") {
+  if (allocator === "quadrants") {
     weights = initWeightsQuadrants(config);
   } else {
     weights = new Grid(start, end);
+  }
+
+  if (placer === "weightsStair") {
+    weights = initWeightsStair(weights);
   }
 
   return allocation.reduce((
     /** @type { Point[] } */ stones,
     [startRect, endRect],
   ) => {
-    let subweights = weights.slice(startRect, endRect);
-
-    if (placer === "weightsStair") {
-      subweights = initWeightsStair(subweights);
-    }
+    const subweights = weights.slice(startRect, endRect);
 
     const stn = subweights.toVh(pickIndexWithWeights(subweights.values));
     stones.push(stn);
@@ -95,7 +95,7 @@ function placeWithWeights(config, allocation) {
     weights = weightAdjusters[weightAdjuster](config, weights, stn);
 
     return stones;
-  });
+  }, []);
 }
 
 /**

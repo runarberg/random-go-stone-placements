@@ -188,5 +188,7 @@ export default class Grid {
           .join(" "),
       ),
     );
+    // eslint-disable-next-line no-console
+    console.log("");
   }
 }

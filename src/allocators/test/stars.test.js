@@ -41,7 +41,7 @@ test("stars", (t) => {
     [15, 9],
   ]);
 
-  t.deepEqual(stars(config, 12), [
+  t.deepEqual(stars(config, 9), [
     [3, 15],
     [15, 3],
     [15, 15],
