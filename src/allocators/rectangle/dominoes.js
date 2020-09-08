@@ -1,18 +1,18 @@
 /**
- * @typedef { import("../main.js").Config } Config
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
  */
 
-import { range } from "../utils/common.js";
-import Grid from "../utils/grid.js";
+import { range } from "../../utils/common.js";
+import Grid from "../../utils/grid.js";
 import {
   orderPairs,
   circleTaxicabMaker,
   pickIndexWithWeights,
   pickWithWeights,
-} from "../utils/weights.js";
+} from "../../utils/weights.js";
 
 /**
  * Number of cells along each axis required

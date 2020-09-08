@@ -1,13 +1,12 @@
 /**
- * @typedef { import("../main.js").Config } Config
- * @typedef { import("./index.js").Allocation } Allocation
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  */
 
 /**
  * @param { Config } config
- * @param { Allocation } allocation
+ * @param { Point[] } allocation
  * @returns { Point[] }
  */
 export default function pointsUnaltered(config, allocation) {

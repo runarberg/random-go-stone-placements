@@ -1,16 +1,15 @@
 /**
- * @typedef { import("../main.js").Config } Config
- * @typedef { import("./index.js").Allocation } Allocation
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
  */
 
-import { pickUniformRect, allowedCoord } from "../utils/prob-dist.js";
+import { pickUniformRect, allowedCoord } from "../../utils/prob-dist.js";
 
 /**
  * @param { Config } config
- * @param { Allocation } allocation
+ * @param { Rectangle[] } allocation
  * @returns { Point[] }
  */
 export default function distUniform(config, allocation) {

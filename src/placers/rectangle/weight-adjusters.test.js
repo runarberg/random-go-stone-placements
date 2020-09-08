@@ -1,13 +1,14 @@
 import test from "ava";
 
 import Grid from "../../utils/grid.js";
-import weightAdjusters from "../weight-adjusters.js";
+
+import weightAdjusters from "./weight-adjusters.js";
 
 /**
  * @typedef { import("../../main.js").Config } Config
  */
 
-// npm test "./src/placers/test/weight-adjusters.test.js"  //
+// npm test "./src/placers/rectangle/weight-adjusters.test.js"  //
 
 test("constant", (t) => {
   /** @type { Config } */
@@ -18,7 +19,9 @@ test("constant", (t) => {
     handicap: 0,
     margins: 0,
     preventAdjacent: true,
+    allocatorType: "rectangle",
     allocator: "whole",
+    placerType: "rectangle",
     placer: "distUniform",
     weightAdjuster: "constant",
   };
@@ -63,7 +66,9 @@ test("linearTaxicabDistance", (t) => {
     handicap: 0,
     margins: 0,
     preventAdjacent: true,
+    allocatorType: "rectangle",
     allocator: "whole",
+    placerType: "rectangle",
     placer: "distUniform",
     weightAdjuster: "constant",
   };

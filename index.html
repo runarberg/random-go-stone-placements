@@ -161,6 +161,7 @@
                 id="input:allocator/stars"
                 name="allocator"
                 type="radio"
+                data-allocator-type="point"
                 value="stars"
                 aria-describedby="field-desc:allocator/stars"
               />
@@ -181,6 +182,7 @@
                 id="input:allocator/whole"
                 name="allocator"
                 type="radio"
+                data-allocator-type="rectangle"
                 value="whole"
                 aria-describedby="field-desc:allocator/whole"
                 checked
@@ -202,6 +204,7 @@
                 id="input:allocator/quadrants"
                 name="allocator"
                 type="radio"
+                data-allocator-type="rectangle"
                 value="quadrants"
                 aria-describedby="field-desc:allocator/quadrants"
               />
@@ -222,6 +225,7 @@
                 id="input:allocator/dominoes"
                 name="allocator"
                 type="radio"
+                data-allocator-type="rectangle"
                 value="dominoes"
                 aria-describedby="field-desc:allocator/dominoes"
               />
@@ -240,7 +244,7 @@
         </fieldset>
 
         <fieldset class="placer-field radio-fieldset">
-          <legend>Place stones from</legend>
+          <legend>Place stones using</legend>
 
           <ul class="fields">
             <li>
@@ -249,6 +253,7 @@
                 name="placer"
                 type="radio"
                 value="pointsUnaltered"
+                data-placer-type="point"
                 aria-describedby="field-desc:placer/pointsUnaltered"
                 checked
               />
@@ -269,6 +274,7 @@
                 id="input:placer/distUniform"
                 name="placer"
                 type="radio"
+                data-placer-type="rectangle"
                 value="distUniform"
                 aria-describedby="field-desc:placer/distUniform"
                 checked
@@ -290,6 +296,7 @@
                 id="input:placer/weightsUniform"
                 name="placer"
                 type="radio"
+                data-placer-type="rectangle"
                 value="weightsUniform"
                 aria-describedby="field-desc:placer/weightsUniform"
               />
@@ -310,6 +317,7 @@
                 id="input:placer/weightsStair"
                 name="placer"
                 type="radio"
+                data-placer-type="rectangle"
                 value="weightsStair"
                 aria-describedby="field-desc:placer/weightsStair"
               />

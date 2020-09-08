@@ -1,14 +1,20 @@
-import allocators from "./allocators/index.js";
+import allocatorsPoint from "./allocators/point/index.js";
+import allocatorsRect from "./allocators/rectangle/index.js";
 import formatSGF, { createSGFFile } from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
 import formatText from "./formats/text.js";
-import placers from "./placers/index.js";
+import placersPoint from "./placers/point/index.js";
+import placersRect from "./placers/rectangle/index.js";
 import { preparePlacements } from "./utils/common.js";
 
 /**
- * @typedef { import("./allocators/index.js").Allocator } Allocator
- * @typedef { import("./placers/index.js").Placer } Placer
- * @typedef { import("./placers/weight-adjusters.js").WeightAdjuster } WeightAdjuster
+ * @typedef { import("./allocators/point/index.js").AllocatorPoint } AllocatorPoint
+ * @typedef { import("./allocators/rectangle/index.js").AllocatorRect } AllocatorRect
+ * @typedef { import("./placers/point/index.js").PlacerPoint } PlacerPoint
+ * @typedef { import("./placers/rectangle/index.js").PlacerRect } PlacerRect
+ * @typedef { import("./placers/rectangle/weight-adjusters.js").WeightAdjuster } WeightAdjuster
+ *
+ * @typedef { [number, number] } Point
  *
  * @typedef { object } Placement - A specific stone placement
  * @property { number } col - The column number
@@ -22,8 +28,10 @@ import { preparePlacements } from "./utils/common.js";
  * @property { number } handicap - How many extra stones for black
  * @property { number } margins - How many stone free lines from the edge
  * @property { boolean } preventAdjacent - Prevent putting stone adjacent to an existing stone
- * @property { Allocator } allocator - Which pre-allocation method to use
- * @property { Placer } placer - Which placement method to use
+ * @property { string } allocatorType - Pre-allocate into points or rectangles?
+ * @property { AllocatorPoint | AllocatorRect } allocator - Which pre-allocation method to use
+ * @property { string } placerType - Place stones from pre-allocated points or rectangles?
+ * @property { PlacerPoint | PlacerRect } placer - Which placement method to use
  * @property { WeightAdjuster } weightAdjuster - If using weight-based placement method, how to adjust weights
  */
 
@@ -114,7 +122,9 @@ function getConfig(form) {
     throw new Error("DOM Failure");
   }
 
+  const allocatorType = allocator.getAttribute("data-allocator-type");
   const allocatorValue = allocator.value;
+  const placerType = placer.getAttribute("data-placer-type");
   const placerValue = placer.value;
   const weightAdjusterValue = weightAdjuster.value;
 
@@ -150,7 +160,9 @@ function getConfig(form) {
     handicap: handicap.valueAsNumber,
     margins: margins.valueAsNumber,
     preventAdjacent: preventAdjacent.checked,
+    allocatorType,
     allocator: allocatorValue,
+    placerType,
     placer: placerValue,
     weightAdjuster: weightAdjusterValue,
   };
@@ -170,8 +182,20 @@ function handleSubmit(event) {
 
   const config = getConfig(form);
   const totalStones = config.handicap + config.stones * 2;
-  const allocation = allocators[config.allocator](config, totalStones);
-  const stones = placers[config.placer](config, allocation);
+
+  /** @type { Point[] } */
+  let stones;
+
+  if (config.allocatorType === "point") {
+    const allocation = allocatorsPoint[config.allocator](config, totalStones);
+    stones = placersPoint[config.placer](config, allocation);
+  } else if (config.allocatorType === "rectangle") {
+    const allocation = allocatorsRect[config.allocator](config, totalStones);
+    stones = placersRect[config.placer](config, allocation);
+  } else {
+    throw new Error("Unsupported allocator type");
+  }
+
   const placements = preparePlacements(stones, config.handicap);
   const output = form.elements.namedItem("placements");
   if (!(output instanceof HTMLOutputElement)) {

@@ -1,16 +1,16 @@
 /**
- * @typedef { import("../main.js").Config } Config
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { "constant" | "linearTaxicabDistance" } WeightAdjuster
  */
 
-import Grid from "../utils/grid.js";
+import Grid from "../../utils/grid.js";
 import {
   circleTaxicabMaker,
   distanceTaxicabMaker,
   medianNonzero,
-} from "../utils/weights.js";
+} from "../../utils/weights.js";
 
 /**
  * @param { Config } config

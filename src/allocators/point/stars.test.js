@@ -1,12 +1,12 @@
 import test from "ava";
 
-import stars from "../stars.js";
+import stars from "./stars.js";
 
 /**
  * @typedef { import("../../main.js").Config } Config
  */
 
-// npm test "./src/allocators/test/stars.test.js"  //
+// npm test "./src/allocators/point/stars.test.js"  //
 
 test("stars", (t) => {
   /** @type { Config } */
@@ -17,7 +17,9 @@ test("stars", (t) => {
     handicap: 0,
     margins: 0,
     preventAdjacent: false,
+    allocatorType: "point",
     allocator: "whole",
+    placerType: "point",
     placer: "distUniform",
     weightAdjuster: "constant",
   };

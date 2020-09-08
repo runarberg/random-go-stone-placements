@@ -1,18 +1,16 @@
 /**
- * @typedef { import("../main.js").Placement } Placement
- * @typedef { import("../main.js").Config } Config
- * @typedef { import("./index.js").Allocation } Allocation
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
  */
 
-import Grid from "../utils/grid.js";
+import Grid from "../../utils/grid.js";
 import {
   regionRect,
   pickIndexWithWeights,
   distanceToBoundaryMaker,
-} from "../utils/weights.js";
+} from "../../utils/weights.js";
 
 import weightAdjusters from "./weight-adjusters.js";
 
@@ -59,7 +57,7 @@ function initWeightsStair(weights) {
 
 /**
  * @param { Config } config
- * @param { Allocation } allocation
+ * @param { Rectangle[] } allocation
  * @returns { Point[] }
  */
 function placeWithWeights(config, allocation) {
@@ -100,7 +98,7 @@ function placeWithWeights(config, allocation) {
 
 /**
  * @param { Config } config
- * @param { Allocation } allocation
+ * @param { Rectangle[] } allocation
  * @returns { Point[] }
  */
 export function weightsUniform(config, allocation) {
@@ -109,7 +107,7 @@ export function weightsUniform(config, allocation) {
 
 /**
  * @param { Config } config
- * @param { Allocation } allocation
+ * @param { Rectangle[] } allocation
  * @returns { Point[] }
  */
 export function weightsStair(config, allocation) {

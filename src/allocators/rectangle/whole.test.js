@@ -1,12 +1,12 @@
 import test from "ava";
 
-import whole from "../whole.js";
+import whole from "./whole.js";
 
 /**
  * @typedef { import("../../main.js").Config } Config
  */
 
-// npm test "./src/allocators/test/whole.test.js"  //
+// npm test "./src/allocators/rectangle/whole.test.js"  //
 
 test("whole", (t) => {
   /** @type { Config } */
@@ -17,7 +17,9 @@ test("whole", (t) => {
     handicap: 0,
     margins: 2,
     preventAdjacent: false,
+    allocatorType: "rectangle",
     allocator: "whole",
+    placerType: "rectangle",
     placer: "distUniform",
     weightAdjuster: "constant",
   };

@@ -1,5 +1,5 @@
 /**
- * @typedef { import("../main.js").Config } Config
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  */
