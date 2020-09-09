@@ -18,9 +18,10 @@ test("whole", (t) => {
     margins: 2,
     preventAdjacent: false,
     allocatorType: "rectangle",
-    allocator: "whole",
-    placerType: "rectangle",
-    placer: "distUniform",
+    allocatorPoint: "stars",
+    allocatorRect: "whole",
+    placerPoint: "pointsUnaltered",
+    placerRect: "distUniform",
     weightAdjuster: "constant",
   };
 

@@ -29,9 +29,10 @@ import { preparePlacements } from "./utils/common.js";
  * @property { number } margins - How many stone free lines from the edge
  * @property { boolean } preventAdjacent - Prevent putting stone adjacent to an existing stone
  * @property { string } allocatorType - Pre-allocate into points or rectangles?
- * @property { AllocatorPoint | AllocatorRect } allocator - Which pre-allocation method to use
- * @property { string } placerType - Place stones from pre-allocated points or rectangles?
- * @property { PlacerPoint | PlacerRect } placer - Which placement method to use
+ * @property { AllocatorPoint } allocatorPoint - Which point-based pre-allocation method to use
+ * @property { AllocatorRect } allocatorRect - Which rectangle-based pre-allocation method to use
+ * @property { PlacerPoint } placerPoint - Which point-based placement method to use
+ * @property { PlacerRect } placerRect - Which rectangle-based placement method to use
  * @property { WeightAdjuster } weightAdjuster - If using weight-based placement method, how to adjust weights
  */
 
@@ -104,8 +105,11 @@ function getConfig(form) {
   const handicap = elements.namedItem("handicap");
   const margins = elements.namedItem("margins");
   const preventAdjacent = elements.namedItem("preventAdjacent");
-  const allocator = elements.namedItem("allocator");
-  const placer = elements.namedItem("placer");
+  const allocatorType = elements.namedItem("allocatorType");
+  const allocatorPoint = elements.namedItem("allocatorPoint");
+  const allocatorRect = elements.namedItem("allocatorRect");
+  const placerPoint = elements.namedItem("placerPoint");
+  const placerRect = elements.namedItem("placerRect");
   const weightAdjuster = elements.namedItem("weightAdjuster");
 
   if (
@@ -115,35 +119,49 @@ function getConfig(form) {
     !(handicap instanceof HTMLInputElement) ||
     !(margins instanceof HTMLInputElement) ||
     !(preventAdjacent instanceof HTMLInputElement) ||
-    !(allocator instanceof RadioNodeList) ||
-    !(placer instanceof RadioNodeList) ||
+    !(allocatorType instanceof RadioNodeList) ||
+    !(allocatorPoint instanceof RadioNodeList) ||
+    !(allocatorRect instanceof RadioNodeList) ||
+    !(placerPoint instanceof RadioNodeList) ||
+    !(placerRect instanceof RadioNodeList) ||
     !(weightAdjuster instanceof RadioNodeList)
   ) {
     throw new Error("DOM Failure");
   }
 
-  const allocatorType = allocator.getAttribute("data-allocator-type");
-  const allocatorValue = allocator.value;
-  const placerType = placer.getAttribute("data-placer-type");
-  const placerValue = placer.value;
+  const allocatorTypeValue = allocatorType.value;
+  const allocatorPointValue = allocatorPoint.value;
+  const allocatorRectValue = allocatorRect.value;
+  const placerPointValue = placerPoint.value;
+  const placerRectValue = placerRect.value;
   const weightAdjusterValue = weightAdjuster.value;
 
-  if (
-    allocatorValue !== "whole" &&
-    allocatorValue !== "stars" &&
-    allocatorValue !== "quadrants" &&
-    allocatorValue !== "dominoes"
-  ) {
-    throw new Error("Allocator not supported");
+  if (allocatorTypeValue !== "point" && allocatorTypeValue !== "rectangle") {
+    throw new Error("Allocator type not supported");
+  }
+
+  if (allocatorPointValue !== "stars" && allocatorPointValue !== "dummy") {
+    throw new Error("This point-based allocator not supported");
   }
 
   if (
-    placerValue !== "distUniform" &&
-    placerValue !== "pointsUnaltered" &&
-    placerValue !== "weightsUniform" &&
-    placerValue !== "weightsStair"
+    allocatorRectValue !== "whole" &&
+    allocatorRectValue !== "quadrants" &&
+    allocatorRectValue !== "dominoes"
   ) {
-    throw new Error("Placer not supported");
+    throw new Error("This rectangle-based allocator not supported");
+  }
+
+  if (placerPointValue !== "pointsUnaltered" && placerPointValue !== "dummy") {
+    throw new Error("This point-based placer not supported");
+  }
+
+  if (
+    placerRectValue !== "distUniform" &&
+    placerRectValue !== "weightsUniform" &&
+    placerRectValue !== "weightsStair"
+  ) {
+    throw new Error("This rectangle-based placer not supported");
   }
 
   if (
@@ -160,10 +178,11 @@ function getConfig(form) {
     handicap: handicap.valueAsNumber,
     margins: margins.valueAsNumber,
     preventAdjacent: preventAdjacent.checked,
-    allocatorType,
-    allocator: allocatorValue,
-    placerType,
-    placer: placerValue,
+    allocatorType: allocatorTypeValue,
+    allocatorPoint: allocatorPointValue,
+    allocatorRect: allocatorRectValue,
+    placerPoint: placerPointValue,
+    placerRect: placerRectValue,
     weightAdjuster: weightAdjusterValue,
   };
 }
@@ -187,11 +206,17 @@ function handleSubmit(event) {
   let stones;
 
   if (config.allocatorType === "point") {
-    const allocation = allocatorsPoint[config.allocator](config, totalStones);
-    stones = placersPoint[config.placer](config, allocation);
+    const allocation = allocatorsPoint[config.allocatorPoint](
+      config,
+      totalStones,
+    );
+    stones = placersPoint[config.placerPoint](config, allocation);
   } else if (config.allocatorType === "rectangle") {
-    const allocation = allocatorsRect[config.allocator](config, totalStones);
-    stones = placersRect[config.placer](config, allocation);
+    const allocation = allocatorsRect[config.allocatorRect](
+      config,
+      totalStones,
+    );
+    stones = placersRect[config.placerRect](config, allocation);
   } else {
     throw new Error("Unsupported allocator type");
   }

@@ -1,3 +1,4 @@
+import dummy from "./dummy.js";
 import stars from "./stars.js";
 
 /**
@@ -5,7 +6,7 @@ import stars from "./stars.js";
  *
  * @typedef { [number, number] } Point
  *
- * @typedef { "stars" } AllocatorPoint
+ * @typedef { "stars" | "dummy" } AllocatorPoint
  */
 
 // eslint-disable-next-line jsdoc/valid-types
@@ -14,6 +15,7 @@ import stars from "./stars.js";
  */
 const allocatorsPoint = {
   stars,
+  dummy,
 };
 
 export default allocatorsPoint;

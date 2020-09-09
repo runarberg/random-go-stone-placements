@@ -61,7 +61,7 @@ function initWeightsStair(weights) {
  * @returns { Point[] }
  */
 function placeWithWeights(config, allocation) {
-  const { size, margins, allocator, placer, weightAdjuster } = config;
+  const { size, margins, allocatorRect, placerRect, weightAdjuster } = config;
 
   /** @type { Point } */
   const start = [margins, margins];
@@ -71,13 +71,13 @@ function placeWithWeights(config, allocation) {
   /** @type { Grid } */
   let weights;
 
-  if (allocator === "quadrants") {
+  if (allocatorRect === "quadrants") {
     weights = initWeightsQuadrants(config);
   } else {
     weights = new Grid(start, end);
   }
 
-  if (placer === "weightsStair") {
+  if (placerRect === "weightsStair") {
     weights = initWeightsStair(weights);
   }
 

@@ -59,141 +59,26 @@
           Prevent adjacent stones
         </label>
 
-        <!--
-        <fieldset class="generator-field radio-fieldset">
-          <legend>Generate with</legend>
-
-          <ul class="fields">
-            <li>
-              <input
-                id="input:generator/uniform"
-                name="generator"
-                type="radio"
-                value="uniform"
-                aria-describedby="field-desc:generator/uniform"
-                checked
-              />
-
-              <label for="input:generator/uniform">
-                Uniform distribution
-              </label>
-
-              <p
-                id="field-desc:generator/uniform"
-                class="description"
-              >
-                Each intersection has equal chance.
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:generator/quadrant-shuffle"
-                name="generator"
-                type="radio"
-                value="quadrantShuffle"
-                aria-describedby="field-desc:generator/quadrant-shuffle"
-              />
-
-              <label for="input:generator/quadrant-shuffle">
-                Quadrant shuffle
-              </label>
-
-              <p
-                id="field-desc:generator/quadrant-shuffle"
-                class="description"
-              >
-                Favor placing in every quadrant.
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:generator/domino-shuffle"
-                name="generator"
-                type="radio"
-                value="dominoShuffle"
-                aria-describedby="field-desc:generator/domino-shuffle"
-              />
-
-              <label for="input:generator/domino-shuffle">
-                Domino shuffle
-              </label>
-
-              <p
-                id="field-desc:generator/domino-shuffle"
-                class="description"
-              >
-                Reserve domino-shaped space for each stone.
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:generator/adaptive-weights"
-                name="generator"
-                type="radio"
-                value="adaptiveWeights"
-                aria-describedby="field-desc:generator/adaptive-weights"
-              />
-
-              <label for="input:generator/adaptive-weights">
-                Adaptive weights
-              </label>
-
-              <p
-                id="field-desc:generator/adaptive-weights"
-                class="description"
-              >
-                Weight for each intersection adjusts after each stone is placed.
-              </p>
-            </li>
-          </ul>
-        </fieldset>
-        -->
-
-        <fieldset class="allocator-field radio-fieldset">
+        <fieldset class="allocatorType-field radio-fieldset">
           <legend>Pre-allocate into</legend>
 
           <ul class="fields">
             <li>
               <input
-                id="input:allocator/stars"
-                name="allocator"
+                id="input:allocatorType/point"
+                name="allocatorType"
                 type="radio"
-                data-allocator-type="point"
-                value="stars"
-                aria-describedby="field-desc:allocator/stars"
-              />
-
-              <label for="input:allocator/stars">
-                Star points
-              </label>
-
-              <p
-                id="field-desc:allocator/stars"
-                class="description"
-              >
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:allocator/whole"
-                name="allocator"
-                type="radio"
-                data-allocator-type="rectangle"
-                value="whole"
-                aria-describedby="field-desc:allocator/whole"
+                value="point"
+                aria-describedby="field-desc:allocatorType/point"
                 checked
               />
 
-              <label for="input:allocator/whole">
-                Whole board
+              <label for="input:allocatorType/point">
+                Points
               </label>
 
               <p
-                id="field-desc:allocator/whole"
+                id="field-desc:allocatorType/point"
                 class="description"
               >
               </p>
@@ -201,41 +86,19 @@
 
             <li>
               <input
-                id="input:allocator/quadrants"
-                name="allocator"
+                id="input:allocatorType/rectangle"
+                name="allocatorType"
                 type="radio"
-                data-allocator-type="rectangle"
-                value="quadrants"
-                aria-describedby="field-desc:allocator/quadrants"
+                value="rectangle"
+                aria-describedby="field-desc:allocatorType/rectangle"
               />
 
-              <label for="input:allocator/quadrants">
-                Quadrants
+              <label for="input:allocatorType/rectangle">
+                Rectangles
               </label>
 
               <p
-                id="field-desc:allocator/quadrants"
-                class="description"
-              >
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:allocator/dominoes"
-                name="allocator"
-                type="radio"
-                data-allocator-type="rectangle"
-                value="dominoes"
-                aria-describedby="field-desc:allocator/dominoes"
-              />
-
-              <label for="input:allocator/dominoes">
-                Dominoes 
-              </label>
-
-              <p
-                id="field-desc:allocator/dominoes"
+                id="field-desc:allocatorType/rectangle"
                 class="description"
               >
               </p>
@@ -243,27 +106,72 @@
           </ul>
         </fieldset>
 
-        <fieldset class="placer-field radio-fieldset">
-          <legend>Place stones using</legend>
+        <fieldset class="allocatorPoint-field radio-fieldset">
+          <legend>Pre-allocate into (points)</legend>
 
           <ul class="fields">
             <li>
               <input
-                id="input:placer/pointsUnaltered"
-                name="placer"
+                id="input:allocatorPoint/stars"
+                name="allocatorPoint"
                 type="radio"
-                value="pointsUnaltered"
-                data-placer-type="point"
-                aria-describedby="field-desc:placer/pointsUnaltered"
+                value="stars"
+                aria-describedby="field-desc:allocatorPoint/stars"
                 checked
               />
 
-              <label for="input:placer/pointsUnaltered">
-                Place points as they are 
+              <label for="input:allocatorPoint/stars">
+                Star points
               </label>
 
               <p
-                id="field-desc:placer/pointsUnaltered"
+                id="field-desc:allocatorPoint/stars"
+                class="description"
+              >
+              </p>
+            </li>
+            <li>
+              <input
+                id="input:allocatorPoint/dummy"
+                name="allocatorPoint"
+                type="radio"
+                value="dummy"
+                aria-describedby="field-desc:allocatorPoint/dummy"
+              />
+
+              <label for="input:allocatorPoint/dummy">
+                Dummy
+              </label>
+
+              <p
+                id="field-desc:allocatorPoint/dummy"
+                class="description"
+              >
+              </p>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset class="allocatorRect-field radio-fieldset">
+          <legend>Pre-allocate into (rectangles)</legend>
+
+          <ul class="fields">
+            <li>
+              <input
+                id="input:allocatorRect/whole"
+                name="allocatorRect"
+                type="radio"
+                value="whole"
+                aria-describedby="field-desc:allocatorRect/whole"
+                checked
+              />
+
+              <label for="input:allocatorRect/whole">
+                Whole board
+              </label>
+
+              <p
+                id="field-desc:allocatorRect/whole"
                 class="description"
               >
               </p>
@@ -271,21 +179,112 @@
 
             <li>
               <input
-                id="input:placer/distUniform"
-                name="placer"
+                id="input:allocatorRect/quadrants"
+                name="allocatorRect"
                 type="radio"
-                data-placer-type="rectangle"
-                value="distUniform"
-                aria-describedby="field-desc:placer/distUniform"
+                value="quadrants"
+                aria-describedby="field-desc:allocatorRect/quadrants"
+              />
+
+              <label for="input:allocatorRect/quadrants">
+                Quadrants
+              </label>
+
+              <p
+                id="field-desc:allocatorRect/quadrants"
+                class="description"
+              >
+              </p>
+            </li>
+
+            <li>
+              <input
+                id="input:allocatorRect/dominoes"
+                name="allocatorRect"
+                type="radio"
+                value="dominoes"
+                aria-describedby="field-desc:allocatorRect/dominoes"
+              />
+
+              <label for="input:allocatorRect/dominoes">
+                Dominoes 
+              </label>
+
+              <p
+                id="field-desc:allocatorRect/dominoes"
+                class="description"
+              >
+              </p>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset class="placerPoint-field radio-fieldset">
+          <legend>Place stones (from points) using</legend>
+
+          <ul class="fields">
+            <li>
+              <input
+                id="input:placerPoint/pointsUnaltered"
+                name="placerPoint"
+                type="radio"
+                value="pointsUnaltered"
+                aria-describedby="field-desc:placerPoint/pointsUnaltered"
                 checked
               />
 
-              <label for="input:placer/distUniform">
+              <label for="input:placerPoint/pointsUnaltered">
+                Place points as they are
+              </label>
+
+              <p
+                id="field-desc:placerPoint/pointsUnaltered"
+                class="description"
+              >
+              </p>
+            </li>
+            <li>
+              <input
+                id="input:placerPoint/dummy"
+                name="placerPoint"
+                type="radio"
+                value="dummy"
+                aria-describedby="field-desc:placerPoint/dummy"
+              />
+
+              <label for="input:placerPoint/dummy">
+                Dummy
+              </label>
+
+              <p
+                id="field-desc:placerPoint/dummy"
+                class="description"
+              >
+              </p>
+            </li>
+          </ul>
+        </fieldset>
+
+        <fieldset class="placerRect-field radio-fieldset">
+          <legend>Place stones (from rectangles) using</legend>
+
+          <ul class="fields">
+            <li>
+              <input
+                id="input:placerRect/distUniform"
+                name="placerRect"
+                type="radio"
+                value="distUniform"
+                aria-describedby="field-desc:placerRect/distUniform"
+                checked
+              />
+
+              <label for="input:placerRect/distUniform">
                 Uniform distribution 
               </label>
 
               <p
-                id="field-desc:placer/distUniform"
+                id="field-desc:placerRect/distUniform"
                 class="description"
               >
               </p>
@@ -293,20 +292,19 @@
 
             <li>
               <input
-                id="input:placer/weightsUniform"
-                name="placer"
+                id="input:placerRect/weightsUniform"
+                name="placerRect"
                 type="radio"
-                data-placer-type="rectangle"
                 value="weightsUniform"
-                aria-describedby="field-desc:placer/weightsUniform"
+                aria-describedby="field-desc:placerRect/weightsUniform"
               />
 
-              <label for="input:placer/weightsUniform">
+              <label for="input:placerRect/weightsUniform">
                 Uniform weights
               </label>
 
               <p
-                id="field-desc:placer/weightsUniform"
+                id="field-desc:placerRect/weightsUniform"
                 class="description"
               >
               </p>
@@ -314,20 +312,19 @@
 
             <li>
               <input
-                id="input:placer/weightsStair"
-                name="placer"
+                id="input:placerRect/weightsStair"
+                name="placerRect"
                 type="radio"
-                data-placer-type="rectangle"
                 value="weightsStair"
-                aria-describedby="field-desc:placer/weightsStair"
+                aria-describedby="field-desc:placerRect/weightsStair"
               />
 
-              <label for="input:placer/weightsStair">
+              <label for="input:placerRect/weightsStair">
                 Stair shaped weights
               </label>
 
               <p
-                id="field-desc:placer/weightsStair"
+                id="field-desc:placerRect/weightsStair"
                 class="description"
               >
               </p>
@@ -381,7 +378,6 @@
             </li>
           </ul>
         </fieldset>
-
 
         <div class="confirm-buttons">
           <button class="submit-button" name="generate">Generate</button>

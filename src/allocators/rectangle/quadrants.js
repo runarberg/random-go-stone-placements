@@ -83,7 +83,7 @@ function getIndexesQuadrants(
  * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-export default function quadrants({ size, margins, placer }, totalStones) {
+export default function quadrants({ size, margins, placerRect }, totalStones) {
   const start = margins;
   const end = size - margins;
   const middle = size / 2;
@@ -91,7 +91,7 @@ export default function quadrants({ size, margins, placer }, totalStones) {
   let midEnd;
   let midStart;
 
-  switch (placer) {
+  switch (placerRect) {
     case "distUniform":
       //case "distNormal":
       midEnd = middle;
