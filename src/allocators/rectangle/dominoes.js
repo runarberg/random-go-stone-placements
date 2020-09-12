@@ -1,5 +1,5 @@
 /**
- * @typedef { import("../../../main.js").Config } Config
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
@@ -8,11 +8,10 @@
 import { range } from "../../utils/common.js";
 import Grid from "../../utils/grid.js";
 import {
-  regionRect,
   orderPairs,
   circleTaxicabMaker,
-  pickIndex,
-  pick,
+  pickIndexWithWeights,
+  pickWithWeights,
 } from "../../utils/weights.js";
 
 /**
@@ -62,7 +61,7 @@ function neighborsMaker(start, end) {
  * @returns { Rectangle[] }
  */
 function randomDominoes(numsCell, totalStones) {
-  let weights = new Grid([0, 0], numsCell, [], 1 << totalStones);
+  let weights = new Grid([0, 0], numsCell, 1 << totalStones);
 
   const neighbors = neighborsMaker([0, 0], numsCell);
 
@@ -78,13 +77,13 @@ function randomDominoes(numsCell, totalStones) {
 
     // ensure pairing when picking first cell
     do {
-      first = weights.toVh(pickIndex(weights.values));
+      first = weights.toVh(pickIndexWithWeights(weights.values));
       neighborsFirst = neighbors(first);
       weightsNeighbsFirst = weights.valuesAt(neighborsFirst);
     } while (Math.max(...weightsNeighbsFirst) === 0);
 
     const second = weights.toVh(
-      pick(weights.fromVhes(neighborsFirst), weightsNeighbsFirst),
+      pickWithWeights(weights.fromVhes(neighborsFirst), weightsNeighbsFirst),
     );
 
     // adjust weights
@@ -130,7 +129,7 @@ function randomSegments(start, end, separationMin, numsSeg) {
       .forEach((numSegRemain) => {
         const lenSegMax =
           lenRemain - (lenSegMin + separationMin) * numSegRemain;
-        const lenSeg = pick(range(lenSegMin, lenSegMax + 1));
+        const lenSeg = pickWithWeights(range(lenSegMin, lenSegMax + 1));
 
         /** @type { Point } */
         segments[axis].push([coordinate, coordinate + lenSeg]);
@@ -146,25 +145,13 @@ function randomSegments(start, end, separationMin, numsSeg) {
 }
 
 /**
- * @param { number } size
- * @param { Rectangle[] } rectangles
- * @returns { Grid }
- */
-export function initWeightsDominoes(size, rectangles) {
-  return new Grid([0, 0], [size, size]).applyExcept(
-    () => 0,
-    rectangles.flatMap(([start, end]) => regionRect(start, end)),
-  );
-}
-
-/**
- * @param { number } totalStones
  * @param { Config } config
+ * @param { number } totalStones
  * @returns { Rectangle[] }
  */
 export default function dominoes(
-  totalStones,
   { size, margins, preventAdjacent },
+  totalStones,
 ) {
   const start = margins;
   const end = size - margins;
