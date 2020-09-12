@@ -1,12 +1,12 @@
 import test from "ava";
 
-import whole from "./whole.js";
+import whole from "../whole.js";
 
 /**
- * @typedef { import("../../main.js").Config } Config
+ * @typedef { import("../../../main.js").Config } Config
  */
 
-// npm test "./src/allocators/rectangle/whole.test.js"  //
+// npm test "./src/allocators/rectangle/test/whole.test.js"  //
 
 test("whole", (t) => {
   /** @type { Config } */

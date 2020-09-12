@@ -1,14 +1,14 @@
 import test from "ava";
 
-import Grid from "../../utils/grid.js";
+import Grid from "../../../utils/grid.js";
 
-import weightAdjusters from "./weight-adjusters.js";
+import weightAdjusters from "../weight-adjusters.js";
 
 /**
- * @typedef { import("../../main.js").Config } Config
+ * @typedef { import("../../../main.js").Config } Config
  */
 
-// npm test "./src/placers/rectangle/weight-adjusters.test.js"  //
+// npm test "./src/placers/rectangle/test/weight-adjusters.test.js"  //
 
 test("constant", (t) => {
   /** @type { Config } */

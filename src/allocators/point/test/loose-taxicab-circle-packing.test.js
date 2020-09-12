@@ -1,14 +1,14 @@
 import test from "ava";
 
-import { testablesUnexported } from "./loose-taxicab-circle-packing.js";
+import { testablesUnexported } from "../loose-taxicab-circle-packing.js";
 
 /**
- * @typedef { import("../../main.js").Config } Config
+ * @typedef { import("../../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  */
 
-// npm test "./src/allocators/point/loose-taxicab-circle-packing.test.js"  //
+// npm test "./src/allocators/point/test/loose-taxicab-circle-packing.test.js"  //
 
 test("calcSparsities", (t) => {
   const { calcSparsities } = testablesUnexported;

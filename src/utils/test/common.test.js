@@ -2,7 +2,7 @@ import test from "ava";
 
 import { range } from "../common.js";
 
-// npm test "./src/generators/utils/test/common.test.js"
+// npm test "./src/utils/test/common.test.js"
 
 test("range", (t) => {
   t.deepEqual(range(0, 5), [0, 1, 2, 3, 4]);

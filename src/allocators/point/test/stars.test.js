@@ -3,7 +3,7 @@ import test from "ava";
 import stars from "../stars.js";
 
 /**
- * @typedef { import("../../main.js").Config } Config
+ * @typedef { import("../../../main.js").Config } Config
  */
 
 // npm test "./src/allocators/point/test/stars.test.js"  //
