@@ -50,7 +50,7 @@ function calcIdxQuadrant(quadrant) {
     ? 2
     : quadrant === 0b0001
     ? 3
-    : throw new Error("Quadrant out of range");
+    : -1;
 }
 
 /**
