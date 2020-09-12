@@ -1,4 +1,4 @@
-import dummy from "./dummy.js";
+import looseTaxicabCirclePacking from "./loose-taxicab-circle-packing.js";
 import stars from "./stars.js";
 
 /**
@@ -6,7 +6,7 @@ import stars from "./stars.js";
  *
  * @typedef { [number, number] } Point
  *
- * @typedef { "stars" | "dummy" } AllocatorPoint
+ * @typedef { "stars" | "looseTaxicabCirclePacking" } AllocatorPoint
  */
 
 // eslint-disable-next-line jsdoc/valid-types
@@ -15,7 +15,7 @@ import stars from "./stars.js";
  */
 const allocatorsPoint = {
   stars,
-  dummy,
+  looseTaxicabCirclePacking,
 };
 
 export default allocatorsPoint;

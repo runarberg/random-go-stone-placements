@@ -140,7 +140,10 @@ function getConfig(form) {
     throw new Error("Allocator type not supported");
   }
 
-  if (allocatorPointValue !== "stars" && allocatorPointValue !== "dummy") {
+  if (
+    allocatorPointValue !== "stars" &&
+    allocatorPointValue !== "looseTaxicabCirclePacking"
+  ) {
     throw new Error("This point-based allocator not supported");
   }
 
