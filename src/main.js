@@ -1,10 +1,20 @@
+import allocatorsPoint from "./allocators/point/index.js";
+import allocatorsRect from "./allocators/rectangle/index.js";
 import formatSGF, { createSGFFile } from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
 import formatText from "./formats/text.js";
-import generators from "./generators/index.js";
+import placersPoint from "./placers/point/index.js";
+import placersRect from "./placers/rectangle/index.js";
+import { preparePlacements } from "./utils/common.js";
 
 /**
- * @typedef { import("./generators/index.js").Generator } Generator
+ * @typedef { import("./allocators/point/index.js").AllocatorPoint } AllocatorPoint
+ * @typedef { import("./allocators/rectangle/index.js").AllocatorRect } AllocatorRect
+ * @typedef { import("./placers/point/index.js").PlacerPoint } PlacerPoint
+ * @typedef { import("./placers/rectangle/index.js").PlacerRect } PlacerRect
+ * @typedef { import("./placers/rectangle/weight-adjusters.js").WeightAdjuster } WeightAdjuster
+ *
+ * @typedef { [number, number] } Point
  *
  * @typedef { object } Placement - A specific stone placement
  * @property { number } col - The column number
@@ -18,7 +28,12 @@ import generators from "./generators/index.js";
  * @property { number } handicap - How many extra stones for black
  * @property { number } margins - How many stone free lines from the edge
  * @property { boolean } preventAdjacent - Prevent putting stone adjacent to an existing stone
- * @property { Generator } generator - Which randomizaton method to use
+ * @property { string } allocatorType - Pre-allocate into points or rectangles?
+ * @property { AllocatorPoint } allocatorPoint - Which point-based pre-allocation method to use
+ * @property { AllocatorRect } allocatorRect - Which rectangle-based pre-allocation method to use
+ * @property { PlacerPoint } placerPoint - Which point-based placement method to use
+ * @property { PlacerRect } placerRect - Which rectangle-based placement method to use
+ * @property { WeightAdjuster } weightAdjuster - If using weight-based placement method, how to adjust weights
  */
 
 // @ts-ignore
@@ -90,7 +105,12 @@ function getConfig(form) {
   const handicap = elements.namedItem("handicap");
   const margins = elements.namedItem("margins");
   const preventAdjacent = elements.namedItem("preventAdjacent");
-  const generator = elements.namedItem("generator");
+  const allocatorType = elements.namedItem("allocatorType");
+  const allocatorPoint = elements.namedItem("allocatorPoint");
+  const allocatorRect = elements.namedItem("allocatorRect");
+  const placerPoint = elements.namedItem("placerPoint");
+  const placerRect = elements.namedItem("placerRect");
+  const weightAdjuster = elements.namedItem("weightAdjuster");
 
   if (
     !(stones instanceof HTMLInputElement) ||
@@ -99,20 +119,59 @@ function getConfig(form) {
     !(handicap instanceof HTMLInputElement) ||
     !(margins instanceof HTMLInputElement) ||
     !(preventAdjacent instanceof HTMLInputElement) ||
-    !(generator instanceof RadioNodeList)
+    !(allocatorType instanceof RadioNodeList) ||
+    !(allocatorPoint instanceof RadioNodeList) ||
+    !(allocatorRect instanceof RadioNodeList) ||
+    !(placerPoint instanceof RadioNodeList) ||
+    !(placerRect instanceof RadioNodeList) ||
+    !(weightAdjuster instanceof RadioNodeList)
   ) {
     throw new Error("DOM Failure");
   }
 
-  const generatorValue = generator.value;
+  const allocatorTypeValue = allocatorType.value;
+  const allocatorPointValue = allocatorPoint.value;
+  const allocatorRectValue = allocatorRect.value;
+  const placerPointValue = placerPoint.value;
+  const placerRectValue = placerRect.value;
+  const weightAdjusterValue = weightAdjuster.value;
+
+  if (allocatorTypeValue !== "point" && allocatorTypeValue !== "rectangle") {
+    throw new Error("Allocator type not supported");
+  }
 
   if (
-    generatorValue !== "dominoShuffle" &&
-    generatorValue !== "quadrantShuffle" &&
-    generatorValue !== "uniform" &&
-    generatorValue !== "adaptiveWeights"
+    allocatorPointValue !== "stars" &&
+    allocatorPointValue !== "looseTaxicabCirclePacking"
   ) {
-    throw new Error("Generator not supported");
+    throw new Error("This point-based allocator not supported");
+  }
+
+  if (
+    allocatorRectValue !== "whole" &&
+    allocatorRectValue !== "quadrants" &&
+    allocatorRectValue !== "dominoes"
+  ) {
+    throw new Error("This rectangle-based allocator not supported");
+  }
+
+  if (placerPointValue !== "pointsUnaltered" && placerPointValue !== "dummy") {
+    throw new Error("This point-based placer not supported");
+  }
+
+  if (
+    placerRectValue !== "distUniform" &&
+    placerRectValue !== "weightsUniform" &&
+    placerRectValue !== "weightsStair"
+  ) {
+    throw new Error("This rectangle-based placer not supported");
+  }
+
+  if (
+    weightAdjusterValue !== "constant" &&
+    weightAdjusterValue !== "linearTaxicabDistance"
+  ) {
+    throw new Error("Weight adjuster not supported");
   }
 
   return {
@@ -122,7 +181,12 @@ function getConfig(form) {
     handicap: handicap.valueAsNumber,
     margins: margins.valueAsNumber,
     preventAdjacent: preventAdjacent.checked,
-    generator: generatorValue,
+    allocatorType: allocatorTypeValue,
+    allocatorPoint: allocatorPointValue,
+    allocatorRect: allocatorRectValue,
+    placerPoint: placerPointValue,
+    placerRect: placerRectValue,
+    weightAdjuster: weightAdjusterValue,
   };
 }
 
@@ -140,7 +204,27 @@ function handleSubmit(event) {
 
   const config = getConfig(form);
   const totalStones = config.handicap + config.stones * 2;
-  const placements = generators[config.generator](totalStones, config);
+
+  /** @type { Point[] } */
+  let stones;
+
+  if (config.allocatorType === "point") {
+    const allocation = allocatorsPoint[config.allocatorPoint](
+      config,
+      totalStones,
+    );
+    stones = placersPoint[config.placerPoint](config, allocation);
+  } else if (config.allocatorType === "rectangle") {
+    const allocation = allocatorsRect[config.allocatorRect](
+      config,
+      totalStones,
+    );
+    stones = placersRect[config.placerRect](config, allocation);
+  } else {
+    throw new Error("Unsupported allocator type");
+  }
+
+  const placements = preparePlacements(stones, config.handicap);
   const output = form.elements.namedItem("placements");
   if (!(output instanceof HTMLOutputElement)) {
     throw new Error("DOM failure");
