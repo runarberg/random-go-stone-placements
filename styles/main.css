@@ -286,12 +286,13 @@ body {
   grid-area: form;
   grid-gap: 1ex 1em;
   grid-template:
-    "stones     size            "
-    "komi       handicap        "
-    "margins    prevent-adjacent"
-    "generator generator      "
-    ".          .               " 1ex
-    "submit     submit          ";
+    "seed      seed            "
+    "stones    size            "
+    "komi      handicap        "
+    "margins   prevent-adjacent"
+    "generator generator       "
+    ".         .               " 1ex
+    "submit    submit          ";
 }
 
 .form label,
@@ -306,6 +307,10 @@ body {
 
 .form label.checkbox-field {
   flex-flow: row;
+}
+
+.form .seed-field {
+  grid-area: seed;
 }
 
 .form .stones-field {

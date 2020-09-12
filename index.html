@@ -28,29 +28,34 @@
 
     <main class="app">
       <form id="generator-form" class="form">
+        <label class="seed-field">
+          <span class="label">Random Seed <small>(optional)</small></span>
+          <input name="seed" type="text" />
+        </label>
+
         <label class="stones-field">
           Number of stones each:
-          <input name="stones" type="number" min="0" value="3" />
+          <input name="stones" type="number" min="0" value="3" required />
         </label>
 
         <label class="size-field">
           Board size:
-          <input name="size" type="number" min="9" max="25" value="19" />
+          <input name="size" type="number" min="9" max="25" value="19" required />
         </label>
 
         <label class="komi-field">
           Komi:
-          <input name="komi" type="number" value="6.5" step="0.5" />
+          <input name="komi" type="number" value="6.5" step="0.5" required />
         </label>
 
         <label class="handicap-field">
           Handicap:
-          <input name="handicap" type="number" value="0" />
+          <input name="handicap" type="number" value="0" required />
         </label>
 
         <label class="margins-field">
           Stone free margins:
-          <input name="margins" type="number" value="2" />
+          <input name="margins" type="number" value="2" required />
         </label>
 
         <label class="prevent-adjacent-field checkbox-field">

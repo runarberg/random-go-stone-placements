@@ -12,6 +12,7 @@ import generators from "./generators/index.js";
  * @property { "B" | "W" } player - Which color stone
  *
  * @typedef { object } Config - Configuration data from the form inputs
+ * @property { string | null } seed - Random seed for more deterministic output
  * @property { number } stones - Number of stones each
  * @property { number } size - The size of the board
  * @property { number } komi - Points given to white at the beginning
@@ -21,13 +22,36 @@ import generators from "./generators/index.js";
  * @property { Generator } generator - Which randomizaton method to use
  */
 
-// @ts-ignore
 import("focus-visible").catch((error) => {
   /* eslint-disable no-console */
   console.warn("Failed to import focus-visible");
   console.error(error);
   /* eslint-enable no-console */
 });
+
+/**
+ * @param { string } str
+ * @returns { number }
+ */
+function toHash(str) {
+  let hash = 0xdeadbeef;
+
+  for (const c of str) {
+    hash = (hash << 5) - hash + c.codePointAt(0);
+  }
+
+  return hash;
+}
+
+/**
+ * @param { number } number
+ * @returns { number }
+ */
+function toFraction(n) {
+  const str = Math.abs(n).toString(16);
+
+  return Number.parseInt(str.slice(-8), 16) / 0xffffffff;
+}
 
 /**
  * @param { Placement[] } placements
@@ -84,6 +108,7 @@ function setOutput(output, placements, config) {
  */
 function getConfig(form) {
   const { elements } = form;
+  const seed = elements.namedItem("seed");
   const stones = elements.namedItem("stones");
   const size = elements.namedItem("size");
   const komi = elements.namedItem("komi");
@@ -93,6 +118,7 @@ function getConfig(form) {
   const generator = elements.namedItem("generator");
 
   if (
+    !(seed instanceof HTMLInputElement) ||
     !(stones instanceof HTMLInputElement) ||
     !(size instanceof HTMLInputElement) ||
     !(komi instanceof HTMLInputElement) ||
@@ -116,6 +142,7 @@ function getConfig(form) {
   }
 
   return {
+    seed: seed.value ? toFraction(tohash(seed.value)) : null,
     stones: stones.valueAsNumber,
     size: size.valueAsNumber,
     komi: komi.valueAsNumber,
