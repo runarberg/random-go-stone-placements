@@ -9,6 +9,38 @@ import Grid from "../../utils/grid.js";
 import { regionRect } from "../../utils/weights.js";
 
 /**
+ * @param { number } quadrantMask
+ * @returns { number }
+ */
+function getRandomQuadrant(quadrantMask) {
+  const bits = Array.from(quadrantMask.toString(2).padStart(4, "0"), (n) =>
+    Number.parseInt(n, 10),
+  ).reverse();
+  const once = bits.reduce((count, bit) => count + bit, 0);
+
+  if (once === 1) {
+    return quadrantMask;
+  }
+
+  // Get a random nth of the available bits.
+  const nth = Math.floor(Math.random() * once);
+  let bitsLeft = nth + 1;
+  const index = bits.findIndex((bit) => {
+    if (bit) {
+      bitsLeft -= 1;
+    }
+
+    if (bitsLeft === 0) {
+      return true;
+    }
+
+    return false;
+  });
+
+  return 1 << index;
+}
+
+/**
  * @param { number } size
  * @param { Rectangle[] } rectangles
  * @returns { Grid }
