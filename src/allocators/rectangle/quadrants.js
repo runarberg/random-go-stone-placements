@@ -1,5 +1,5 @@
 /**
- * @typedef { import("../../../main.js").Config } Config
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
  * @typedef { [Point, Point] } Rectangle
@@ -31,32 +31,48 @@ export function initWeightsQuadrants(size, rectangles) {
 }
 
 /**
- * @param { number } totalStones
  * @param { Config } config
+ * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-export default function quadrants(totalStones, { size, margins }) {
+export default function quadrants({ size, margins, placerRect }, totalStones) {
   const start = margins;
   const end = size - margins;
-  const centerLower = Math.floor((size - 1) / 2);
-  const centerUpper = Math.ceil((size - 1) / 2);
+  const middle = size / 2;
+
+  let midEnd;
+  let midStart;
+
+  switch (placerRect) {
+    case "distUniform":
+      midEnd = middle;
+      midStart = middle;
+      break;
+    case "weightsUniform":
+    case "weightsStair":
+      midEnd = Math.ceil(middle);
+      midStart = Math.floor(middle);
+      break;
+    default:
+      throw new Error("unsupported placer option");
+  }
 
   /** @type { Rectangle[] } */
   return [
     [
       [start, start],
-      [centerLower + 1, centerLower + 1],
+      [midEnd, midEnd],
     ],
     [
-      [start, centerUpper],
-      [centerLower + 1, end],
+      [start, midStart],
+      [midEnd, end],
     ],
     [
-      [centerUpper, start],
-      [end, centerLower + 1],
+      [midStart, start],
+      [end, midEnd],
     ],
     [
-      [centerUpper, centerUpper],
+      [midStart, midStart],
       [end, end],
     ],
   ];
