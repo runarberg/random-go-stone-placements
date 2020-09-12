@@ -41,6 +41,49 @@ function getRandomQuadrant(quadrantMask) {
 }
 
 /**
+ * @param { number } quadrant
+ * @returns { number }
+ */
+function calcIdxQuadrant(quadrant) {
+  return quadrant === 0b1000
+    ? 0
+    : quadrant === 0b0100
+    ? 1
+    : quadrant === 0b0010
+    ? 2
+    : quadrant === 0b0001
+    ? 3
+    : throw new Error("Quadrant out of range");
+}
+
+/**
+ * @typedef { object } State
+ * @property { number } quadrantMask
+ * @property { number[] } indexes
+ *
+ * @param { number } n
+ * @param { State | undefined } state
+ * @returns { number[] }
+ */
+function getIndexesQuadrants(
+  n,
+  state = {
+    quadrantMask: 0b1111,
+    indexes: [],
+  },
+) {
+  if (n <= 0) {
+    return state.indexes;
+  }
+
+  const nextQuadrant = getRandomQuadrant(state.quadrantMask);
+  state.indexes.push(calcIdxQuadrant(nextQuadrant));
+  state.quadrantMask = state.quadrantMask ^ nextQuadrant || 0b1111;
+
+  return getIndexesQuadrants(n - 1, state);
+}
+
+/**
  * @param { number } size
  * @param { Rectangle[] } rectangles
  * @returns { Grid }
@@ -90,7 +133,7 @@ export default function quadrants({ size, margins, placerRect }, totalStones) {
   }
 
   /** @type { Rectangle[] } */
-  return [
+  const quadrantsAll = [
     [
       [start, start],
       [midEnd, midEnd],
@@ -108,4 +151,6 @@ export default function quadrants({ size, margins, placerRect }, totalStones) {
       [end, end],
     ],
   ];
+
+  return getIndexesQuadrants(totalStones).map((idx) => quadrantsAll[idx]);
 }
