@@ -1,19 +1,21 @@
+import looseTaxicabCirclePacking from "./loose-taxicab-circle-packing.js";
 import stars from "./stars.js";
 
 /**
- * @typedef { import("../../../main.js").Config } Config
- *
- * @typedef { "stars" } PointAllocator
+ * @typedef { import("../../main.js").Config } Config
  *
  * @typedef { [number, number] } Point
+ *
+ * @typedef { "stars" | "looseTaxicabCirclePacking" } AllocatorPoint
  */
 
 // eslint-disable-next-line jsdoc/valid-types
 /*
- * @type { { [name in PointAllocator]: (totalStones: number, config: Config) => Point[] } }
+ * @type { { [name in AllocatorPoint]: (config: Config, totalStones: number) => Point[] } }
  */
-const pointAllocators = {
+const allocatorsPoint = {
   stars,
+  looseTaxicabCirclePacking,
 };
 
-export default pointAllocators;
+export default allocatorsPoint;
