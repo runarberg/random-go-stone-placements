@@ -5,9 +5,6 @@
  * @typedef { [Point, Point] } Rectangle
  */
 
-import Grid from "../../utils/grid.js";
-import { regionRect } from "../../utils/weights.js";
-
 /**
  * @param { number } quadrantMask
  * @returns { number }
@@ -81,28 +78,6 @@ function getIndexesQuadrants(
   state.quadrantMask = state.quadrantMask ^ nextQuadrant || 0b1111;
 
   return getIndexesQuadrants(n - 1, state);
-}
-
-/**
- * @param { number } size
- * @param { Rectangle[] } rectangles
- * @returns { Grid }
- */
-export function initWeightsQuadrants(size, rectangles) {
-  if (size % 2 === 0) {
-    return new Grid([0, 0], [size, size]).applyExcept(
-      () => 0,
-      rectangles.flatMap(([start, end]) => regionRect(start, end)),
-    );
-  }
-
-  return rectangles
-    .reduce(
-      (acc, [start, end]) =>
-        acc.applyAt((wgt) => wgt >> 1, regionRect(start, end)),
-      new Grid([0, 0], [size, size], [], 1 << 4),
-    )
-    .apply((wgt) => (wgt === 1 << 4 ? 0 : wgt));
 }
 
 /**
