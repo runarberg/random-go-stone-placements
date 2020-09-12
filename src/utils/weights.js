@@ -145,7 +145,7 @@ function cumulative(nums) {
  * @param { number[] } weights
  * @returns { number }
  */
-export function pickIndex(weights) {
+export function pickIndexWithWeights(weights) {
   if (weights.some((weight) => weight < 0)) {
     throw new Error("Negative weight");
   }
@@ -171,7 +171,7 @@ export function pickIndex(weights) {
  * @param { number[] } weights
  * @returns { number }
  */
-export function pick(
+export function pickWithWeights(
   options,
   weights = Array.from({ length: options.length }).fill(1),
 ) {
@@ -179,7 +179,7 @@ export function pick(
     throw new Error("Unequal length");
   }
 
-  return options[pickIndex(weights)];
+  return options[pickIndexWithWeights(weights)];
 }
 
 /**
@@ -226,10 +226,10 @@ export function distanceToBoundaryMaker(
     const distanceMax = Math.min(end[0] - start[0] - 1, end[1] - start[1] - 1);
 
     return Math.min(
-      start[0] === startOuter[0] ? distanceMax : point[0] - start[0],
-      start[1] === startOuter[1] ? distanceMax : point[1] - start[1],
-      end[0] === endOuter[0] ? distanceMax : end[0] - point[0] - 1,
-      end[1] === endOuter[1] ? distanceMax : end[1] - point[1] - 1,
+      start[0] === startOuter[0] ? distanceMax : point[0] - (start[0] - 1),
+      start[1] === startOuter[1] ? distanceMax : point[1] - (start[1] - 1),
+      end[0] === endOuter[0] ? distanceMax : end[0] - point[0],
+      end[1] === endOuter[1] ? distanceMax : end[1] - point[1],
     );
   };
 }
