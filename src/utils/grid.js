@@ -10,10 +10,10 @@ export default class Grid {
   /**
    * @param { Point } start
    * @param { Point } end
-   * @param { number[] } values
    * @param { number } valueInit
+   * @param { number[] } values
    */
-  constructor(start = [0, 0], end, values = [], valueInit = 1) {
+  constructor(start = [0, 0], end, valueInit = 1, values = []) {
     /**
      * @readonly
      * @type { Point }
@@ -103,11 +103,11 @@ export default class Grid {
    * @returns { Grid }
    */
   apply(func) {
-    return new Grid(this.start, this.end, this.values.map(func));
+    return new Grid(this.start, this.end, 0, this.values.map(func));
   }
 
   /**
-   * @param { (val: number) => number } func
+   * @param { (val: number, idx: number, arr: number[]) => number } func
    * @param { Point[] } vhesOuter
    * @returns { Grid }
    */
@@ -117,9 +117,10 @@ export default class Grid {
     return new Grid(
       this.start,
       this.end,
-      this.values.map((val, idx) => {
+      0,
+      this.values.map((val, idx, arr) => {
         if (idxesInner.includes(idx)) {
-          return func(val);
+          return func(val, idx, arr);
         }
         return val;
       }),
@@ -127,7 +128,7 @@ export default class Grid {
   }
 
   /**
-   * @param { (val: number) => number } func
+   * @param { (val: number, idx: number, arr: number[]) => number } func
    * @param { Point[] } vhesOuter
    * @returns { Grid }
    */
@@ -137,9 +138,10 @@ export default class Grid {
     return new Grid(
       this.start,
       this.end,
-      this.values.map((val, idx) => {
+      0,
+      this.values.map((val, idx, arr) => {
         if (!idxesInner.includes(idx)) {
-          return func(val);
+          return func(val, idx, arr);
         }
         return val;
       }),
@@ -155,6 +157,7 @@ export default class Grid {
     return new Grid(
       start,
       end,
+      0,
       range(start[0], end[0]).flatMap((v) =>
         this.values.slice(this.fromVh([v, start[1]]), this.fromVh([v, end[1]])),
       ),
@@ -185,5 +188,7 @@ export default class Grid {
           .join(" "),
       ),
     );
+    // eslint-disable-next-line no-console
+    console.log("");
   }
 }

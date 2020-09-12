@@ -3,7 +3,7 @@ import test from "ava";
 import Grid from "../grid.js";
 import { regionRect } from "../weights.js";
 
-// npm test "./src/generators/utils/test/grid.test.js"
+// npm test "./src/utils/test/grid.test.js"
 
 test("Grid.toVh", (t) => {
   t.deepEqual(new Grid([0, 0], [6, 6]).toVh(14), [2, 2]);
