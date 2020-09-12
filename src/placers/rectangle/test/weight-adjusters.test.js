@@ -1,7 +1,6 @@
 import test from "ava";
 
 import Grid from "../../../utils/grid.js";
-
 import weightAdjusters from "../weight-adjusters.js";
 
 /**
