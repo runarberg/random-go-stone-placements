@@ -1,10 +1,7 @@
-import allocatorsPoint from "./allocators/point/index.js";
-import allocatorsRect from "./allocators/rectangle/index.js";
 import formatSGF, { createSGFFile } from "./formats/sgf.js";
 import drawSVG from "./formats/svg.js";
 import formatText from "./formats/text.js";
-import placersPoint from "./placers/point/index.js";
-import placersRect from "./placers/rectangle/index.js";
+import generate from "./generate.js";
 import { preparePlacements } from "./utils/common.js";
 
 /**
@@ -28,11 +25,9 @@ import { preparePlacements } from "./utils/common.js";
  * @property { number } handicap - How many extra stones for black
  * @property { number } margins - How many stone free lines from the edge
  * @property { boolean } preventAdjacent - Prevent putting stone adjacent to an existing stone
- * @property { string } allocatorType - Pre-allocate into points or rectangles?
- * @property { AllocatorPoint } allocatorPoint - Which point-based pre-allocation method to use
- * @property { AllocatorRect } allocatorRect - Which rectangle-based pre-allocation method to use
- * @property { PlacerPoint } placerPoint - Which point-based placement method to use
- * @property { PlacerRect } placerRect - Which rectangle-based placement method to use
+ * @property { "point" | "rectangle" } generator - Pre-allocate into points or rectangles?
+ * @property { AllocatorPoint | AllocatorRect | null } allocator - Which pre-allocation method to use
+ * @property { PlacerPoint | PlacerRect | null } placer - Which placement method to use
  * @property { WeightAdjuster } weightAdjuster - If using weight-based placement method, how to adjust weights
  */
 
@@ -105,11 +100,9 @@ function getConfig(form) {
   const handicap = elements.namedItem("handicap");
   const margins = elements.namedItem("margins");
   const preventAdjacent = elements.namedItem("preventAdjacent");
-  const allocatorType = elements.namedItem("allocatorType");
-  const allocatorPoint = elements.namedItem("allocatorPoint");
-  const allocatorRect = elements.namedItem("allocatorRect");
-  const placerPoint = elements.namedItem("placerPoint");
-  const placerRect = elements.namedItem("placerRect");
+  const generator = elements.namedItem("generator");
+  const allocator = elements.namedItem("allocator");
+  const placer = elements.namedItem("placer");
   const weightAdjuster = elements.namedItem("weightAdjuster");
 
   if (
@@ -119,52 +112,43 @@ function getConfig(form) {
     !(handicap instanceof HTMLInputElement) ||
     !(margins instanceof HTMLInputElement) ||
     !(preventAdjacent instanceof HTMLInputElement) ||
-    !(allocatorType instanceof RadioNodeList) ||
-    !(allocatorPoint instanceof RadioNodeList) ||
-    !(allocatorRect instanceof RadioNodeList) ||
-    !(placerPoint instanceof RadioNodeList) ||
-    !(placerRect instanceof RadioNodeList) ||
+    !(generator instanceof RadioNodeList) ||
+    !(allocator instanceof RadioNodeList || allocator === null) ||
+    !(placer instanceof RadioNodeList || placer === null) ||
     !(weightAdjuster instanceof RadioNodeList)
   ) {
     throw new Error("DOM Failure");
   }
 
-  const allocatorTypeValue = allocatorType.value;
-  const allocatorPointValue = allocatorPoint.value;
-  const allocatorRectValue = allocatorRect.value;
-  const placerPointValue = placerPoint.value;
-  const placerRectValue = placerRect.value;
-  const weightAdjusterValue = weightAdjuster.value;
+  const generatorValue = generator.value;
+  const allocatorValue = allocator?.value ?? null;
+  const placerValue = placer?.value ?? null;
+  const weightAdjusterValue = weightAdjuster.value || "constant";
 
-  if (allocatorTypeValue !== "point" && allocatorTypeValue !== "rectangle") {
-    throw new Error("Allocator type not supported");
+  if (generatorValue !== "point" && generatorValue !== "rectangle") {
+    throw new Error("Generator not supported");
   }
 
   if (
-    allocatorPointValue !== "stars" &&
-    allocatorPointValue !== "looseTaxicabCirclePacking"
+    allocatorValue !== null &&
+    allocatorValue !== "stars" &&
+    allocatorValue !== "looseTaxicabCirclePacking" &&
+    allocatorValue !== "whole" &&
+    allocatorValue !== "quadrants" &&
+    allocatorValue !== "dominoes"
   ) {
-    throw new Error("This point-based allocator not supported");
+    throw new Error("This allocator not supported");
   }
 
   if (
-    allocatorRectValue !== "whole" &&
-    allocatorRectValue !== "quadrants" &&
-    allocatorRectValue !== "dominoes"
+    placerValue !== null &&
+    placerValue !== "pointsUnaltered" &&
+    placerValue !== "dummy" &&
+    placerValue !== "distUniform" &&
+    placerValue !== "weightsUniform" &&
+    placerValue !== "weightsStair"
   ) {
-    throw new Error("This rectangle-based allocator not supported");
-  }
-
-  if (placerPointValue !== "pointsUnaltered" && placerPointValue !== "dummy") {
-    throw new Error("This point-based placer not supported");
-  }
-
-  if (
-    placerRectValue !== "distUniform" &&
-    placerRectValue !== "weightsUniform" &&
-    placerRectValue !== "weightsStair"
-  ) {
-    throw new Error("This rectangle-based placer not supported");
+    throw new Error("This placer not supported");
   }
 
   if (
@@ -181,17 +165,16 @@ function getConfig(form) {
     handicap: handicap.valueAsNumber,
     margins: margins.valueAsNumber,
     preventAdjacent: preventAdjacent.checked,
-    allocatorType: allocatorTypeValue,
-    allocatorPoint: allocatorPointValue,
-    allocatorRect: allocatorRectValue,
-    placerPoint: placerPointValue,
-    placerRect: placerRectValue,
+    generator: generatorValue,
+    allocator: allocatorValue,
+    placer: placerValue,
     weightAdjuster: weightAdjusterValue,
   };
 }
 
 /**
  * @param { Event } event
+ * @returns { void }
  */
 function handleSubmit(event) {
   event.preventDefault();
@@ -203,29 +186,10 @@ function handleSubmit(event) {
   }
 
   const config = getConfig(form);
-  const totalStones = config.handicap + config.stones * 2;
-
-  /** @type { Point[] } */
-  let stones;
-
-  if (config.allocatorType === "point") {
-    const allocation = allocatorsPoint[config.allocatorPoint](
-      config,
-      totalStones,
-    );
-    stones = placersPoint[config.placerPoint](config, allocation);
-  } else if (config.allocatorType === "rectangle") {
-    const allocation = allocatorsRect[config.allocatorRect](
-      config,
-      totalStones,
-    );
-    stones = placersRect[config.placerRect](config, allocation);
-  } else {
-    throw new Error("Unsupported allocator type");
-  }
-
+  const stones = generate(config);
   const placements = preparePlacements(stones, config.handicap);
   const output = form.elements.namedItem("placements");
+
   if (!(output instanceof HTMLOutputElement)) {
     throw new Error("DOM failure");
   }
@@ -289,7 +253,46 @@ function handleKomiChange(event) {
 }
 
 /**
- *
+ * @param { Event } event
+ * @returns { void }
+ */
+function handleGeneratorChange(event) {
+  if (!(event.target instanceof HTMLInputElement)) {
+    throw new Error("DOM error");
+  }
+
+  const { value } = event.target;
+
+  for (const name of ["allocator", "placer"]) {
+    const fields = document.getElementById(`fields:${name}`);
+
+    if (!fields) {
+      continue;
+    }
+
+    const oldTemplateId = fields.dataset.template;
+
+    if (oldTemplateId) {
+      const oldTemplate = document.getElementById(oldTemplateId);
+
+      if (oldTemplate instanceof HTMLTemplateElement) {
+        const lis = fields.querySelectorAll("li");
+        oldTemplate.content.append(...lis);
+      }
+    }
+
+    const templateId = `template:fields/${name}/${value}`;
+    const template = document.getElementById(templateId);
+
+    if (template instanceof HTMLTemplateElement) {
+      fields.append(template.content);
+      fields.dataset.template = templateId;
+    }
+  }
+}
+
+/**
+ * @returns { void }
  */
 function main() {
   const { searchParams } = new URL(window.location.href);
@@ -356,6 +359,21 @@ function main() {
   const komiEl = form.elements.namedItem("komi");
   if (komiEl instanceof HTMLElement) {
     komiEl.addEventListener("change", handleKomiChange);
+  }
+
+  const generatorRadio = form.elements.namedItem("generator");
+  if (generatorRadio instanceof RadioNodeList) {
+    for (const el of generatorRadio) {
+      if (!(el instanceof HTMLInputElement)) {
+        throw new Error("DOM error");
+      }
+
+      el.addEventListener("change", handleGeneratorChange);
+
+      if (el.checked) {
+        el.dispatchEvent(new Event("change"));
+      }
+    }
   }
 }
 

@@ -59,305 +59,226 @@
           Prevent adjacent stones
         </label>
 
-        <fieldset class="allocator-type-field radio-fieldset">
-          <legend>Pre-allocate into</legend>
+        <fieldset class="generator-field radio-fieldset">
+          <legend>Random Generator</legend>
 
           <ul class="fields">
             <li>
               <input
-                id="input:allocatorType/point"
-                name="allocatorType"
+                id="input:generator/point"
+                name="generator"
                 type="radio"
                 value="point"
                 checked
               />
 
-              <label for="input:allocatorType/point">
+              <label for="input:generator/point">
                 Points
               </label>
             </li>
 
             <li>
               <input
-                id="input:allocatorType/rectangle"
-                name="allocatorType"
+                id="input:generator/rectangle"
+                name="generator"
                 type="radio"
                 value="rectangle"
               />
 
-              <label for="input:allocatorType/rectangle">
+              <label for="input:generator/rectangle">
                 Rectangles
               </label>
             </li>
           </ul>
-        </fieldset>
 
-        <fieldset class="allocator-point-field radio-fieldset">
-          <legend>Pre-allocate into (points)</legend>
+          <div class="nested-fields">
+            <fieldset class="allocator-field radio-fieldset">
+              <legend>Pre-allocate into</legend>
 
-          <ul class="fields">
-            <li>
-              <input
-                id="input:allocatorPoint/stars"
-                name="allocatorPoint"
-                type="radio"
-                value="stars"
-                checked
-              />
+              <ul id="fields:allocator" class="fields">
+                <template id="template:fields/allocator/point">
+                  <li>
+                    <input
+                      id="input:allocator/stars"
+                      name="allocator"
+                      type="radio"
+                      value="stars"
+                      checked
+                    />
 
-              <label for="input:allocatorPoint/stars">
-                Star points
-              </label>
-            </li>
+                    <label for="input:allocator/stars">
+                      Star points
+                    </label>
+                  </li>
 
-            <li>
-              <input
-                id="input:allocatorPoint/looseTaxicabCirclePacking"
-                name="allocatorPoint"
-                type="radio"
-                value="looseTaxicabCirclePacking"
-                aria-describedby="field-desc:allocatorPoint/looseTaxicabCirclePacking"
-              />
+                  <li>
+                    <input
+                      id="input:allocator/looseTaxicabCirclePacking"
+                      name="allocator"
+                      type="radio"
+                      value="looseTaxicabCirclePacking"
+                    />
 
-              <label for="input:allocatorPoint/looseTaxicabCirclePacking">
-                Centers of loosely packed taxicab circles
-              </label>
+                    <label for="input:allocator/looseTaxicabCirclePacking">
+                      Taxicab circles
+                    </label>
+                  </li>
+                </template>
 
-              <p
-                id="field-desc:allocatorPoint/looseTaxicabCirclePacking"
-                class="description"
-              >
-              </p>
-            </li>
-          </ul>
-        </fieldset>
+                <template id="template:fields/allocator/rectangle">
+                  <li>
+                    <input
+                      id="input:allocator/whole"
+                      name="allocator"
+                      type="radio"
+                      value="whole"
+                      checked
+                    />
 
-        <fieldset class="allocator-rect-field radio-fieldset">
-          <legend>Pre-allocate into (rectangles)</legend>
+                    <label for="input:allocator/whole">
+                      Whole board
+                    </label>
+                  </li>
 
-          <ul class="fields">
-            <li>
-              <input
-                id="input:allocatorRect/whole"
-                name="allocatorRect"
-                type="radio"
-                value="whole"
-                aria-describedby="field-desc:allocatorRect/whole"
-                checked
-              />
+                  <li>
+                    <input
+                      id="input:allocator/quadrants"
+                      name="allocator"
+                      type="radio"
+                      value="quadrants"
+                    />
 
-              <label for="input:allocatorRect/whole">
-                Whole board
-              </label>
+                    <label for="input:allocator/quadrants">
+                      Quadrants
+                    </label>
+                  </li>
 
-              <p
-                id="field-desc:allocatorRect/whole"
-                class="description"
-              >
-              </p>
-            </li>
+                  <li>
+                    <input
+                      id="input:allocator/dominoes"
+                      name="allocator"
+                      type="radio"
+                      value="dominoes"
+                    />
 
-            <li>
-              <input
-                id="input:allocatorRect/quadrants"
-                name="allocatorRect"
-                type="radio"
-                value="quadrants"
-                aria-describedby="field-desc:allocatorRect/quadrants"
-              />
+                    <label for="input:allocator/dominoes">
+                      Dominoes
+                    </label>
+                  </li>
+                </template>
+              </ul>
+            </fieldset>
 
-              <label for="input:allocatorRect/quadrants">
-                Quadrants
-              </label>
+            <fieldset class="placer-field radio-fieldset">
+              <legend>Place stones using</legend>
 
-              <p
-                id="field-desc:allocatorRect/quadrants"
-                class="description"
-              >
-              </p>
-            </li>
+              <ul id="fields:placer" class="fields">
+                <template id="template:fields/placer/point">
+                  <li>
+                    <input
+                      id="input:placer/pointsUnaltered"
+                      name="placer"
+                      type="radio"
+                      value="pointsUnaltered"
+                      checked
+                    />
 
-            <li>
-              <input
-                id="input:allocatorRect/dominoes"
-                name="allocatorRect"
-                type="radio"
-                value="dominoes"
-                aria-describedby="field-desc:allocatorRect/dominoes"
-              />
+                    <label for="input:placer/pointsUnaltered">
+                      Place points as they are
+                    </label>
+                  </li>
 
-              <label for="input:allocatorRect/dominoes">
-                Dominoes 
-              </label>
+                  <li>
+                    <input
+                      id="input:placer/dummy"
+                      name="placer"
+                      type="radio"
+                      value="dummy"
+                    />
 
-              <p
-                id="field-desc:allocatorRect/dominoes"
-                class="description"
-              >
-              </p>
-            </li>
-          </ul>
-        </fieldset>
+                    <label for="input:placer/dummy">
+                      Dummy
+                    </label>
+                  </li>
+                </template>
 
-        <fieldset class="placer-point-field radio-fieldset">
-          <legend>Place stones (from points) using</legend>
+                <template id="template:fields/placer/rectangle">
+                  <li>
+                    <input
+                      id="input:placer/distUniform"
+                      name="placer"
+                      type="radio"
+                      value="distUniform"
+                      checked
+                    />
 
-          <ul class="fields">
-            <li>
-              <input
-                id="input:placerPoint/pointsUnaltered"
-                name="placerPoint"
-                type="radio"
-                value="pointsUnaltered"
-                aria-describedby="field-desc:placerPoint/pointsUnaltered"
-                checked
-              />
+                    <label for="input:placer/distUniform">
+                      Uniform distribution
+                    </label>
+                  </li>
 
-              <label for="input:placerPoint/pointsUnaltered">
-                Place points as they are
-              </label>
+                  <li>
+                    <input
+                      id="input:placer/weightsUniform"
+                      name="placer"
+                      type="radio"
+                      value="weightsUniform"
+                    />
 
-              <p
-                id="field-desc:placerPoint/pointsUnaltered"
-                class="description"
-              >
-              </p>
-            </li>
+                    <label for="input:placer/weightsUniform">
+                      Uniform weights
+                    </label>
+                  </li>
 
-            <li>
-              <input
-                id="input:placerPoint/dummy"
-                name="placerPoint"
-                type="radio"
-                value="dummy"
-                aria-describedby="field-desc:placerPoint/dummy"
-              />
+                  <li>
+                    <input
+                      id="input:placer/weightsStair"
+                      name="placer"
+                      type="radio"
+                      value="weightsStair"
+                    />
 
-              <label for="input:placerPoint/dummy">
-                Dummy
-              </label>
+                    <label for="input:placer/weightsStair">
+                      Stair shaped weights
+                    </label>
+                  </li>
+                </template>
+              </ul>
+            </fieldset>
 
-              <p
-                id="field-desc:placerPoint/dummy"
-                class="description"
-              >
-              </p>
-            </li>
-          </ul>
-        </fieldset>
+            <fieldset class="weights-field radio-fieldset">
+              <legend>Adjust weights by</legend>
 
-        <fieldset class="placer-rect-field radio-fieldset">
-          <legend>Place stones (from rectangles) using</legend>
+              <ul class="fields">
+                <li>
+                  <input
+                    id="input:weightAdjuster/constant"
+                    name="weightAdjuster"
+                    type="radio"
+                    value="constant"
+                    checked
+                  />
 
-          <ul class="fields">
-            <li>
-              <input
-                id="input:placerRect/distUniform"
-                name="placerRect"
-                type="radio"
-                value="distUniform"
-                aria-describedby="field-desc:placerRect/distUniform"
-                checked
-              />
+                  <label for="input:weightAdjuster/constant">
+                    None
+                  </label>
+                </li>
 
-              <label for="input:placerRect/distUniform">
-                Uniform distribution 
-              </label>
+                <li>
+                  <input
+                    id="input:weightAdjuster/linearTaxicabDistance"
+                    name="weightAdjuster"
+                    type="radio"
+                    value="linearTaxicabDistance"
+                  />
 
-              <p
-                id="field-desc:placerRect/distUniform"
-                class="description"
-              >
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:placerRect/weightsUniform"
-                name="placerRect"
-                type="radio"
-                value="weightsUniform"
-                aria-describedby="field-desc:placerRect/weightsUniform"
-              />
-
-              <label for="input:placerRect/weightsUniform">
-                Uniform weights
-              </label>
-
-              <p
-                id="field-desc:placerRect/weightsUniform"
-                class="description"
-              >
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:placerRect/weightsStair"
-                name="placerRect"
-                type="radio"
-                value="weightsStair"
-                aria-describedby="field-desc:placerRect/weightsStair"
-              />
-
-              <label for="input:placerRect/weightsStair">
-                Stair shaped weights
-              </label>
-
-              <p
-                id="field-desc:placerRect/weightsStair"
-                class="description"
-              >
-              </p>
-            </li>
-          </ul>
-        </fieldset>
-
-        <fieldset class="weight-adjuster-field radio-fieldset">
-          <legend>Adjust weights by</legend>
-
-          <ul class="fields">
-            <li>
-              <input
-                id="input:weightAdjuster/constant"
-                name="weightAdjuster"
-                type="radio"
-                value="constant"
-                aria-describedby="field-desc:weightAdjuster/constant"
-                checked
-              />
-
-              <label for="input:weightAdjuster/constant">
-                None
-              </label>
-
-              <p
-                id="field-desc:weightAdjuster/constant"
-                class="description"
-              >
-              </p>
-            </li>
-
-            <li>
-              <input
-                id="input:weightAdjuster/linearTaxicabDistance"
-                name="weightAdjuster"
-                type="radio"
-                value="linearTaxicabDistance"
-                aria-describedby="field-desc:weightAdjuster/linearTaxicabDistance"
-              />
-
-              <label for="input:weightAdjuster/linearTaxicabDistance">
-                Multiplying by taxicab distance 
-              </label>
-
-              <p
-                id="field-desc:weightAdjuster/linearTaxicabDistance"
-                class="description"
-              >
-              </p>
-            </li>
-          </ul>
+                  <label for="input:weightAdjuster/linearTaxicabDistance">
+                    Multiplying by taxicab distance
+                  </label>
+                </li>
+              </ul>
+            </fieldset>
+          </div>
         </fieldset>
 
         <div class="confirm-buttons">

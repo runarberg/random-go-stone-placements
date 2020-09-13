@@ -17,11 +17,9 @@ test("stars", (t) => {
     handicap: 0,
     margins: 0,
     preventAdjacent: false,
-    allocatorType: "point",
-    allocatorPoint: "stars",
-    allocatorRect: "whole",
-    placerPoint: "pointsUnaltered",
-    placerRect: "distUniform",
+    generator: "point",
+    allocator: "stars",
+    placer: "pointsUnaltered",
     weightAdjuster: "constant",
   };
 

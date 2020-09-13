@@ -21,11 +21,9 @@ test("calcSparsities", (t) => {
     handicap: 0,
     margins: 2,
     preventAdjacent: false,
-    allocatorType: "point",
-    allocatorPoint: "stars",
-    allocatorRect: "whole",
-    placerPoint: "pointsUnaltered",
-    placerRect: "distUniform",
+    generator: "point",
+    allocator: "stars",
+    placer: "pointsUnaltered",
     weightAdjuster: "constant",
   };
 

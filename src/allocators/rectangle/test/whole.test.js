@@ -17,11 +17,9 @@ test("whole", (t) => {
     handicap: 0,
     margins: 2,
     preventAdjacent: false,
-    allocatorType: "rectangle",
-    allocatorPoint: "stars",
-    allocatorRect: "whole",
-    placerPoint: "pointsUnaltered",
-    placerRect: "distUniform",
+    generator: "rectangle",
+    allocator: "whole",
+    placer: "distUniform",
     weightAdjuster: "constant",
   };
 
