@@ -289,9 +289,8 @@ body {
     "stones         size            "
     "komi           handicap        "
     "margins        prevent-adjacent"
-    "allocator-type allocator-points"
-    "allocator-rect placer-points   "
-    "placer-rect    weight-adjuster "
+    "generator      generator       "
+    "weight-adjust  weight-adjust   "
     ".              .               " 1ex
     "submit         submit          ";
 }
@@ -334,28 +333,31 @@ body {
   grid-area: prevent-adjacent;
 }
 
-.form .allocator-type-field {
-  grid-area: allocator-type;
+.form .generator-field {
+  grid-area: generator;
 }
 
-.form .allocator-points-field {
-  grid-area: allocator-points;
+.form .generator-field .nested-fields {
+  display: grid;
+  font-size: 0.9em;
+  grid-gap: 1ex;
+  grid-template:
+    "allocator placer "
+    "weights   weights"
+    / 1fr 1fr;
+  margin-block-start: 1ex;
 }
 
-.form .allocator-rect-field {
-  grid-area: allocator-rect;
+.form .generator-field .allocator-field {
+  grid-area: allocator;
 }
 
-.form .placer-points-field {
-  grid-area: placer-points;
+.form .generator-field .placer-field {
+  grid-area: placer;
 }
 
-.form .placer-rect-field {
-  grid-area: placer-rect;
-}
-
-.form .weight-adjuster-field {
-  grid-area: weight-adjuster;
+.form .generator-field .weights-field {
+  grid-area: weights;
 }
 
 .form .radio-fieldset input[type="radio"] {
@@ -381,6 +383,14 @@ body {
     / max-content 1fr;
   justify-content: start;
   margin-block: 0.5ex;
+}
+
+.form .radio-fieldset. .nested-fields fieldset {
+  align-self: stretch;
+}
+
+.form .radio-fieldset label {
+  grid-area: label;
 }
 
 .form .radio-fieldset .description {

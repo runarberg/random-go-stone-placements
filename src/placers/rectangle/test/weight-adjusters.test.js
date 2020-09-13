@@ -18,11 +18,9 @@ test("constant", (t) => {
     handicap: 0,
     margins: 0,
     preventAdjacent: true,
-    allocatorType: "rectangle",
-    allocatorPoint: "stars",
-    allocatorRect: "whole",
-    placerPoint: "pointsUnaltered",
-    placerRect: "distUniform",
+    generator: "rectangle",
+    allocator: "whole",
+    placer: "distUniform",
     weightAdjuster: "constant",
   };
 
@@ -66,11 +64,9 @@ test("linearTaxicabDistance", (t) => {
     handicap: 0,
     margins: 0,
     preventAdjacent: true,
-    allocatorType: "rectangle",
-    allocatorPoint: "stars",
-    allocatorRect: "whole",
-    placerPoint: "pointsUnaltered",
-    placerRect: "distUniform",
+    generator: "rectangle",
+    allocator: "whole",
+    placer: "distUniform",
     weightAdjuster: "constant",
   };
 
