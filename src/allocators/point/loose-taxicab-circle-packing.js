@@ -29,7 +29,7 @@ function dotProduct([a1, a2], [b1, b2]) {
  * Stones on taxicab circle, if any, reduce the sparsity
  * by their component in that direction.
  *
- * @param { Config } config
+ * @param { { size: number, margins: number } } config
  * @param { Point[] } stones
  * @param { Point } stn
  * @param { number } radius
@@ -200,7 +200,7 @@ export default function looseTaxicabCirclePacking(config, totalStones) {
             });
           }
 
-          const idxPicked = pickIndexWithWeights(sparsitiesCombined);
+          const idxPicked = pickIndexWithWeights(config, sparsitiesCombined);
 
           const [dv, dh] = sparsCardinal.neighbors[idxPicked];
           const [v, h] = stones[idxStn];

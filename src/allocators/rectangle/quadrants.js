@@ -1,3 +1,7 @@
+import { randomUniform } from "d3-random";
+
+import { Seeder } from "../../utils/prob-dist.js";
+
 /**
  * @typedef { import("../../main.js").Config } Config
  *
@@ -6,10 +10,11 @@
  */
 
 /**
+ * @param { { seeder: Seeder } } config
  * @param { number } quadrantMask
  * @returns { number }
  */
-function getRandomQuadrant(quadrantMask) {
+function getRandomQuadrant({ seeder }, quadrantMask) {
   const bits = Array.from(quadrantMask.toString(2).padStart(4, "0"), (n) =>
     Number.parseInt(n, 10),
   ).reverse();
@@ -20,7 +25,7 @@ function getRandomQuadrant(quadrantMask) {
   }
 
   // Get a random nth of the available bits.
-  const nth = Math.floor(Math.random() * once);
+  const nth = Math.floor(randomUniform.source(seeder.next)()() * once);
   let bitsLeft = nth + 1;
   const index = bits.findIndex((bit) => {
     if (bit) {
@@ -58,11 +63,13 @@ function calcIdxQuadrant(quadrant) {
  * @property { number } quadrantMask
  * @property { number[] } indexes
  *
+ * @param { { seeder: Seeder } } config
  * @param { number } n
  * @param { State | undefined } state
  * @returns { number[] }
  */
 function getIndexesQuadrants(
+  config,
   n,
   state = {
     quadrantMask: 0b1111,
@@ -73,11 +80,11 @@ function getIndexesQuadrants(
     return state.indexes;
   }
 
-  const nextQuadrant = getRandomQuadrant(state.quadrantMask);
+  const nextQuadrant = getRandomQuadrant(config, state.quadrantMask);
   state.indexes.push(calcIdxQuadrant(nextQuadrant));
   state.quadrantMask = state.quadrantMask ^ nextQuadrant || 0b1111;
 
-  return getIndexesQuadrants(n - 1, state);
+  return getIndexesQuadrants(config, n - 1, state);
 }
 
 /**
@@ -85,7 +92,8 @@ function getIndexesQuadrants(
  * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-export default function quadrants({ size, margins, placerRect }, totalStones) {
+export default function quadrants(config, totalStones) {
+  const { size, margins, placerRect } = config;
   const start = margins;
   const end = size - margins;
   const middle = size / 2;
@@ -127,5 +135,7 @@ export default function quadrants({ size, margins, placerRect }, totalStones) {
     ],
   ];
 
-  return getIndexesQuadrants(totalStones).map((idx) => quadrantsAll[idx]);
+  return getIndexesQuadrants(config, totalStones).map(
+    (idx) => quadrantsAll[idx],
+  );
 }

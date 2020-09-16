@@ -7,6 +7,7 @@
 
 import { range } from "../../utils/common.js";
 import Grid from "../../utils/grid.js";
+import { Seeder } from "../../utils/prob-dist.js";
 import {
   orderPairs,
   circleTaxicabMaker,
@@ -56,11 +57,12 @@ function neighborsMaker(start, end) {
 /**
  * Random adjoining pair of cells (= domino) for each stone
  *
+ * @param { { seeder: Seeder } } config
  * @param { Point } numsCell
  * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-function randomDominoes(numsCell, totalStones) {
+function randomDominoes(config, numsCell, totalStones) {
   let weights = new Grid([0, 0], numsCell, 1 << totalStones);
 
   const neighbors = neighborsMaker([0, 0], numsCell);
@@ -77,13 +79,17 @@ function randomDominoes(numsCell, totalStones) {
 
     // ensure pairing when picking first cell
     do {
-      first = weights.toVh(pickIndexWithWeights(weights.values));
+      first = weights.toVh(pickIndexWithWeights(config, weights.values));
       neighborsFirst = neighbors(first);
       weightsNeighbsFirst = weights.valuesAt(neighborsFirst);
     } while (Math.max(...weightsNeighbsFirst) === 0);
 
     const second = weights.toVh(
-      pickWithWeights(weights.fromVhes(neighborsFirst), weightsNeighbsFirst),
+      pickWithWeights(
+        config,
+        weights.fromVhes(neighborsFirst),
+        weightsNeighbsFirst,
+      ),
     );
 
     // adjust weights
@@ -102,19 +108,22 @@ function randomDominoes(numsCell, totalStones) {
 /**
  * Along each axis, randomly divide the length of board into segments
  *
- * @param { number } start
- * @param { number } end
- * @param { number } separationMin
+ * @param { { seeder: Seeder, size: number, margins: number, preventAdjacent: boolean } } config
  * @param { Point } numsSeg
  * @returns { [Point[], Point[]] }
  */
-function randomSegments(start, end, separationMin, numsSeg) {
+function randomSegments(config, numsSeg) {
+  const { size, margins, preventAdjacent } = config;
+  const start = margins;
+  const end = size - margins;
+  const separation = preventAdjacent ? 1 : 0;
+
   // segment: [start, end)
   /** @type { [Point[], Point[]] } */
   const segments = [[], []];
 
   range(0, 2).forEach((axis) => {
-    const lenAvailable = end - start - separationMin * (numsSeg[axis] - 1);
+    const lenAvailable = end - start - separation * (numsSeg[axis] - 1);
     const lenSegMin = Math.floor(lenAvailable / numsSeg[axis]);
 
     if (lenSegMin < 1) {
@@ -127,15 +136,14 @@ function randomSegments(start, end, separationMin, numsSeg) {
     range(1, numsSeg[axis])
       .reverse()
       .forEach((numSegRemain) => {
-        const lenSegMax =
-          lenRemain - (lenSegMin + separationMin) * numSegRemain;
-        const lenSeg = pickWithWeights(range(lenSegMin, lenSegMax + 1));
+        const lenSegMax = lenRemain - (lenSegMin + separation) * numSegRemain;
+        const lenSeg = pickWithWeights(config, range(lenSegMin, lenSegMax + 1));
 
         /** @type { Point } */
         segments[axis].push([coordinate, coordinate + lenSeg]);
 
-        coordinate += lenSeg + separationMin;
-        lenRemain -= lenSeg + separationMin;
+        coordinate += lenSeg + separation;
+        lenRemain -= lenSeg + separation;
       });
     /** @type { Point } */
     segments[axis].push([coordinate, coordinate + lenRemain]);
@@ -149,17 +157,11 @@ function randomSegments(start, end, separationMin, numsSeg) {
  * @param { number } totalStones
  * @returns { Rectangle[] }
  */
-export default function dominoes(
-  { size, margins, preventAdjacent },
-  totalStones,
-) {
-  const start = margins;
-  const end = size - margins;
-  const separation = preventAdjacent ? 1 : 0;
+export default function dominoes(config, totalStones) {
   const numsCell = calcNumsCell(totalStones);
-  const segs = randomSegments(start, end, separation, numsCell);
+  const segs = randomSegments(config, numsCell);
 
-  return randomDominoes(calcNumsCell(totalStones), totalStones).map(
+  return randomDominoes(config, calcNumsCell(totalStones), totalStones).map(
     ([first, second]) =>
       /** @type { Rectangle } */ ([
         // nw corner from first, se corner from second

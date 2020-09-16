@@ -87,7 +87,9 @@ function placeWithWeights(config, allocation) {
   ) => {
     const subweights = weights.slice(startRect, endRect);
 
-    const stn = subweights.toVh(pickIndexWithWeights(subweights.values));
+    const stn = subweights.toVh(
+      pickIndexWithWeights(config, subweights.values),
+    );
     stones.push(stn);
 
     weights = weightAdjusters[weightAdjuster](config, weights, stn);

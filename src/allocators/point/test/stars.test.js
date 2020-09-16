@@ -1,5 +1,6 @@
 import test from "ava";
 
+import { Seeder } from "../../../utils/prob-dist.js";
 import stars from "../stars.js";
 
 /**
@@ -11,6 +12,7 @@ import stars from "../stars.js";
 test("stars", (t) => {
   /** @type { Config } */
   const config = {
+    seeder: new Seeder(""),
     stones: 0,
     size: 19,
     komi: 0,

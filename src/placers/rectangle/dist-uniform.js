@@ -18,7 +18,7 @@ export default function distUniform(config, allocation) {
     let stn;
 
     do {
-      stn = pickUniformRect(start, end);
+      stn = pickUniformRect(config, start, end);
     } while (!allowedCoord(stn, stones, config));
 
     stones.push(stn);

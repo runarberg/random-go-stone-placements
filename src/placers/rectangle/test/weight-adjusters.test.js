@@ -1,6 +1,7 @@
 import test from "ava";
 
 import Grid from "../../../utils/grid.js";
+import { Seeder } from "../../../utils/prob-dist.js";
 import weightAdjusters from "../weight-adjusters.js";
 
 /**
@@ -12,6 +13,7 @@ import weightAdjusters from "../weight-adjusters.js";
 test("constant", (t) => {
   /** @type { Config } */
   const config = {
+    seeder: new Seeder(""),
     stones: 0,
     size: 5,
     komi: 0,
@@ -60,6 +62,7 @@ test("constant", (t) => {
 test("linearTaxicabDistance", (t) => {
   /** @type { Config } */
   const config = {
+    seeder: new Seeder(""),
     stones: 0,
     size: 5,
     komi: 0,
