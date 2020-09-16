@@ -1,4 +1,7 @@
+import { randomUniform } from "d3-random";
+
 import { range } from "./common.js";
+import { Seeder } from "./prob-dist.js";
 
 /**
  * Points in rectangular region, bound by [start, end)
@@ -142,10 +145,11 @@ function cumulative(nums) {
 /**
  * Random index, using relative weights
  *
+ * @param { { seeder: Seeder } } config
  * @param { number[] } weights
  * @returns { number }
  */
-export function pickIndexWithWeights(weights) {
+export function pickIndexWithWeights({ seeder }, weights) {
   if (weights.some((weight) => weight < 0)) {
     throw new Error("Negative weight");
   }
@@ -160,18 +164,20 @@ export function pickIndexWithWeights(weights) {
     throw new Error("total weights overflowed");
   }
 
-  const nRand = Math.random() * total;
+  const nRand = randomUniform.source(seeder.next)()() * total;
   return cumulative(weights).findIndex((val) => val > nRand);
 }
 
 /**
  * Random element in list, optionally using relative weights
  *
+ * @param { { seeder: Seeder } } config
  * @param { number[] } options
  * @param { number[] } weights
  * @returns { number }
  */
 export function pickWithWeights(
+  config,
   options,
   weights = Array.from({ length: options.length }).fill(1),
 ) {
@@ -179,7 +185,7 @@ export function pickWithWeights(
     throw new Error("Unequal length");
   }
 
-  return options[pickIndexWithWeights(weights)];
+  return options[pickIndexWithWeights(config, weights)];
 }
 
 /**

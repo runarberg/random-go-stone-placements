@@ -6,6 +6,7 @@ import formatText from "./formats/text.js";
 import placersPoint from "./placers/point/index.js";
 import placersRect from "./placers/rectangle/index.js";
 import { preparePlacements } from "./utils/common.js";
+import { Seeder } from "./utils/prob-dist.js";
 
 /**
  * @typedef { import("./allocators/point/index.js").AllocatorPoint } AllocatorPoint
@@ -22,6 +23,7 @@ import { preparePlacements } from "./utils/common.js";
  * @property { "B" | "W" } player - Which color stone
  *
  * @typedef { object } Config - Configuration data from the form inputs
+ * @property { Seeder } seeder - An LCG for each word in seed text
  * @property { number } stones - Number of stones each
  * @property { number } size - The size of the board
  * @property { number } komi - Points given to white at the beginning
@@ -36,7 +38,6 @@ import { preparePlacements } from "./utils/common.js";
  * @property { WeightAdjuster } weightAdjuster - If using weight-based placement method, how to adjust weights
  */
 
-// @ts-ignore
 import("focus-visible").catch((error) => {
   /* eslint-disable no-console */
   console.warn("Failed to import focus-visible");
@@ -99,6 +100,7 @@ function setOutput(output, placements, config) {
  */
 function getConfig(form) {
   const { elements } = form;
+  const seed = elements.namedItem("seed");
   const stones = elements.namedItem("stones");
   const size = elements.namedItem("size");
   const komi = elements.namedItem("komi");
@@ -113,6 +115,7 @@ function getConfig(form) {
   const weightAdjuster = elements.namedItem("weightAdjuster");
 
   if (
+    !(seed instanceof HTMLInputElement) ||
     !(stones instanceof HTMLInputElement) ||
     !(size instanceof HTMLInputElement) ||
     !(komi instanceof HTMLInputElement) ||
@@ -175,6 +178,7 @@ function getConfig(form) {
   }
 
   return {
+    seeder: new Seeder(seed.value),
     stones: stones.valueAsNumber,
     size: size.valueAsNumber,
     komi: komi.valueAsNumber,

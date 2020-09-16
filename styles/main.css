@@ -286,6 +286,7 @@ body {
   grid-area: form;
   grid-gap: 1ex 1em;
   grid-template:
+    "seed           seed            "
     "stones         size            "
     "komi           handicap        "
     "margins        prevent-adjacent"
@@ -308,6 +309,10 @@ body {
 
 .form label.checkbox-field {
   flex-flow: row;
+}
+
+.form .seed-field {
+  grid-area: seed;
 }
 
 .form .stones-field {
