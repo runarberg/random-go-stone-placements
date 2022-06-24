@@ -169,7 +169,7 @@
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsdoc": "^30.2.4",
     "eslint-plugin-prettier": "^3.1.4",
-    "jsdom": "^16.4.0",
+    "jsdom": "^16.5.0",
     "prettier": "^2.0.5",
     "rollup": "^2.26.8",
     "rollup-plugin-copy": "^3.3.0",
